@@ -1,0 +1,14 @@
+{
+  "configurations": [
+    {
+      "type": "java",
+      "name": "Spring Boot-SpringBootMongoDbRestApIsApplication<SpringBootMongoDBRestAPIs>",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "console": "internalConsole",
+      "mainClass": "com.OOP.springboot.mongodb.SpringBootMongoDbRestApIsApplication",
+      "projectName": "SpringBootMongoDBRestAPIs",
+      "args": ""
+    }
+  ]
+}
