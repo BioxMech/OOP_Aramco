@@ -10,11 +10,18 @@ public class ResponseMsg {
 	private String url;
 	private String error = "";
 	private List<Customer> customers = new ArrayList<Customer>();
+	private List<String> links = new ArrayList<>();
 	
 	public ResponseMsg(String message, String url, List<Customer> customers) {
 		this.message = message;
 		this.url = url;
 		this.customers = customers;
+	}
+
+	public ResponseMsg(String message, String url, List<String> links, boolean isCrawl) {
+		this.message = message;
+		this.url = url;
+		this.links = links;
 	}
 	
 	public ResponseMsg(String message, String url, String error) {
@@ -58,4 +65,12 @@ public class ResponseMsg {
 	public String getError() {
 		return this.error;
 	}
+
+	public List<String> getLinks() {
+		return links;
+	}
+
+//	public void setLinks(List<String> links) {
+//		this.links = links;
+//	}
 }
