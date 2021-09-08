@@ -1,19 +1,18 @@
 package com.OOP.springboot.mongodb.service;
 
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.*;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class CrawlerService {
@@ -31,8 +30,8 @@ public class CrawlerService {
         this.links = new ArrayList<>();
     }
 
-    @GetMapping("/website")
-    public List<String> getPageLinks(String URL) {
+    // Thailand Web Scraping Service
+    public List<String> scrapeThailand(String URL) {
 
         try {
             // Fetch the HTML code
@@ -78,16 +77,65 @@ public class CrawlerService {
                         fos.write(bytes);
                         fos.close();
 
-
                         System.out.println(savedFileName + " has been downloaded.");
 
                         // TODO: To complete the excel reading
+                        double current_year = Calendar.getInstance().get(Calendar.YEAR);
+                        FileInputStream excel_file = new FileInputStream("./excel_files/" + savedFileName);
+                        Workbook wb = new HSSFWorkbook(excel_file);
+                        Sheet sheet = wb.getSheetAt(0);
+                        Iterator<Row> rows = sheet.iterator();
+                        int dateColIndex = 0;
+                        int totalColIndex = 0;
+                        boolean found = false;
+                        double ytd_total = 0;
+                        boolean current_year_section = false;
 
-                        // For deleting the files after reading it
-//                        File f = new File("./excel_files/" + savedFileName);
-//                        if (f.delete()) {
-//                            System.out.println("Successful");
-//                        }
+                        Outer:
+                        while (rows.hasNext()) {
+                            Row currentRow = rows.next();
+
+                            if (!current_year_section && currentRow.getCell(dateColIndex) != null) {
+                                if (currentRow.getCell(dateColIndex).getCellType() == CellType.STRING &&
+                                        currentRow.getCell(dateColIndex).getStringCellValue().trim().equals("2021")) {
+                                    current_year_section = true;
+                                }
+                                else if (currentRow.getCell(dateColIndex).getCellType() == CellType.NUMERIC &&
+                                        currentRow.getCell(dateColIndex).getNumericCellValue() == current_year) {
+                                    current_year_section = true;
+                                }
+                            }
+
+                            if (!found) {
+                                Iterator<Cell> cellsInRow = currentRow.iterator();
+
+                                // To find the "Total" column index in the excel file
+                                while (cellsInRow.hasNext()) {
+                                    Cell currentCell = cellsInRow.next();
+                                    if (currentCell.getCellType() == CellType.STRING && currentCell.getStringCellValue().equals("Total")) {
+                                        totalColIndex = currentCell.getColumnIndex();
+                                        found = true;
+                                        continue Outer;
+                                    }
+                                }
+                            }
+                            // Checking if the current row is "YTD"
+                            else if (current_year_section && currentRow.getCell(dateColIndex).getCellType() == CellType.STRING &&
+                                    currentRow.getCell(dateColIndex).getStringCellValue().trim().equals("YTD")) {
+                                ytd_total = currentRow.getCell(totalColIndex).getNumericCellValue();
+                                links.add(ytd_total + "");
+                            }
+                        }
+
+                        // Close the workbook and stream
+                        wb.close();
+                        excel_file.close();
+
+                        // Delete the files after reading it
+                        File f = new File("./excel_files/" + savedFileName);
+                        if (f.delete()) {
+                            System.out.println("Successful");
+                        }
 
                     } catch (IOException err) { // if file/link failed to be found, it will throw a checked error
                         System.err.println("Could not read the file at '" + link);
@@ -101,4 +149,6 @@ public class CrawlerService {
 
         return links;
     }
+
+    // TODO: China Web scraping service
 }

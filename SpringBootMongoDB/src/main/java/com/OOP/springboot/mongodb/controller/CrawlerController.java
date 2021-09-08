@@ -13,26 +13,28 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/crawl")
+@RequestMapping("/api/scrape")
 public class CrawlerController {
 
     @Autowired
     CrawlerService crawlerService;
 
     @GetMapping("/thailand")
-    public ResponseEntity<ResponseMsg> getAllScrapeData(HttpServletRequest request) {
+    public ResponseEntity<ResponseMsg> getThailandScrapeData(HttpServletRequest request) {
         try {
             // get all documents from MongoDB database
-            List<String> links = crawlerService.getPageLinks("http://www.eppo.go.th/index.php/en/en-energystatistics/petroleum-statistic");
+            List<String> links = crawlerService.scrapeThailand("http://www.eppo.go.th/index.php/en/en-energystatistics/petroleum-statistic");
 
             String message = "Crawling successfully!";
 
             return new ResponseEntity<ResponseMsg>(new ResponseMsg(message,
                     request.getRequestURI(), links, true), HttpStatus.OK);
-        }catch(Exception e) {
+        } catch(Exception e) {
             String message = "Crawling failed";
             return new ResponseEntity<ResponseMsg>(new ResponseMsg(message, request.getRequestURI(),
                     e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    // TODO: China web scraping controller
 }
