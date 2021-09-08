@@ -19,7 +19,7 @@ public class CrawlerController {
     @Autowired
     CrawlerService crawlerService;
 
-    @GetMapping("/")
+    @GetMapping("/thailand")
     public ResponseEntity<ResponseMsg> getAllScrapeData(HttpServletRequest request) {
         try {
             // get all documents from MongoDB database
