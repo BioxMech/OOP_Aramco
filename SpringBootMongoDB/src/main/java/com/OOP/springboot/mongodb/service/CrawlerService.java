@@ -18,13 +18,17 @@ import java.util.*;
 public class CrawlerService {
 
     private final List<String> links;
-    private final List<String> filesToScrape = new ArrayList<>(Arrays.asList(
+    private final List<String> thailandDataRequiredTitle = new ArrayList<>(Arrays.asList(
             "Table 2.1-1: Production of Crude Oil",
             "Table 2.1-2: Production of Condensate",
             "Table 2.1-4: Quantity and Value of Petroleum Products Import",
             "Table 2.1-5: Quantity and Value of Petroleum Products Export",
             "Table 2.2-2: Material Intake",
             "Table 2.3-2: Production of Petroleum Products (Barrel/Day)"
+    ));
+    private final List<String> chinaDataRequiredTitle = new ArrayList<>(Arrays.asList(
+            "（13）Major Export Commodities in Quantity and Value",
+            "（14）Major Import Commodities in Quantity and Value"
     ));
     public CrawlerService(List<String> links) {
         this.links = new ArrayList<>();
@@ -46,7 +50,7 @@ public class CrawlerService {
                 // Go to the 1st div element and look at its text (in terms of js, value)
                 String rowName = e.firstElementSibling().selectFirst("div").text();
                 // Check if it is the right row we are looking for
-                if (filesToScrape.contains(rowName)) {
+                if (thailandDataRequiredTitle.contains(rowName)) {
                     // Obtain the link
                     link = e.selectFirst("a").absUrl("href");
                     // Returning purpose
@@ -151,4 +155,41 @@ public class CrawlerService {
     }
 
     // TODO: China Web scraping service
+    public List<String> scrapeChina(String URL) {
+
+        try {
+            // Fetch the HTML code
+            Document document = Jsoup.connect(URL).get();
+            // Parse the HTML to extract links to other URLs
+            Elements elementData = document.select("table tr td"); // table row tag
+
+            // Store a local variable of the link when looping (for better debugging purpose too)
+            String link;
+
+            // Checker to see if the next td is part of the required data
+            boolean isRequired = false;
+
+            // Looping through the elements that you have extracted in elementData
+            for (Element e : elementData) {
+                String title = e.text().trim();
+//                System.out.println(title);
+                if (chinaDataRequiredTitle.contains(title)) {
+                    isRequired = true;
+                    continue;
+                }
+
+                if (isRequired) {
+                    // find the anchor tags > pick the last one > get the absolute URL
+                    link = e.select("a").last().absUrl("href"); // retrieve the link of the latest available month
+                    links.add(link); // add it into the links arrayList
+                    isRequired = false; // reset the boolean value
+                }
+            }
+
+        } catch (IOException e) { // Same as the above - if URL cannot be found
+            System.err.println("For '" + URL + "': " + e.getMessage());
+        }
+
+        return links;
+    }
 }
