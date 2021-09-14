@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 
 import com.OOP.springboot.mongodb.model.Customer;
-import org.json.JSONObject;
 
 public class ResponseMsg {
 	private String message;
