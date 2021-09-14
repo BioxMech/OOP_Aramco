@@ -2,8 +2,10 @@ package com.OOP.springboot.mongodb.message;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import com.OOP.springboot.mongodb.model.Customer;
+import org.json.JSONObject;
 
 public class ResponseMsg {
 	private String message;
@@ -11,7 +13,8 @@ public class ResponseMsg {
 	private String error = "";
 	private List<Customer> customers = new ArrayList<Customer>();
 	private List<String> links = new ArrayList<>();
-	
+	private List<Map<String,String>> dataObjects = new ArrayList<>();
+
 	public ResponseMsg(String message, String url, List<Customer> customers) {
 		this.message = message;
 		this.url = url;
@@ -23,11 +26,26 @@ public class ResponseMsg {
 		this.url = url;
 		this.links = links;
 	}
+
+	// Constructor for China
+	public ResponseMsg(String message, String url, List<Map<String,String>> dataObjects, boolean sCrawl, String country) {
+		this.message = message;
+		this.url = url;
+		this.dataObjects = dataObjects;
+	}
 	
 	public ResponseMsg(String message, String url, String error) {
 		this.message = message;
 		this.url = url;
 		this.error = error;
+	}
+
+	public List<Map<String,String>> getDataObjects() {
+		return dataObjects;
+	}
+
+	public void setDataObjects(List<Map<String,String>>dataObjects) {
+		this.dataObjects = dataObjects;
 	}
 
 	public ResponseMsg(String message, String url) {

@@ -154,8 +154,14 @@ public class CrawlerService {
         return links;
     }
 
+
     // TODO: China Web scraping service
-    public List<String> scrapeChina(String URL) {
+    public List<Map<String, String>> scrapeChina(String URL) {
+
+        // TODO Retrieve and store XLS file
+
+        // Initialize list
+        List<Map<String, String>> dataObjects = new ArrayList<>();
 
         try {
             // Fetch the HTML code
@@ -178,6 +184,7 @@ public class CrawlerService {
                     continue;
                 }
 
+                // TODO Extract links for all the months
                 if (isRequired) {
                     // find the anchor tags > pick the last one > get the absolute URL
                     link = e.select("a").last().absUrl("href"); // retrieve the link of the latest available month
@@ -186,10 +193,81 @@ public class CrawlerService {
                 }
             }
 
+
+            // ArrayList containing the elements that have to be retrieved from both pages
+            ArrayList<String> importData = new ArrayList<>(Arrays.asList(
+                    "Crude petroleum oils",
+                    "Naphtha",
+                    "Aviation kerosene",
+                    "Natural gases"
+            ));
+//            ArrayList<String> exportData = new ArrayList<>();
+
+            // Retrieve data from the 2 links that we have scraped from the main page
+            for (String dataLink: links){
+                System.out.println(dataLink);
+
+                // Fetch the HTML code
+                Document dataDocument = Jsoup.connect(dataLink).get();
+
+//                System.out.println(dataDocument.outerHtml());
+
+                // Parse the HTML to extract data required
+                Elements header = dataDocument.select("div.atcl-ttl");
+
+
+                // Splitting import and export data
+                if (header.text().contains("Import")) {
+                    System.out.println("Import Logic");
+
+                    // Extract row data
+                    Elements importRowData = dataDocument.select("table.ke-zeroborder tr");
+                    for (Element row: importRowData){
+
+                        if (importData.contains(row.select("td:first-child").text())){
+
+                            System.out.println(row.select("td:first-child").text());
+
+                            // Assign title
+                            String title = row.select("td:first-child").text();
+
+                            //                                JSONObject crudePetroleumOil = new JSONObject();
+                            Map<String, String> chinaDataObj = new HashMap<>();
+                            chinaDataObj.put("type", title);
+
+                            // TODO To insert month here
+
+                            chinaDataObj.put("quantity_unit", row.getElementsByTag("td").get(1).text());
+                            chinaDataObj.put("month_quantity", row.getElementsByTag("td").get(2).text());
+                            chinaDataObj.put("month_value", row.getElementsByTag("td").get(3).text());
+                            chinaDataObj.put("jan_to_month_quantity", row.getElementsByTag("td").get(4).text());
+                            chinaDataObj.put("jan_to_month_value", row.getElementsByTag("td").get(5).text());
+                            chinaDataObj.put("percentage_change_quantity", row.getElementsByTag("td").get(6).text());
+                            chinaDataObj.put("percentage_change_value", row.getElementsByTag("td").get(7).text());
+
+
+//                                System.out.println(chinaDataObj);
+
+                            // Add to dataObjects
+                            dataObjects.add(chinaDataObj);
+                        }
+                    }
+                }
+                else {
+                    System.out.println("Export Logic");
+                    // TODO Export Logic
+                }
+
+
+
+
+            }
+
         } catch (IOException e) { // Same as the above - if URL cannot be found
             System.err.println("For '" + URL + "': " + e.getMessage());
         }
 
-        return links;
+        System.out.println(dataObjects);
+        return dataObjects;
     }
 }
