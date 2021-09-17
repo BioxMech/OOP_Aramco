@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="aafd4c5e-d4f8-412f-b836-6e6140b3fe9f" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/SpringBootMongoDB/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/SpringBootMongoDB/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SpringBootMongoDB/src/main/java/com/OOP/springboot/mongodb/service/CrawlerService.java" beforeDir="false" afterPath="$PROJECT_DIR$/SpringBootMongoDB/src/main/java/com/OOP/springboot/mongodb/service/CrawlerService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SpringBootMongoDB/target/classes/com/OOP/springboot/mongodb/SpringBootApplication.class" beforeDir="false" afterPath="$PROJECT_DIR$/SpringBootMongoDB/target/classes/com/OOP/springboot/mongodb/SpringBootApplication.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SpringBootMongoDB/target/classes/com/OOP/springboot/mongodb/controller/CrawlerController.class" beforeDir="false" afterPath="$PROJECT_DIR$/SpringBootMongoDB/target/classes/com/OOP/springboot/mongodb/controller/CrawlerController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SpringBootMongoDB/target/classes/com/OOP/springboot/mongodb/controller/CustomerController.class" beforeDir="false" afterPath="$PROJECT_DIR$/SpringBootMongoDB/target/classes/com/OOP/springboot/mongodb/controller/CustomerController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SpringBootMongoDB/target/classes/com/OOP/springboot/mongodb/exception/CustomException.class" beforeDir="false" afterPath="$PROJECT_DIR$/SpringBootMongoDB/target/classes/com/OOP/springboot/mongodb/exception/CustomException.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SpringBootMongoDB/target/classes/com/OOP/springboot/mongodb/message/ResponseMsg.class" beforeDir="false" afterPath="$PROJECT_DIR$/SpringBootMongoDB/target/classes/com/OOP/springboot/mongodb/message/ResponseMsg.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SpringBootMongoDB/target/classes/com/OOP/springboot/mongodb/model/Customer.class" beforeDir="false" afterPath="$PROJECT_DIR$/SpringBootMongoDB/target/classes/com/OOP/springboot/mongodb/model/Customer.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SpringBootMongoDB/target/classes/com/OOP/springboot/mongodb/repository/CustomerRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/SpringBootMongoDB/target/classes/com/OOP/springboot/mongodb/repository/CustomerRepository.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SpringBootMongoDB/target/classes/com/OOP/springboot/mongodb/service/CrawlerService.class" beforeDir="false" afterPath="$PROJECT_DIR$/SpringBootMongoDB/target/classes/com/OOP/springboot/mongodb/service/CrawlerService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SpringBootMongoDB/target/classes/com/OOP/springboot/mongodb/service/CustomerService.class" beforeDir="false" afterPath="$PROJECT_DIR$/SpringBootMongoDB/target/classes/com/OOP/springboot/mongodb/service/CustomerService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SpringBootMongoDB/target/test-classes/com/OOP/springboot/mongodb/SpringBootApplicationTests.class" beforeDir="false" afterPath="$PROJECT_DIR$/SpringBootMongoDB/target/test-classes/com/OOP/springboot/mongodb/SpringBootApplicationTests.class" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="testing" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="1y7tyCYUK4hEwUx6phM1tAr8WC4" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="RequestMappingsPanelOrder0" value="0" />
+    <property name="RequestMappingsPanelOrder1" value="1" />
+    <property name="RequestMappingsPanelWidth0" value="75" />
+    <property name="RequestMappingsPanelWidth1" value="75" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="aspect.path.notification.shown" value="true" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.tslint" value="true" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
+    <property name="settings.editor.selected.configurable" value="preferences.editor" />
+  </component>
+  <component name="RunManager" selected="Spring Boot.Unnamed">
+    <configuration default="true" type="ArquillianJUnit" factoryName="" nameIsGenerated="true">
+      <option name="arquillianRunConfiguration">
+        <value>
+          <option name="containerStateName" value="" />
+        </value>
+      </option>
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="JetRunConfigurationType">
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
+      <option name="filePath" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="SpringBootMongoDBRestAPIs" type="MavenRunConfiguration" factoryName="Maven" nameIsGenerated="true">
+      <MavenSettings>
+        <option name="myGeneralSettings" />
+        <option name="myRunnerSettings" />
+        <option name="myRunnerParameters">
+          <MavenRunnerParameters>
+            <option name="profiles">
+              <set />
+            </option>
+            <option name="goals">
+              <list />
+            </option>
+            <option name="pomFileName" />
+            <option name="profilesMap">
+              <map />
+            </option>
+            <option name="resolveToWorkspace" value="false" />
+            <option name="workingDirPath" value="$PROJECT_DIR$/SpringBootMongoDB" />
+          </MavenRunnerParameters>
+        </option>
+      </MavenSettings>
+      <method v="2" />
+    </configuration>
+    <configuration name="Unnamed" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
+      <module name="SpringBootMongoDBRestAPIs" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.OOP.springboot.mongodb.SpringBootApplication" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="SHORTEN_COMMAND_LINE" value="NONE" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <list>
+      <item itemvalue="Maven.SpringBootMongoDBRestAPIs" />
+      <item itemvalue="Spring Boot.Unnamed" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Spring Boot.Unnamed" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="aafd4c5e-d4f8-412f-b836-6e6140b3fe9f" name="Default Changelist" comment="" />
+      <created>1631614712822</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1631614712822</updated>
+      <workItem from="1631614716409" duration="1453000" />
+      <workItem from="1631793589485" duration="5103000" />
+      <workItem from="1631846846989" duration="1914000" />
+      <workItem from="1631851170926" duration="15355000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+</project>
