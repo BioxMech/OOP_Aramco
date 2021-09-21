@@ -1,4 +1,0 @@
--------------------------------------------------------------------------------
-Test set: com.OOP.springboot.mongodb.SpringBootMongoDbRestApIsApplicationTests
--------------------------------------------------------------------------------
-Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.874 s - in com.OOP.springboot.mongodb.SpringBootMongoDbRestApIsApplicationTests

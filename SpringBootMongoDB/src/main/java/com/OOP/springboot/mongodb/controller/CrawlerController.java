@@ -25,8 +25,8 @@ public class CrawlerController {
     public ResponseEntity<ResponseMsg> getThailandScrapeData(HttpServletRequest request) {
         try {
             // get all documents from MongoDB database
-            List<String> links = crawlerService.scrapeThailand("http://www.eppo.go.th/index.php/en/en-energystatistics/petroleum-statistic");
-
+//            List<String> links = crawlerService.scrapeThailand("http://www.eppo.go.th/index.php/en/en-energystatistics/petroleum-statistic");
+            List<String> links = crawlerService.scrapeThailand();
             String message = "Thailand - Crawling successfully!";
 
             return new ResponseEntity<ResponseMsg>(new ResponseMsg(message,
@@ -45,8 +45,8 @@ public class CrawlerController {
 
             List<Map<String, String>> dataObjects;
             // get all documents for MongoDB database
-            dataObjects = crawlerService.scrapeChina("http://english.customs.gov.cn/statics/report/monthly.html");
-
+//            dataObjects = crawlerService.scrapeChina("http://english.customs.gov.cn/statics/report/monthly.html");
+            dataObjects = crawlerService.scrapeChina();
             String message = "China - Crawling successfully!";
 
             return new ResponseEntity<ResponseMsg>(new ResponseMsg(message,

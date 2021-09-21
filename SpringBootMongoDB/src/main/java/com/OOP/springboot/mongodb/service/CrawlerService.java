@@ -7,6 +7,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -48,8 +49,9 @@ public class CrawlerService {
     }
 
     // Thailand Web Scraping Service
-    public List<String> scrapeThailand(String URL) {
-
+    @Scheduled(cron = "0 00 03 * * ?") // 3 Am everyday
+    public List<String> scrapeThailand() {
+        String URL = "http://www.eppo.go.th/index.php/en/en-energystatistics/petroleum-statistic";
         try {
             // Fetch the HTML code
             Document document = Jsoup.connect(URL).get();
@@ -149,10 +151,10 @@ public class CrawlerService {
                         excel_file.close();
 
                         // Delete the files after reading it
-                        File f = new File("./excel_files/" + savedFileName);
-                        if (f.delete()) {
-                            System.out.println("Successful");
-                        }
+//                        File f = new File("./excel_files/" + savedFileName);
+//                        if (f.delete()) {
+//                            System.out.println("Successful");
+//                        }
 
                     } catch (IOException err) { // if file/link failed to be found, it will throw a checked error
                         System.err.println("Could not read the file at '" + link);
@@ -168,10 +170,11 @@ public class CrawlerService {
     }
 
 
-    // TODO: China Web scraping service
-    public List<Map<String, String>> scrapeChina(String URL) {
+    //  China Web scraping service
+    @Scheduled(cron = "0 00 03 * * ?") // 3 Am everyday
+    public List<Map<String, String>> scrapeChina() {
 
-        // TODO Retrieve and store XLS file
+        String URL = "http://english.customs.gov.cn/statics/report/monthly.html";
 
         // Initialize list
         List<Map<String, String>> dataObjects = new ArrayList<>();
