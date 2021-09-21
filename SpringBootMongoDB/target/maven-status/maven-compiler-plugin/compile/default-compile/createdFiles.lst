@@ -1,7 +1,7 @@
 com\OOP\springboot\mongodb\controller\CustomerController.class
 com\OOP\springboot\mongodb\model\Customer.class
+com\OOP\springboot\mongodb\service\CrawlerService.class
 com\OOP\springboot\mongodb\exception\CustomException.class
-com\OOP\springboot\mongodb\SpringBootMongoDbRestApIsApplication.class
 com\OOP\springboot\mongodb\service\CustomerService.class
 com\OOP\springboot\mongodb\message\ResponseMsg.class
 com\OOP\springboot\mongodb\repository\CustomerRepository.class
