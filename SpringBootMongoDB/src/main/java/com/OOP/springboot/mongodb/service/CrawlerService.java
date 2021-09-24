@@ -20,12 +20,12 @@ public class CrawlerService {
 
     private final List<String> links;
     private final List<String> thailandDataRequiredTitle = new ArrayList<>(Arrays.asList(
-            "Table 2.1-1: Production of Crude Oil",
-            "Table 2.1-2: Production of Condensate",
-            "Table 2.1-4: Quantity and Value of Petroleum Products Import",
-            "Table 2.1-5: Quantity and Value of Petroleum Products Export",
-            "Table 2.2-2: Material Intake",
-            "Table 2.3-2: Production of Petroleum Products (Barrel/Day)"
+            "Table 2.1-1: Production of Crude Oil"
+//            "Table 2.1-2: Production of Condensate",
+//            "Table 2.1-4: Quantity and Value of Petroleum Products Import",
+//            "Table 2.1-5: Quantity and Value of Petroleum Products Export",
+//            "Table 2.2-2: Material Intake",
+//            "Table 2.3-2: Production of Petroleum Products (Barrel/Day)"
     ));
     private final List<String> chinaDataRequiredTitle = new ArrayList<>(Arrays.asList(
             "（13）Major Export Commodities in Quantity and Value",
@@ -48,7 +48,11 @@ public class CrawlerService {
     }
 
     // Thailand Web Scraping Service
-    public List<String> scrapeThailand(String URL) {
+    public List<Map<String, List<Map<String, Map<String, Integer>>>>> scrapeThailand(String URL) {
+        // Initialize list
+        List<Map<String, List<Map<String, Map<String, Integer>>>>> dataObjects = new ArrayList<>();
+        List<Map<String, String>> headerObjects = new ArrayList<>();
+        Map<String, List<Map<String, Map<String, Integer>>>> currYearData = new HashMap<>();
 
         try {
             // Fetch the HTML code
@@ -65,7 +69,10 @@ public class CrawlerService {
                 // Check if it is the right row we are looking for
                 if (thailandDataRequiredTitle.contains(rowName)) {
                     // Obtain the link
-                    link = e.selectFirst("a").absUrl("href");
+//                    link for the latest excel file
+//                    link = e.selectFirst("a").absUrl("href");
+
+                    link = e.getElementsByIndexEquals(2).select("a").attr("abs:href");
                     // Returning purpose
                     links.add(link);
 
@@ -97,51 +104,90 @@ public class CrawlerService {
                         System.out.println(savedFileName + " has been downloaded.");
 
                         // TODO: To complete the excel reading
-                        double current_year = Calendar.getInstance().get(Calendar.YEAR);
                         FileInputStream excel_file = new FileInputStream("./excel_files/" + savedFileName);
                         Workbook wb = new HSSFWorkbook(excel_file);
                         Sheet sheet = wb.getSheetAt(0);
-                        Iterator<Row> rows = sheet.iterator();
-                        int dateColIndex = 0;
-                        int totalColIndex = 0;
-                        boolean found = false;
-                        double ytd_total = 0;
-                        boolean current_year_section = false;
 
-                        Outer:
-                        while (rows.hasNext()) {
-                            Row currentRow = rows.next();
+                        // Map out the headers in the excel file
+                        Map<String, String> headerObjectsIndiv = new HashMap<>();
+                        int i = 1;
+                        Row headerRow = sheet.getRow(4);
+                        Iterator<Cell> headerCellIterator= headerRow.cellIterator();
+                        while(headerCellIterator.hasNext()) {
+                            Cell cell = headerCellIterator.next();
+                            switch (cell.getCellType()) {
+                                case NUMERIC:
+                                    headerObjectsIndiv.put(i+"", cell.getNumericCellValue() +"");
+                                    ++i;
+                                    break;
+                                case STRING:
+                                    if (cell.getStringCellValue().equals("MONTH"))
+                                        continue;
+                                    headerObjectsIndiv.put(i+"", cell.getStringCellValue());
+                                    ++i;
+                                    break;
+                            }
+                        }
+                        headerObjects.add(headerObjectsIndiv);
 
-                            if (!current_year_section && currentRow.getCell(dateColIndex) != null) {
-                                if (currentRow.getCell(dateColIndex).getCellType() == CellType.STRING &&
-                                        currentRow.getCell(dateColIndex).getStringCellValue().trim().equals("2021")) {
-                                    current_year_section = true;
-                                }
-                                else if (currentRow.getCell(dateColIndex).getCellType() == CellType.NUMERIC &&
-                                        currentRow.getCell(dateColIndex).getNumericCellValue() == current_year) {
-                                    current_year_section = true;
-                                }
+                        // Extracting the data
+                        int rowTotal = sheet.getLastRowNum();
+                        for (int yearRow = 5; yearRow < rowTotal; yearRow+=14) {
+                            Row currRow = sheet.getRow(yearRow);
+                            Cell yearCell = currRow.getCell(0);
+                            List<Map<String, Map<String, Integer>>> dataToAdd = new ArrayList<>();
+//                            currYearData = new HashMap<>();
+                            if (yearCell.getCellType() == CellType.BLANK) {
+                                break;
+                            }
+                            String year = null;
+                            switch (yearCell.getCellType()) {
+                                case NUMERIC:
+                                    year = ((int)yearCell.getNumericCellValue()) + "";
+                                    System.out.println(year);
+                                    break;
+                                case STRING:
+                                    year = yearCell.getStringCellValue();
+                                    System.out.println(year);
+                                    break;
                             }
 
-                            if (!found) {
-                                Iterator<Cell> cellsInRow = currentRow.iterator();
+                            // for loop to loop through and obtain the months and YTD
+                            Map<String, Map<String, Integer>> currMonthData = null;
+                            for (int dataRow = 1; dataRow < 14; dataRow++) {
+                                currMonthData = new HashMap<>();
+                                Row nextRow = sheet.getRow((yearRow+dataRow));
+                                String month = nextRow.getCell(0).getStringCellValue().trim();
+//                                System.out.println(month);
 
-                                // To find the "Total" column index in the excel file
-                                while (cellsInRow.hasNext()) {
-                                    Cell currentCell = cellsInRow.next();
-                                    if (currentCell.getCellType() == CellType.STRING && currentCell.getStringCellValue().equals("Total")) {
-                                        totalColIndex = currentCell.getColumnIndex();
-                                        found = true;
-                                        continue Outer;
+                                // for loop to loop through the cells in the row
+                                Map<String, Integer> regionalData = new HashMap<>();
+                                for (int a = 1; a < 13; a++) {
+                                    String header = headerObjects.get(0).get(a+"");
+                                    Cell cell = nextRow.getCell(a);
+                                    if (cell.getCellType() == CellType.BLANK) {
+                                        regionalData.put(header, 0);
+                                    }
+                                    switch (cell.getCellType()) {
+                                        case NUMERIC:
+                                            regionalData.put(header, (int) cell.getNumericCellValue());
+                                            break;
+                                        case STRING:
+                                            regionalData.put(header, Integer.parseInt(cell.getStringCellValue()));
+                                            break;
                                     }
                                 }
+//                                System.out.println(regionalData);
+                                currMonthData.put(month, regionalData);
+//                                System.out.println("currMonthData"+currMonthData);
+                                dataToAdd.add(currMonthData);
                             }
-                            // Checking if the current row is "YTD"
-                            else if (current_year_section && currentRow.getCell(dateColIndex).getCellType() == CellType.STRING &&
-                                    currentRow.getCell(dateColIndex).getStringCellValue().trim().equals("YTD")) {
-                                ytd_total = currentRow.getCell(totalColIndex).getNumericCellValue();
-                                links.add(ytd_total + "");
-                            }
+
+                            currYearData.put(year, dataToAdd);
+//                            System.out.println(currYearData);
+                            dataObjects.add(currYearData);
+
+
                         }
 
                         // Close the workbook and stream
@@ -150,9 +196,9 @@ public class CrawlerService {
 
                         // Delete the files after reading it
                         File f = new File("./excel_files/" + savedFileName);
-                        if (f.delete()) {
-                            System.out.println("Successful");
-                        }
+//                        if (f.delete()) {
+//                            System.out.println("Successful");
+//                        }
 
                     } catch (IOException err) { // if file/link failed to be found, it will throw a checked error
                         System.err.println("Could not read the file at '" + link);
@@ -164,7 +210,8 @@ public class CrawlerService {
             System.err.println("For '" + URL + "': " + e.getMessage());
         }
 
-        return links;
+        System.out.println(dataObjects);
+        return dataObjects;
     }
 
 
@@ -205,7 +252,7 @@ public class CrawlerService {
                 /* Retrieve month from header */
                 String month = StringUtils.substringBetween(header.text(),",", ".");
                 if (month.contains("-")) {
-                     month = StringUtils.substringAfter(month,"-");
+                    month = StringUtils.substringAfter(month,"-");
                 }
                 /* Handle import and export data separately */
                 if (header.text().contains("Import")) {
@@ -258,6 +305,7 @@ public class CrawlerService {
         } catch (IOException e) {
             System.err.println("For '" + URL + "': " + e.getMessage());
         }
+
         return dataObjects;
     }
 }
