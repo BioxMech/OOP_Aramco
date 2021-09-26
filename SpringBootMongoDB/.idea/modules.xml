@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/SpringBootMongoDB.iml" filepath="$PROJECT_DIR$/SpringBootMongoDB.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/OOP_Aramco.iml" filepath="$PROJECT_DIR$/.idea/OOP_Aramco.iml" />
+      <module fileurl="file://$PROJECT_DIR$/SpringBootMongoDB/SpringBootMongoDBRestAPIs.iml" filepath="$PROJECT_DIR$/SpringBootMongoDB/SpringBootMongoDBRestAPIs.iml" />
     </modules>
   </component>
 </project>

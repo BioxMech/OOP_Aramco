@@ -6,16 +6,19 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="SpringBootMongoDB" />
+        <module name="SpringBootMongoDBRestAPIs" />
+        <module name="OOP_Aramco" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="SpringBootMongoDB" target="1.8" />
+      <module name="OOP_Aramco" target="1.8" />
+      <module name="SpringBootMongoDBRestAPIs" target="1.8" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="SpringBootMongoDB" options="-parameters" />
+      <module name="OOP_Aramco" options="-parameters" />
+      <module name="SpringBootMongoDBRestAPIs" options="-parameters" />
     </option>
   </component>
 </project>

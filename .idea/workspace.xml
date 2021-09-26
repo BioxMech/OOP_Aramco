@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="994818c9-14ef-4b9f-a877-de22c4d62f96" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/SpringBootMongoDB/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/SpringBootMongoDB/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SpringBootMongoDB/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/SpringBootMongoDB/.idea/encodings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SpringBootMongoDB/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/SpringBootMongoDB/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SpringBootMongoDB/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/SpringBootMongoDB/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SpringBootMongoDB/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/SpringBootMongoDB/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SpringBootMongoDB/target/SpringBootMongoDBRestAPIs-1.00.jar" beforeDir="false" afterPath="$PROJECT_DIR$/SpringBootMongoDB/target/SpringBootMongoDBRestAPIs-1.00.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SpringBootMongoDB/target/SpringBootMongoDBRestAPIs-1.00.jar.original" beforeDir="false" afterPath="$PROJECT_DIR$/SpringBootMongoDB/target/SpringBootMongoDBRestAPIs-1.00.jar.original" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SpringBootMongoDB/target/classes/com/OOP/springboot/mongodb/SpringBootApplication.class" beforeDir="false" afterPath="$PROJECT_DIR$/SpringBootMongoDB/target/classes/com/OOP/springboot/mongodb/SpringBootApplication.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SpringBootMongoDB/target/classes/com/OOP/springboot/mongodb/controller/CrawlerController.class" beforeDir="false" afterPath="$PROJECT_DIR$/SpringBootMongoDB/target/classes/com/OOP/springboot/mongodb/controller/CrawlerController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SpringBootMongoDB/target/classes/com/OOP/springboot/mongodb/controller/CustomerController.class" beforeDir="false" afterPath="$PROJECT_DIR$/SpringBootMongoDB/target/classes/com/OOP/springboot/mongodb/controller/CustomerController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SpringBootMongoDB/target/classes/com/OOP/springboot/mongodb/exception/CustomException.class" beforeDir="false" afterPath="$PROJECT_DIR$/SpringBootMongoDB/target/classes/com/OOP/springboot/mongodb/exception/CustomException.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SpringBootMongoDB/target/classes/com/OOP/springboot/mongodb/message/ResponseMsg.class" beforeDir="false" afterPath="$PROJECT_DIR$/SpringBootMongoDB/target/classes/com/OOP/springboot/mongodb/message/ResponseMsg.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SpringBootMongoDB/target/classes/com/OOP/springboot/mongodb/model/Customer.class" beforeDir="false" afterPath="$PROJECT_DIR$/SpringBootMongoDB/target/classes/com/OOP/springboot/mongodb/model/Customer.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SpringBootMongoDB/target/classes/com/OOP/springboot/mongodb/repository/CustomerRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/SpringBootMongoDB/target/classes/com/OOP/springboot/mongodb/repository/CustomerRepository.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SpringBootMongoDB/target/classes/com/OOP/springboot/mongodb/service/CrawlerService.class" beforeDir="false" afterPath="$PROJECT_DIR$/SpringBootMongoDB/target/classes/com/OOP/springboot/mongodb/service/CrawlerService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SpringBootMongoDB/target/classes/com/OOP/springboot/mongodb/service/CustomerService.class" beforeDir="false" afterPath="$PROJECT_DIR$/SpringBootMongoDB/target/classes/com/OOP/springboot/mongodb/service/CustomerService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SpringBootMongoDB/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/SpringBootMongoDB/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SpringBootMongoDB/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/SpringBootMongoDB/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SpringBootMongoDB/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/createdFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/SpringBootMongoDB/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/createdFiles.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SpringBootMongoDB/target/test-classes/com/OOP/springboot/mongodb/SpringBootApplicationTests.class" beforeDir="false" afterPath="$PROJECT_DIR$/SpringBootMongoDB/target/test-classes/com/OOP/springboot/mongodb/SpringBootApplicationTests.class" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="1yFnZ2LNz9IxiomrknBmZFIke95" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="project.structure.last.edited" value="Project" />
+    <property name="project.structure.proportion" value="0.0" />
+    <property name="project.structure.side.proportion" value="0.0" />
+  </component>
+  <component name="RunManager">
+    <configuration name="SpringBootApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.OOP.springboot.mongodb.SpringBootApplication" />
+      <module name="SpringBootMongoDBRestAPIs" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.OOP.springboot.mongodb.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.SpringBootApplication" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="994818c9-14ef-4b9f-a877-de22c4d62f96" name="Changes" comment="" />
+      <created>1631856258364</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1631856258364</updated>
+    </task>
+    <servers />
+  </component>
+</project>
