@@ -5,7 +5,7 @@ import org.jsoup.nodes.Element;
 
 public class ChinaImportsPageScraper extends ChinaPageScraper{
     private static final String[] requiredCommodities = {
-            "Crude petroleum oils",
+            "Crude petroleum oil",
             "Naphtha",
             "Aviation kerosene",
             "Natural gases"
