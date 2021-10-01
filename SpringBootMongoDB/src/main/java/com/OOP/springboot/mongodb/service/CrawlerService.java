@@ -1,5 +1,6 @@
 package com.OOP.springboot.mongodb.service;
 
+import com.OOP.springboot.mongodb.service.utils.ChinaLinkScraper;
 import com.OOP.springboot.mongodb.service.utils.ChinaPageScraper;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -159,43 +160,22 @@ public class CrawlerService {
         return links;
     }
 
-
     //  China Web scraping service
 //    @Scheduled(cron = "0 00 03 * * ?") // 3 Am everyday
-    public List<Map<String, String>> scrapeChina() {
-
-        String URL = "http://english.customs.gov.cn/statics/report/monthly.html";
-
+    public List<Map<String, String>> scrapeChina() throws IOException {
         // Initialize list
         List<Map<String, String>> dataObjects = new ArrayList<>();
 
         try {
-            Document document = Jsoup.connect(URL).get(); // fetch HTML code
-            Elements elementData = document.select("table tr td"); // select elements which contain links
-            String link; // store link when looping through anchor tags
-            boolean isRequired = false; // Check if next td is part of required data
-
-            for (Element e : elementData) {
-                String title = e.text().trim();
-                if (chinaDataRequiredTitle.contains(title)) {
-                    isRequired = true;
-                    continue;
-                }
-                // TODO Extract links for all the months
-                if (isRequired) {
-                    /* retrieve the link of the latest available month */
-                    link = e.select("a").last().absUrl("href");
-                    links.add(link);
-                    isRequired = false;
-                }
-            }
-            /* Retrieve data from the links extracted from the main page */
+            ChinaLinkScraper linkScraper = new ChinaLinkScraper();
+            links.addAll(linkScraper.scrapeAll());
+            /* Retrieve data from the extracted links */
             for (String url: links){
-                ChinaPageScraper scraper = ChinaPageScraper.getInstance(url);
-                dataObjects.addAll(scraper.extractData());
+                ChinaPageScraper pageScraper = ChinaPageScraper.getInstance(url);
+                dataObjects.addAll(pageScraper.extractData());
             }
         } catch (IOException e) {
-            System.err.println("For '" + URL + "': " + e.getMessage());
+            System.err.println(e.getMessage());
         }
         return dataObjects;
     }

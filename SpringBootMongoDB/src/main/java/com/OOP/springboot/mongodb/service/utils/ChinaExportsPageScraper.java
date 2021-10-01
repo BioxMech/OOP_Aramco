@@ -1,11 +1,7 @@
 package com.OOP.springboot.mongodb.service.utils;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import org.apache.commons.lang3.StringUtils;
-import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.select.Elements;
+import org.jsoup.nodes.Element;
 
 public class ChinaExportsPageScraper extends ChinaPageScraper{
     private static final String[] requiredCommodities = {
@@ -14,7 +10,7 @@ public class ChinaExportsPageScraper extends ChinaPageScraper{
             "Diesel oil"
     };
 
-    public ChinaExportsPageScraper(Document doc, Elements header) {
-        super(doc, header, requiredCommodities);
+    public ChinaExportsPageScraper(String url, Document doc, Element header) {
+        super(url, doc, header, requiredCommodities, "export");
     }
 }
