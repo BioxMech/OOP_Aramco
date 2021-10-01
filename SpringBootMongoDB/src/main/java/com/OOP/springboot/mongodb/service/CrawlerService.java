@@ -1,5 +1,6 @@
 package com.OOP.springboot.mongodb.service;
 
+import com.OOP.springboot.mongodb.service.utils.ChinaPageScraper;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
@@ -32,18 +33,7 @@ public class CrawlerService {
             "（13）Major Export Commodities in Quantity and Value",
             "（14）Major Import Commodities in Quantity and Value"
     ));
-    /* Required fields for China */
-    ArrayList<String> chinaRequiredImports = new ArrayList<>(Arrays.asList(
-            "Crude petroleum oils",
-            "Naphtha",
-            "Aviation kerosene",
-            "Natural gases"
-    ));
-    ArrayList<String> chinaRequiredExports = new ArrayList<>(Arrays.asList(
-            "Gasoline",
-            "Aviation kerosene",
-            "Diesel oil"
-    ));
+
     public CrawlerService(List<String> links) {
         this.links = new ArrayList<>();
     }
@@ -171,7 +161,7 @@ public class CrawlerService {
 
 
     //  China Web scraping service
-    @Scheduled(cron = "0 00 03 * * ?") // 3 Am everyday
+//    @Scheduled(cron = "0 00 03 * * ?") // 3 Am everyday
     public List<Map<String, String>> scrapeChina() {
 
         String URL = "http://english.customs.gov.cn/statics/report/monthly.html";
@@ -200,63 +190,9 @@ public class CrawlerService {
                 }
             }
             /* Retrieve data from the links extracted from the main page */
-            for (String dataLink: links){
-                /* Fetch the HTML code */
-                Document dataDocument = Jsoup.connect(dataLink).get();
-                /* Retrieve header from page */
-                Elements header = dataDocument.select("div.atcl-ttl");
-                /* Retrieve month from header */
-                String month = StringUtils.substringBetween(header.text(),",", ".");
-                if (month.contains("-")) {
-                     month = StringUtils.substringAfter(month,"-");
-                }
-                /* Handle import and export data separately */
-                if (header.text().contains("Import")) {
-                    /* Extract rows */
-                    Elements importRowData = dataDocument.select("table.ke-zeroborder tr");
-                    for (Element row: importRowData){
-                        String commodityName = row.select("td:first-child").text(); // get row title (commodity name)
-                        /* save data for required rows */
-                        if (chinaRequiredImports.contains(commodityName)){
-                            Map<String, String> chinaDataObj = new HashMap<>();
-                            Elements rowCells = row.getElementsByTag("td"); // retrieve row data
-                            chinaDataObj.put("type", "import");
-                            chinaDataObj.put("commodity", commodityName);
-                            chinaDataObj.put("quantity_unit", rowCells.get(1).text());
-                            chinaDataObj.put("month_quantity", rowCells.get(2).text());
-                            chinaDataObj.put("month_value", rowCells.get(3).text());
-                            chinaDataObj.put("jan_to_month_quantity", rowCells.get(4).text());
-                            chinaDataObj.put("jan_to_month_value", rowCells.get(5).text());
-                            chinaDataObj.put("percentage_change_quantity", rowCells.get(6).text());
-                            chinaDataObj.put("percentage_change_value", rowCells.get(7).text());
-                            chinaDataObj.put("month", month);
-                            dataObjects.add(chinaDataObj);
-                        }
-                    }
-                }
-                else {
-                    /* Extract rows */
-                    Elements exportRowData = dataDocument.select("table.ke-zeroborder tr");
-                    for (Element row: exportRowData){
-                        String commodityName = row.select("td:first-child").text(); // get row title (commodity name)
-                        /* save data for required rows */
-                        if (chinaRequiredExports.contains(commodityName)){
-                            Map<String, String> chinaDataObj = new HashMap<>();
-                            Elements rowCells = row.getElementsByTag("td"); // retrieve row data
-                            chinaDataObj.put("type", "export");
-                            chinaDataObj.put("commodity", commodityName);
-                            chinaDataObj.put("quantity_unit", rowCells.get(1).text());
-                            chinaDataObj.put("month_quantity", rowCells.get(2).text());
-                            chinaDataObj.put("month_value", rowCells.get(3).text());
-                            chinaDataObj.put("jan_to_month_quantity", rowCells.get(4).text());
-                            chinaDataObj.put("jan_to_month_value", rowCells.get(5).text());
-                            chinaDataObj.put("percentage_change_quantity", rowCells.get(6).text());
-                            chinaDataObj.put("percentage_change_value", rowCells.get(7).text());
-                            chinaDataObj.put("month", month);
-                            dataObjects.add(chinaDataObj);
-                        }
-                    }
-                }
+            for (String url: links){
+                ChinaPageScraper scraper = ChinaPageScraper.getInstance(url);
+                dataObjects.addAll(scraper.extractData());
             }
         } catch (IOException e) {
             System.err.println("For '" + URL + "': " + e.getMessage());
