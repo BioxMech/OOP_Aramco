@@ -13,6 +13,7 @@ public class ResponseMsg {
 	private List<Customer> customers = new ArrayList<Customer>();
 	private List<String> links = new ArrayList<>();
 	private List<Map<String,String>> dataObjects = new ArrayList<>();
+	private List<Map<String, List<Map<String, Map<String, Integer>>>>> currYearData = new ArrayList<>();
 
 	public ResponseMsg(String message, String url, List<Customer> customers) {
 		this.message = message;
@@ -20,11 +21,17 @@ public class ResponseMsg {
 		this.customers = customers;
 	}
 
-	public ResponseMsg(String message, String url, List<String> links, boolean isCrawl) {
+	public ResponseMsg(String message, String url, List<Map<String, List<Map<String, Map<String, Integer>>>>> currYearData, boolean isCrawl) {
 		this.message = message;
 		this.url = url;
-		this.links = links;
+		this.currYearData = currYearData;
 	}
+
+//	public ResponseMsg(String message, String url, List<String> links, boolean isCrawl) {
+//		this.message = message;
+//		this.url = url;
+//		this.links = links;
+//	}
 
 	// Constructor for China
 	public ResponseMsg(String message, String url, List<Map<String,String>> dataObjects, boolean sCrawl, String country) {
@@ -37,6 +44,14 @@ public class ResponseMsg {
 		this.message = message;
 		this.url = url;
 		this.error = error;
+	}
+
+	public List<Map<String, List<Map<String, Map<String, Integer>>>>> getCurrYearObjects() {
+		return currYearData;
+	}
+
+	public void setCurrYearObjects(List<Map<String, List<Map<String, Map<String, Integer>>>>> currYearData) {
+		this.currYearData = currYearData;
 	}
 
 	public List<Map<String,String>> getDataObjects() {

@@ -25,12 +25,14 @@ public class CrawlerController {
     public ResponseEntity<ResponseMsg> getThailandScrapeData(HttpServletRequest request) {
         try {
             // get all documents from MongoDB database
-            List<String> links = crawlerService.scrapeThailand("http://www.eppo.go.th/index.php/en/en-energystatistics/petroleum-statistic");
+//            List<String> links = crawlerService.scrapeThailand("http://www.eppo.go.th/index.php/en/en-energystatistics/petroleum-statistic");
+//            List<Map<String, List<Map<String, Map<String, Integer>>>>> dataObjects = crawlerService.scrapeThailand("http://www.eppo.go.th/index.php/en/en-energystatistics/petroleum-statistic");
+            List<Map<String, List<Map<String, Map<String, Integer>>>>> dataObjects = crawlerService.scrapeThailand();
 
             String message = "Thailand - Crawling successfully!";
 
             return new ResponseEntity<ResponseMsg>(new ResponseMsg(message,
-                    request.getRequestURI(), links, true), HttpStatus.OK);
+                    request.getRequestURI(), dataObjects, true), HttpStatus.OK);
         } catch(Exception e) {
             String message = "Crawling failed";
             return new ResponseEntity<ResponseMsg>(new ResponseMsg(message, request.getRequestURI(),
