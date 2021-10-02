@@ -1,18 +1,18 @@
 package com.OOP.springboot.mongodb.service;
 
+import com.OOP.springboot.mongodb.model.China;
 import com.OOP.springboot.mongodb.service.utils.ChinaLinkScraper;
 import com.OOP.springboot.mongodb.service.utils.ChinaPageScraper;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -20,7 +20,8 @@ import java.util.*;
 
 @Service
 public class CrawlerService {
-
+    @Autowired
+    ChinaService chinaService;
     private final List<String> links;
     private final List<String> thailandDataRequiredTitle = new ArrayList<>(Arrays.asList(
             "Table 2.1-1: Production of Crude Oil",
@@ -163,8 +164,9 @@ public class CrawlerService {
     //  China Web scraping service
 //    @Scheduled(cron = "0 00 03 * * ?") // 3 Am everyday
     public List<Map<String, String>> scrapeChina() throws IOException {
+
         // Initialize list
-        List<Map<String, String>> dataObjects = new ArrayList<>();
+        List<Map<String,String>> dataObjects = new ArrayList<>();
 
         try {
             ChinaLinkScraper linkScraper = new ChinaLinkScraper();
@@ -174,6 +176,7 @@ public class CrawlerService {
                 ChinaPageScraper pageScraper = ChinaPageScraper.getInstance(url);
                 dataObjects.addAll(pageScraper.extractData());
             }
+            chinaService.saveListChina(dataObjects);
         } catch (IOException e) {
             System.err.println(e.getMessage());
         }

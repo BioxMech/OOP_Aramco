@@ -90,8 +90,6 @@ public abstract class ChinaPageScraper {
 //                extractedData.put("quantity", row.get(quantityIndex).text());
 //                extractedData.put("value", row.get(valueIndex).text());
             } catch (RuntimeException e) {
-                System.out.println(e);
-                System.out.println(url);
                 extractedData.put("error", "Commodity Not Found");
             }
             data.add(extractedData);
