@@ -7,7 +7,7 @@ public class ChinaImportsPageScraper extends ChinaPageScraper{
     private static final String[] requiredCommodities = {
             "Crude petroleum oil",
             "Naphtha",
-            "Aviation kerosene",
+            "Kerosene",
             "Natural gases"
     };
 

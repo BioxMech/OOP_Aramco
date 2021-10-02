@@ -6,7 +6,7 @@ import org.jsoup.nodes.Element;
 public class ChinaExportsPageScraper extends ChinaPageScraper{
     private static final String[] requiredCommodities = {
             "Gasoline",
-            "Aviation kerosene",
+            "Kerosene",
             "Diesel oil"
     };
 
