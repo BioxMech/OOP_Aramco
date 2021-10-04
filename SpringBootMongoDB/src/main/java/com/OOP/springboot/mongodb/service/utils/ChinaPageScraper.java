@@ -20,7 +20,7 @@ public abstract class ChinaPageScraper {
     private final String url;
     private final String type;
 //    private int unitIndex;
-//    private int quantityIndex;
+//    private int quantityIndex; = 0
 //    private int valueIndex;
 
     public ChinaPageScraper(String url, Document doc, Element header, String[] requiredCommodities, String type) {

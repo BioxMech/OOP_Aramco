@@ -5,18 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="aafd4c5e-d4f8-412f-b836-6e6140b3fe9f" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/SpringBootMongoDB/src/main/java/com/OOP/springboot/mongodb/controller/ChinaController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/SpringBootMongoDB/src/main/java/com/OOP/springboot/mongodb/model/China.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/SpringBootMongoDB/src/main/java/com/OOP/springboot/mongodb/repository/ChinaRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/SpringBootMongoDB/src/main/java/com/OOP/springboot/mongodb/service/ChinaService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SpringBootMongoDB/src/main/java/com/OOP/springboot/mongodb/controller/CrawlerController.java" beforeDir="false" afterPath="$PROJECT_DIR$/SpringBootMongoDB/src/main/java/com/OOP/springboot/mongodb/controller/CrawlerController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SpringBootMongoDB/src/main/java/com/OOP/springboot/mongodb/message/ResponseMsg.java" beforeDir="false" afterPath="$PROJECT_DIR$/SpringBootMongoDB/src/main/java/com/OOP/springboot/mongodb/message/ResponseMsg.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SpringBootMongoDB/src/main/java/com/OOP/springboot/mongodb/service/CrawlerService.java" beforeDir="false" afterPath="$PROJECT_DIR$/SpringBootMongoDB/src/main/java/com/OOP/springboot/mongodb/service/CrawlerService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SpringBootMongoDB/src/main/java/com/OOP/springboot/mongodb/service/utils/ChinaPageScraper.java" beforeDir="false" afterPath="$PROJECT_DIR$/SpringBootMongoDB/src/main/java/com/OOP/springboot/mongodb/service/utils/ChinaPageScraper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SpringBootMongoDB/target/classes/com/OOP/springboot/mongodb/controller/CrawlerController.class" beforeDir="false" afterPath="$PROJECT_DIR$/SpringBootMongoDB/target/classes/com/OOP/springboot/mongodb/controller/CrawlerController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SpringBootMongoDB/target/classes/com/OOP/springboot/mongodb/controller/CustomerController.class" beforeDir="false" afterPath="$PROJECT_DIR$/SpringBootMongoDB/target/classes/com/OOP/springboot/mongodb/controller/CustomerController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SpringBootMongoDB/target/classes/com/OOP/springboot/mongodb/service/CrawlerService.class" beforeDir="false" afterPath="$PROJECT_DIR$/SpringBootMongoDB/target/classes/com/OOP/springboot/mongodb/service/CrawlerService.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -73,19 +64,6 @@
     <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
   </component>
   <component name="RunManager" selected="Spring Boot.Unnamed">
-    <configuration default="true" type="ArquillianTestNG" factoryName="" nameIsGenerated="true">
-      <option name="arquillianRunConfiguration">
-        <value>
-          <option name="containerStateName" value="" />
-        </value>
-      </option>
-      <option name="TEST_OBJECT" value="CLASS" />
-      <properties />
-      <listeners />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="SpringBootMongoDBRestAPIs" type="MavenRunConfiguration" factoryName="Maven" nameIsGenerated="true">
       <MavenSettings>
         <option name="myGeneralSettings" />
@@ -142,6 +120,8 @@
       <workItem from="1631851170926" duration="15355000" />
       <workItem from="1633059852515" duration="28721000" />
       <workItem from="1633155497863" duration="9405000" />
+      <workItem from="1633268187084" duration="499000" />
+      <workItem from="1633346955424" duration="786000" />
     </task>
     <servers />
   </component>

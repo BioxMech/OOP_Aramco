@@ -31,10 +31,6 @@ public class CrawlerService {
             "Table 2.2-2: Material Intake",
             "Table 2.3-2: Production of Petroleum Products (Barrel/Day)"
     ));
-    private final List<String> chinaDataRequiredTitle = new ArrayList<>(Arrays.asList(
-            "（13）Major Export Commodities in Quantity and Value",
-            "（14）Major Import Commodities in Quantity and Value"
-    ));
 
     public CrawlerService(List<String> links) {
         this.links = new ArrayList<>();
