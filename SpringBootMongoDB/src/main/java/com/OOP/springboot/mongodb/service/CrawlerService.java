@@ -20,8 +20,8 @@ public class CrawlerService {
     private final List<String> links;
     private final HashMap<String, String> thailandLinks = new HashMap<>();
     private final List<String> thailandDataRequiredTitle = new ArrayList<>(Arrays.asList(
-            "Table 2.1-1: Production of Crude Oil"
-//            "Table 2.1-2: Production of Condensate",
+//            "Table 2.1-1: Production of Crude Oil"
+            "Table 2.1-2: Production of Condensate"
 //            "Table 2.1-4: Quantity and Value of Petroleum Products Import",
 //            "Table 2.1-5: Quantity and Value of Petroleum Products Export",
 //            "Table 2.2-2: Material Intake",
@@ -66,15 +66,19 @@ public class CrawlerService {
                 String key = entry.getKey();
                 String value = entry.getValue();
                 if (value.contains("T02_01_01")) {
-                    ThailandCrudeOilProductionScraper excelScraper = new ThailandCrudeOilProductionScraper(value, key);
-                    dataObjects = excelScraper.scrapeThailand();
+                    ThailandCrudeOilProductionScraper crudeOilProductionExcelScraper = new ThailandCrudeOilProductionScraper(value, key);
+                    dataObjects = crudeOilProductionExcelScraper.scrapeThailand();
+                }
+                else if (value.contains("T02_01_02")) {
+                    ThailandCondensateProductionScraper condensateProductionExcelScraper = new ThailandCondensateProductionScraper(value, key);
+                    dataObjects = condensateProductionExcelScraper.scrapeThailand();
                 }
             }
         } catch (IOException e) { // Same as the above - if URL cannot be found
             System.err.println("For '" + URL + "': " + e.getMessage());
         }
 
-        System.out.println(dataObjects);
+//        System.out.println(dataObjects);
         return dataObjects;
     }
 

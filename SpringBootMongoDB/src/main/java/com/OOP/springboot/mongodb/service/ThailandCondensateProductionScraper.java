@@ -3,33 +3,28 @@ package com.OOP.springboot.mongodb.service;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
 import org.jsoup.Jsoup;
-//import org.jsoup.nodes.Document;
-//import org.jsoup.nodes.Element;
-//import org.jsoup.select.Elements;
-//import org.springframework.stereotype.Service;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.*;
 
-public class ThailandCrudeOilProductionScraper {
+public class ThailandCondensateProductionScraper {
     private String URL;
     private String rowName;
 
-    public ThailandCrudeOilProductionScraper(String URL, String rowName) {
+    public ThailandCondensateProductionScraper(String URL, String rowName) {
         this.URL = URL;
         this.rowName = rowName;
     }
+
     public List<Map<String, List<Map<String, Map<String, Integer>>>>> scrapeThailand() {
-        // Initialize list
         List<Map<String, List<Map<String, Map<String, Integer>>>>> dataObjects = new ArrayList<>();
         List<Map<String, String>> headerObjects = new ArrayList<>();
         Map<String, List<Map<String, Map<String, Integer>>>> currYearData = new HashMap<>();
+        int tableRows;
 
         try {
-            // To obtain the raw bytes of the excel file from the link
             byte[] bytes = Jsoup.connect(URL)
                     .header("Accept-Encoding", "xls")
                     .userAgent("Mozilla/5.0 (Windows NT 6.1; WOW64; rv:23.0) Gecko/20100101 Firefox/23.0")
@@ -39,6 +34,7 @@ public class ThailandCrudeOilProductionScraper {
                     .timeout(600000)
                     .execute()
                     .bodyAsBytes();
+
             try {
                 // Name of the file - taken from the website
                 String savedFileName = rowName.substring(13);
@@ -82,11 +78,25 @@ public class ThailandCrudeOilProductionScraper {
                     }
                 }
                 headerObjects.add(headerObjectsIndiv);
+//                System.out.println(headerObjects);
 
                 // Extracting the data
-                int rowTotal = sheet.getLastRowNum();
+//                int rowTotal = sheet.getLastRowNum();
+                int rowTotal = 5;
+//                System.out.println(rowTotal);
+
+                while (true) {
+                    Row currRow = sheet.getRow(rowTotal);
+                    Cell yearCell = currRow.getCell(0);
+                    if (yearCell.getCellType() == CellType.BLANK) {
+                        break;
+                    }
+                    else {
+                        rowTotal+=1;
+                    }
+                }
                 System.out.println(rowTotal);
-                int bottomCell = rowTotal - 7;
+                int bottomCell = rowTotal;
                 int latestThreeYear = bottomCell - (3*14);
                 for (int yearRow = latestThreeYear; yearRow < rowTotal; yearRow+=14) {
                     Row currRow = sheet.getRow(yearRow);
@@ -118,7 +128,7 @@ public class ThailandCrudeOilProductionScraper {
 
                         // for loop to loop through the cells in the row
                         Map<String, Integer> regionalData = new HashMap<>();
-                        for (int a = 1; a < 13; a++) {
+                        for (int a = 1; a < 8; a++) {
                             String header = headerObjects.get(0).get(a+"");
                             Cell cell = nextRow.getCell(a);
                             if (cell.getCellType() == CellType.BLANK) {
@@ -144,7 +154,6 @@ public class ThailandCrudeOilProductionScraper {
                     dataObjects.add(currYearData);
 
                 }
-
                 // Close the workbook and stream
                 wb.close();
                 excel_file.close();
@@ -155,12 +164,12 @@ public class ThailandCrudeOilProductionScraper {
                     System.out.println("Successful");
                 }
 
-            } catch (IOException err) { // if file/link failed to be found, it will throw a checked error
-                System.err.println("Could not read the file at '" + URL);
+
+            } catch (IOException err) {
                 System.err.println("System error message: " + err.getMessage());
             }
 
-        } catch (IOException e) { // Same as the above - if URL cannot be found
+        } catch (IOException e) {
             System.err.println("For '" + URL + "': " + e.getMessage());
         }
 
