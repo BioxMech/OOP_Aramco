@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -47,8 +46,8 @@ public class CrawlerController {
 
             List<Map<String, String>> dataObjects;
             // get all documents for MongoDB database
-            dataObjects = crawlerService.scrapeChina("http://english.customs.gov.cn/statics/report/monthly.html");
-
+//            dataObjects = crawlerService.scrapeChina("http://english.customs.gov.cn/statics/report/monthly.html");
+            dataObjects = crawlerService.scrapeChina();
             String message = "China - Crawling successfully!";
 
             return new ResponseEntity<ResponseMsg>(new ResponseMsg(message,

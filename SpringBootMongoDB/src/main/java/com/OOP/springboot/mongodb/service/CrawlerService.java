@@ -1,14 +1,18 @@
 package com.OOP.springboot.mongodb.service;
 
+import com.OOP.springboot.mongodb.model.China;
+import com.OOP.springboot.mongodb.service.utils.ChinaLinkScraper;
+import com.OOP.springboot.mongodb.service.utils.ChinaPageScraper;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -16,7 +20,8 @@ import java.util.*;
 
 @Service
 public class CrawlerService {
-
+    @Autowired
+    ChinaService chinaService;
     private final List<String> links;
     private final HashMap<String, String> thailandLinks = new HashMap<>();
     private final List<String> thailandDataRequiredTitle = new ArrayList<>(Arrays.asList(
@@ -27,19 +32,18 @@ public class CrawlerService {
 //            "Table 2.2-2: Material Intake",
 //            "Table 2.3-2: Production of Petroleum Products (Barrel/Day)"
     ));
-    private final List<String> chinaDataRequiredTitle = new ArrayList<>(Arrays.asList(
-            "（13）Major Export Commodities in Quantity and Value",
-            "（14）Major Import Commodities in Quantity and Value"
-    ));
+
     public CrawlerService(List<String> links) {
         this.links = new ArrayList<>();
     }
 
     // Thailand Web Scraping Service
+    // @Scheduled(cron = "0 00 03 * * ?") // 3 Am everyday
     public List<Map<String, List<Map<String, Map<String, Integer>>>>> scrapeThailand() {
         String URL = "http://www.eppo.go.th/index.php/en/en-energystatistics/petroleum-statistic";
         // Initialize list
         List<Map<String, List<Map<String, Map<String, Integer>>>>> dataObjects = new ArrayList<>();
+
 
         try {
             // Fetch the HTML code
@@ -328,115 +332,26 @@ public class CrawlerService {
     public List<Map<String, String>> scrapeChina(String URL) {
 
         // TODO Retrieve and store XLS file
+    //  China Web scraping service
+//    @Scheduled(cron = "0 00 03 * * ?") // 3 Am everyday
+    public List<Map<String, String>> scrapeChina() throws IOException {
 
         // Initialize list
-        List<Map<String, String>> dataObjects = new ArrayList<>();
+        List<Map<String,String>> dataObjects = new ArrayList<>();
 
         try {
-            // Fetch the HTML code
-            Document document = Jsoup.connect(URL).get();
-            // Parse the HTML to extract links to other URLs
-            Elements elementData = document.select("table tr td"); // table row tag
-
-            // Store a local variable of the link when looping (for better debugging purpose too)
-            String link;
-
-            // Checker to see if the next td is part of the required data
-            boolean isRequired = false;
-
-            // Looping through the elements that you have extracted in elementData
-            for (Element e : elementData) {
-                String title = e.text().trim();
-//                System.out.println(title);
-                if (chinaDataRequiredTitle.contains(title)) {
-                    isRequired = true;
-                    continue;
-                }
-
-                // TODO Extract links for all the months
-                if (isRequired) {
-                    // find the anchor tags > pick the last one > get the absolute URL
-                    link = e.select("a").last().absUrl("href"); // retrieve the link of the latest available month
-                    links.add(link); // add it into the links arrayList
-                    isRequired = false; // reset the boolean value
-                }
+            ChinaLinkScraper linkScraper = new ChinaLinkScraper();
+            links.addAll(linkScraper.scrapeAll());
+            /* Retrieve data from the extracted links */
+            for (String url: links){
+                ChinaPageScraper pageScraper = ChinaPageScraper.getInstance(url);
+                dataObjects.addAll(pageScraper.extractData());
             }
-
-
-            // ArrayList containing the elements that have to be retrieved from both pages
-            ArrayList<String> importData = new ArrayList<>(Arrays.asList(
-                    "Crude petroleum oils",
-                    "Naphtha",
-                    "Aviation kerosene",
-                    "Natural gases"
-            ));
-//            ArrayList<String> exportData = new ArrayList<>();
-
-            // Retrieve data from the 2 links that we have scraped from the main page
-            for (String dataLink: links){
-                System.out.println(dataLink);
-
-                // Fetch the HTML code
-                Document dataDocument = Jsoup.connect(dataLink).get();
-
-//                System.out.println(dataDocument.outerHtml());
-
-                // Parse the HTML to extract data required
-                Elements header = dataDocument.select("div.atcl-ttl");
-
-
-                // Splitting import and export data
-                if (header.text().contains("Import")) {
-                    System.out.println("Import Logic");
-
-                    // Extract row data
-                    Elements importRowData = dataDocument.select("table.ke-zeroborder tr");
-                    for (Element row: importRowData){
-
-                        if (importData.contains(row.select("td:first-child").text())){
-
-                            System.out.println(row.select("td:first-child").text());
-
-                            // Assign title
-                            String title = row.select("td:first-child").text();
-
-                            //                                JSONObject crudePetroleumOil = new JSONObject();
-                            Map<String, String> chinaDataObj = new HashMap<>();
-                            chinaDataObj.put("type", title);
-
-                            // TODO To insert month here
-
-                            chinaDataObj.put("quantity_unit", row.getElementsByTag("td").get(1).text());
-                            chinaDataObj.put("month_quantity", row.getElementsByTag("td").get(2).text());
-                            chinaDataObj.put("month_value", row.getElementsByTag("td").get(3).text());
-                            chinaDataObj.put("jan_to_month_quantity", row.getElementsByTag("td").get(4).text());
-                            chinaDataObj.put("jan_to_month_value", row.getElementsByTag("td").get(5).text());
-                            chinaDataObj.put("percentage_change_quantity", row.getElementsByTag("td").get(6).text());
-                            chinaDataObj.put("percentage_change_value", row.getElementsByTag("td").get(7).text());
-
-
-//                                System.out.println(chinaDataObj);
-
-                            // Add to dataObjects
-                            dataObjects.add(chinaDataObj);
-                        }
-                    }
-                }
-                else {
-                    System.out.println("Export Logic");
-                    // TODO Export Logic
-                }
-
-
-
-
-            }
-
-        } catch (IOException e) { // Same as the above - if URL cannot be found
-            System.err.println("For '" + URL + "': " + e.getMessage());
+            chinaService.saveListChina(dataObjects);
+        } catch (IOException e) {
+            System.err.println(e.getMessage());
         }
-
-        System.out.println(dataObjects);
         return dataObjects;
     }
 }
+
