@@ -41,4 +41,41 @@ public class ChinaController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @GetMapping("/{year}")
+    public ResponseEntity<List<China>> getAllChinaByYear(@PathVariable String year, HttpServletRequest request) {
+        try {
+
+            List<China> china = chinaService.retrieveAllChinaByYear(year);
+            return new ResponseEntity<>(china, HttpStatus.OK);
+        }catch(Exception e) {
+            System.out.println(e);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/{year}/{commodity}")
+    public ResponseEntity<List<China>> getAllChinaByYear(@PathVariable String year, @PathVariable String commodity, HttpServletRequest request) {
+        try {
+
+            List<China> china = chinaService.retrieveAllChinaByYearAndCommodity(year, commodity);
+            return new ResponseEntity<>(china, HttpStatus.OK);
+        }catch(Exception e) {
+            System.out.println(e);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/{year}/{type}/{commodity}")
+    public ResponseEntity<List<China>> getAllChinaByYear(@PathVariable String year, @PathVariable String commodity, @PathVariable String type, HttpServletRequest request) {
+        try {
+
+            List<China> china = chinaService.retrieveAllChinaByYearAndTypeAndCommodity(year, type, commodity);
+            return new ResponseEntity<>(china, HttpStatus.OK);
+        }catch(Exception e) {
+            System.out.println(e);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 }
