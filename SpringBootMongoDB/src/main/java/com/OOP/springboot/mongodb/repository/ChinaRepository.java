@@ -9,7 +9,6 @@ import java.util.List;
 @Repository
 public interface ChinaRepository extends MongoRepository<China, String>{
 
-
     // Find all data in the specified year
     List <China> findByYear(String year);
 
@@ -18,4 +17,7 @@ public interface ChinaRepository extends MongoRepository<China, String>{
 
     // Find all data in the specified year according to the commodity and type
     List <China> findByYearAndTypeAndCommodity(String year, String type, String commodity);
+
+    List<China> findFirstByOrderByYearDescMonthDesc();
+
 }

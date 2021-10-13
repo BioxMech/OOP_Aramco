@@ -42,5 +42,16 @@ public class ChinaService {
         return repo.findByYearAndTypeAndCommodity(year, type, commodity);
     }
 
+    public List<String> getLatestYearMonth(){
+        List<China> latestEntry = repo.findFirstByOrderByYearDescMonthDesc();
+        if (latestEntry.size() < 1) {
+            return null;
+        }
+        List<String> latestYearMonth = new ArrayList<>();
+        latestYearMonth.add(latestEntry.get(0).getYear());
+        latestYearMonth.add(latestEntry.get(0).getMonth());
+        return latestYearMonth;
+    }
+
     public void deleteAll() { repo.deleteAll(); }
 }

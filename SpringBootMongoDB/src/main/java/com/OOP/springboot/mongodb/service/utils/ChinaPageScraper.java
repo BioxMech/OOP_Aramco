@@ -19,9 +19,6 @@ public abstract class ChinaPageScraper {
     private final Elements table;
     private final String url;
     private final String type;
-//    private int unitIndex;
-//    private int quantityIndex; = 0
-//    private int valueIndex;
 
     public ChinaPageScraper(String url, Document doc, Element header, String[] requiredCommodities, String type) {
         this.url = url;
@@ -30,7 +27,6 @@ public abstract class ChinaPageScraper {
         this.table = doc.select("table");
         this.requiredCommodities = requiredCommodities;
         this.type = type;
-//        initializeIndices();
     }
 
     public static ChinaPageScraper getInstance(String url) throws IOException {
@@ -56,19 +52,6 @@ public abstract class ChinaPageScraper {
         return StringUtils.substringAfter(header.text(),".");
     }
 
-//    private void initializeIndices() {
-//        Elements headerRow = table.select("td:contains(Commodity)").first().parent().select("td");
-//        for (int i = 0; i < headerRow.size(); i++) {
-//            String cellText = headerRow.get(i).text();
-//            if (cellText.contains("Quantity Unit")) {
-//                this.unitIndex = i;
-//            } else if (cellText.equals(month)) {
-//                this.quantityIndex = i;
-//                this.valueIndex = i + 1;
-//            }
-//        }
-//    }
-
     public List<Map<String, String>> extractData() {
         List<Map<String,String>> data = new ArrayList<>();
         for (String commodity: requiredCommodities) {
@@ -86,9 +69,6 @@ public abstract class ChinaPageScraper {
                 extractedData.put("value", row.get(3).text());
                 extractedData.put("percent_change_quantity", row.get(row.size()-2).text());
                 extractedData.put("percent_change_value", row.get(row.size()-1).text());
-//                extractedData.put("unit", row.get(unitIndex).text());
-//                extractedData.put("quantity", row.get(quantityIndex).text());
-//                extractedData.put("value", row.get(valueIndex).text());
             } catch (RuntimeException e) {
                 extractedData.put("error", "Commodity Not Found");
             }
