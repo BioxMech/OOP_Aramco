@@ -1,20 +1,14 @@
 package com.OOP.springboot.mongodb.service;
 
-import com.OOP.springboot.mongodb.model.China;
-import com.OOP.springboot.mongodb.service.utils.ChinaLinkScraper;
-import com.OOP.springboot.mongodb.service.utils.ChinaPageScraper;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.*;
+
+import com.OOP.springboot.mongodb.service.utils.*;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.*;
 
@@ -27,6 +21,7 @@ public class CrawlerService {
     private final List<String> thailandDataRequiredTitle = new ArrayList<>(Arrays.asList(
 //            "Table 2.1-1: Production of Crude Oil"
             "Table 2.1-2: Production of Condensate"
+//            "Table 2.1-3: Import of Crude Oil Classified by Sources"
 //            "Table 2.1-4: Quantity and Value of Petroleum Products Import",
 //            "Table 2.1-5: Quantity and Value of Petroleum Products Export",
 //            "Table 2.2-2: Material Intake",
@@ -39,10 +34,11 @@ public class CrawlerService {
 
     // Thailand Web Scraping Service
     // @Scheduled(cron = "0 00 03 * * ?") // 3 Am everyday
-    public List<Map<String, List<Map<String, Map<String, Integer>>>>> scrapeThailand() {
+    public List<Map<String, String>> scrapeThailand() {
         String URL = "http://www.eppo.go.th/index.php/en/en-energystatistics/petroleum-statistic";
         // Initialize list
-        List<Map<String, List<Map<String, Map<String, Integer>>>>> dataObjects = new ArrayList<>();
+//        List<Map<String, List<Map<String, Map<String, Integer>>>>> dataObjects = new ArrayList<>();
+        List<Map<String, String>> dataObjects = new ArrayList<>();
 
 
         try {
@@ -66,17 +62,23 @@ public class CrawlerService {
 
                 }
             }
+            System.out.println(thailandLinks);
             for (Map.Entry<String, String> entry : thailandLinks.entrySet()) {
                 String key = entry.getKey();
                 String value = entry.getValue();
                 if (value.contains("T02_01_01")) {
+                    System.out.println("Crude Oil Production Scraper Called");
                     ThailandCrudeOilProductionScraper crudeOilProductionExcelScraper = new ThailandCrudeOilProductionScraper(value, key);
                     dataObjects = crudeOilProductionExcelScraper.scrapeThailand();
                 }
-                else if (value.contains("T02_01_02")) {
+                if (value.contains("T02_01_02")) {
                     ThailandCondensateProductionScraper condensateProductionExcelScraper = new ThailandCondensateProductionScraper(value, key);
                     dataObjects = condensateProductionExcelScraper.scrapeThailand();
                 }
+//                if (value.contains("T02_01_03")) {
+//                    ThailandCrudeOilImportScraper crudeOilImportScraper = new ThailandCrudeOilImportScraper(value, key);
+//                    dataObjects = crudeOilImportScraper.scrapeThailand();
+//                }
             }
         } catch (IOException e) { // Same as the above - if URL cannot be found
             System.err.println("For '" + URL + "': " + e.getMessage());
@@ -329,7 +331,6 @@ public class CrawlerService {
 
 
     // TODO: China Web scraping service
-    public List<Map<String, String>> scrapeChina(String URL) {
 
         // TODO Retrieve and store XLS file
     //  China Web scraping service
@@ -347,7 +348,7 @@ public class CrawlerService {
                 ChinaPageScraper pageScraper = ChinaPageScraper.getInstance(url);
                 dataObjects.addAll(pageScraper.extractData());
             }
-            chinaService.saveListChina(dataObjects);
+//            chinaService.saveListChina(dataObjects);
         } catch (IOException e) {
             System.err.println(e.getMessage());
         }

@@ -26,9 +26,10 @@ public class CrawlerController {
             // get all documents from MongoDB database
 //            List<String> links = crawlerService.scrapeThailand("http://www.eppo.go.th/index.php/en/en-energystatistics/petroleum-statistic");
 //            List<Map<String, List<Map<String, Map<String, Integer>>>>> dataObjects = crawlerService.scrapeThailand("http://www.eppo.go.th/index.php/en/en-energystatistics/petroleum-statistic");
-            List<Map<String, List<Map<String, Map<String, Integer>>>>> dataObjects = crawlerService.scrapeThailand();
+//            List<Map<String, List<Map<String, Map<String, Integer>>>>> dataObjects = crawlerService.scrapeThailand();
+            List<Map<String, String>> dataObjects = crawlerService.scrapeThailand();
 
-            String message = "Thailand - Crawling successfully!";
+            String message = "Thailand - Crawling successful!";
 
             return new ResponseEntity<ResponseMsg>(new ResponseMsg(message,
                     request.getRequestURI(), dataObjects, true), HttpStatus.OK);

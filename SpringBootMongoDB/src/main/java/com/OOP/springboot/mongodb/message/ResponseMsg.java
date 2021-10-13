@@ -22,10 +22,10 @@ public class ResponseMsg {
 		this.customers = customers;
 	}
 
-	public ResponseMsg(String message, String url, List<Map<String, List<Map<String, Map<String, Integer>>>>> currYearData, boolean isCrawl) {
+	public ResponseMsg(String message, String url, List<Map<String, String>> dataObjects, boolean isCrawl) {
 		this.message = message;
 		this.url = url;
-		this.currYearData = currYearData;
+		this.dataObjects = dataObjects;
 	}
 
 //	public ResponseMsg(String message, String url, List<String> links, boolean isCrawl) {

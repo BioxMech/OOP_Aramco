@@ -12,16 +12,22 @@ import java.util.*;
 public class ThailandCondensateProductionScraper {
     private String URL;
     private String rowName;
+    private static final String[] monthHeaders = {"JAN", "FEB", "MAR", "APR", "MAY", "JUN",
+            "JUL", "AUG", "SEP", "OCT", "NOV", "DEC", "YTD"
+    };
 
     public ThailandCondensateProductionScraper(String URL, String rowName) {
         this.URL = URL;
         this.rowName = rowName;
     }
 
-    public List<Map<String, List<Map<String, Map<String, Integer>>>>> scrapeThailand() {
-        List<Map<String, List<Map<String, Map<String, Integer>>>>> dataObjects = new ArrayList<>();
-        List<Map<String, String>> headerObjects = new ArrayList<>();
-        Map<String, List<Map<String, Map<String, Integer>>>> currYearData = new HashMap<>();
+    public List<Map<String,String>> scrapeThailand() {
+        List<Map<String,String>> dataObjects = new ArrayList<>();
+        List<String> tableHeaders = new ArrayList<>();
+        Map<String, String> extractedData = null;
+        String unit;
+        String productType = "production";
+        String commodityType = "Condensate";
         int tableRows;
 
         try {
@@ -43,7 +49,6 @@ public class ThailandCondensateProductionScraper {
                     savedFileName = savedFileName.replace("/", " per ");
                 }
                 savedFileName = savedFileName.concat(".xls");
-//                            if (!savedFileName.endsWith(".xls")) savedFileName.concat(".xls");
 
                 // To create the file (set in the excel_files folder)
                 FileOutputStream fos = new FileOutputStream("./excel_files/" + savedFileName);
@@ -57,34 +62,30 @@ public class ThailandCondensateProductionScraper {
                 Workbook wb = new HSSFWorkbook(excel_file);
                 Sheet sheet = wb.getSheetAt(0);
 
+                //obtaining the unit
+                Row unitRow = sheet.getRow(2);
+                Cell unitCell = unitRow.getCell(0);
+                unit = unitCell.getStringCellValue().split(":")[1].trim();
+
                 // Map out the headers in the excel file
-                Map<String, String> headerObjectsIndiv = new HashMap<>();
                 int i = 1;
                 Row headerRow = sheet.getRow(4);
                 Iterator<Cell> headerCellIterator= headerRow.cellIterator();
                 while(headerCellIterator.hasNext()) {
                     Cell cell = headerCellIterator.next();
                     switch (cell.getCellType()) {
-                        case NUMERIC:
-                            headerObjectsIndiv.put(i+"", cell.getNumericCellValue() +"");
-                            ++i;
-                            break;
                         case STRING:
                             if (cell.getStringCellValue().equals("MONTH"))
                                 continue;
-                            headerObjectsIndiv.put(i+"", cell.getStringCellValue());
+                            tableHeaders.add(cell.getStringCellValue());
                             ++i;
                             break;
                     }
                 }
-                headerObjects.add(headerObjectsIndiv);
-//                System.out.println(headerObjects);
+//                System.out.println(tableHeaders);
 
                 // Extracting the data
-//                int rowTotal = sheet.getLastRowNum();
                 int rowTotal = 5;
-//                System.out.println(rowTotal);
-
                 while (true) {
                     Row currRow = sheet.getRow(rowTotal);
                     Cell yearCell = currRow.getCell(0);
@@ -95,19 +96,17 @@ public class ThailandCondensateProductionScraper {
                         rowTotal+=1;
                     }
                 }
-                System.out.println(rowTotal);
+//                System.out.println(rowTotal);
                 int bottomCell = rowTotal;
-                int latestThreeYear = bottomCell - (3*14);
-                for (int yearRow = latestThreeYear; yearRow < rowTotal; yearRow+=14) {
+                int latestFourYear = bottomCell - (4*14);
+                for (int yearRow = latestFourYear; yearRow < rowTotal; yearRow+=14) {
                     Row currRow = sheet.getRow(yearRow);
                     Cell yearCell = currRow.getCell(0);
-                    List<Map<String, Map<String, Integer>>> dataToAdd = new ArrayList<>();
 
-                    if (yearCell.getCellType() == CellType.BLANK) {
-                        break;
-                    }
                     String year = null;
                     switch (yearCell.getCellType()) {
+                        case BLANK:
+                            break;
                         case NUMERIC:
                             year = ((int)yearCell.getNumericCellValue()) + "";
 //                            System.out.println(year);
@@ -118,40 +117,33 @@ public class ThailandCondensateProductionScraper {
                             break;
                     }
 
-                    // for loop to loop through and obtain the months and YTD
-                    Map<String, Map<String, Integer>> currMonthData = null;
-                    for (int dataRow = 1; dataRow < 14; dataRow++) {
-                        currMonthData = new HashMap<>();
-                        Row nextRow = sheet.getRow((yearRow+dataRow));
-                        String month = nextRow.getCell(0).getStringCellValue().trim();
-//                                System.out.println(month);
+                    for (int a = 1; a <= tableHeaders.size(); a++) {
+                        String region = tableHeaders.get(a-1);
+                        extractedData = new HashMap<>();
+                        extractedData.put("year", year);
+                        extractedData.put("type", productType);
+                        extractedData.put("commodity", commodityType);
+                        extractedData.put("unit", unit);
+                        extractedData.put("region", region);
 
-                        // for loop to loop through the cells in the row
-                        Map<String, Integer> regionalData = new HashMap<>();
-                        for (int a = 1; a < 8; a++) {
-                            String header = headerObjects.get(0).get(a+"");
-                            Cell cell = nextRow.getCell(a);
-                            if (cell.getCellType() == CellType.BLANK) {
-                                regionalData.put(header, 0);
-                            }
-                            switch (cell.getCellType()) {
+                        for (int b = 1; b < 14; b++) {
+                            String month = monthHeaders[b-1];
+                            Row row = sheet.getRow(yearRow+b);
+                            Cell cell = row.getCell(a);
+                            switch(cell.getCellType()) {
+                                case BLANK:
+//                                    System.out.println("0");
+                                    extractedData.put(month, "0");
                                 case NUMERIC:
-                                    regionalData.put(header, (int) cell.getNumericCellValue());
-                                    break;
-                                case STRING:
-                                    regionalData.put(header, Integer.parseInt(cell.getStringCellValue()));
-                                    break;
+//                                    System.out.println((int)cell.getNumericCellValue()+"");
+                                    extractedData.put(month, (int)cell.getNumericCellValue()+"");
+//                                case STRING:
+//                                    System.out.println(cell.getStringCellValue());
                             }
                         }
-//                                System.out.println(regionalData);
-                        currMonthData.put(month, regionalData);
-//                                System.out.println("currMonthData"+currMonthData);
-                        dataToAdd.add(currMonthData);
+                        dataObjects.add(extractedData);
+//                        System.out.println(extractedData);
                     }
-
-                    currYearData.put(year, dataToAdd);
-//                            System.out.println(currYearData);
-                    dataObjects.add(currYearData);
 
                 }
                 // Close the workbook and stream

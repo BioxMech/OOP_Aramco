@@ -23,9 +23,7 @@ public class CustomerService {
 		return repo.saveAll(customers);
 	}
 	
-	public List<Customer> retrieveAllCustomers(){
-		return repo.findAll();
-	}
+	public List<Customer> retrieveAllCustomers(){ return repo.findAll(); }
 	
 	public Optional<Customer> getCustomerByID(String id) {
 		return repo.findById(id);
