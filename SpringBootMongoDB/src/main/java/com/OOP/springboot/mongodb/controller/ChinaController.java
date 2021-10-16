@@ -77,4 +77,26 @@ public class ChinaController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @GetMapping("/commodities")
+    public ResponseEntity<List<String>> getDistinctCommodities(){
+        try {
+            List<String> distinctCommodities = chinaService.getAllDistinctCommodities();
+            return new ResponseEntity<>(distinctCommodities, HttpStatus.OK);
+        } catch(Exception e) {
+            System.out.println(e);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/years")
+    public ResponseEntity<List<String>> getDistinctYears(){
+        try {
+            List<String> distinctCommodities = chinaService.getAllDistinctYears();
+            return new ResponseEntity<>(distinctCommodities, HttpStatus.OK);
+        } catch(Exception e) {
+            System.out.println(e);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }

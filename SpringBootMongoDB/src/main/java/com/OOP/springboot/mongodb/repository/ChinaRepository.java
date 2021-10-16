@@ -1,6 +1,7 @@
 package com.OOP.springboot.mongodb.repository;
 
 import com.OOP.springboot.mongodb.model.China;
+import org.springframework.data.mongodb.repository.Aggregation;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
@@ -20,4 +21,9 @@ public interface ChinaRepository extends MongoRepository<China, String>{
 
     List<China> findFirstByOrderByYearDescMonthDesc();
 
+    @Aggregation(pipeline = { "{ '$group': { '_id' : '$commodity' } }" })
+    List<String> findDistinctCommodities();
+
+    @Aggregation(pipeline = { "{ '$group': { '_id' : '$year' } }" })
+    List<String> findDistinctYears();
 }

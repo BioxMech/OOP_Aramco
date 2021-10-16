@@ -53,5 +53,12 @@ public class ChinaService {
         return latestYearMonth;
     }
 
+    public List<String> getAllDistinctCommodities(){
+        return repo.findDistinctCommodities();
+    }
+
+    public List<String> getAllDistinctYears(){
+        return repo.findDistinctYears();
+    }
     public void deleteAll() { repo.deleteAll(); }
 }

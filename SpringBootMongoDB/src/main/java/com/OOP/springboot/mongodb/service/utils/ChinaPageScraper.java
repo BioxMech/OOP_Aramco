@@ -45,11 +45,11 @@ public abstract class ChinaPageScraper {
         if (month.contains("-")) {
             month = StringUtils.substringAfter(month,"-");
         }
-        return month;
+        return month.trim();
     }
 
     private String getYearFromHeader(Element header) {
-        return StringUtils.substringAfter(header.text(),".");
+        return StringUtils.substringAfter(header.text(),".").trim();
     }
 
     public List<Map<String, String>> extractData() {
