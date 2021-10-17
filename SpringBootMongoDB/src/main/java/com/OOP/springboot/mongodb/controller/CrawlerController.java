@@ -23,10 +23,7 @@ public class CrawlerController {
     @GetMapping("/thailand")
     public ResponseEntity<ResponseMsg> getThailandScrapeData(HttpServletRequest request) {
         try {
-            // get all documents from MongoDB database
-//            List<String> links = crawlerService.scrapeThailand("http://www.eppo.go.th/index.php/en/en-energystatistics/petroleum-statistic");
-//            List<Map<String, List<Map<String, Map<String, Integer>>>>> dataObjects = crawlerService.scrapeThailand("http://www.eppo.go.th/index.php/en/en-energystatistics/petroleum-statistic");
-//            List<Map<String, List<Map<String, Map<String, Integer>>>>> dataObjects = crawlerService.scrapeThailand();
+
             List<Map<String, String>> dataObjects = crawlerService.scrapeThailand();
 
             String message = "Thailand - Crawling successful!";

@@ -20,8 +20,8 @@ public class CrawlerService {
     private final HashMap<String, String> thailandLinks = new HashMap<>();
     private final List<String> thailandDataRequiredTitle = new ArrayList<>(Arrays.asList(
 //            "Table 2.1-1: Production of Crude Oil"
-            "Table 2.1-2: Production of Condensate"
-//            "Table 2.1-3: Import of Crude Oil Classified by Sources"
+//            "Table 2.1-2: Production of Condensate"
+            "Table 2.1-3: Import of Crude Oil Classified by Sources"
 //            "Table 2.1-4: Quantity and Value of Petroleum Products Import",
 //            "Table 2.1-5: Quantity and Value of Petroleum Products Export",
 //            "Table 2.2-2: Material Intake",
@@ -37,7 +37,6 @@ public class CrawlerService {
     public List<Map<String, String>> scrapeThailand() {
         String URL = "http://www.eppo.go.th/index.php/en/en-energystatistics/petroleum-statistic";
         // Initialize list
-//        List<Map<String, List<Map<String, Map<String, Integer>>>>> dataObjects = new ArrayList<>();
         List<Map<String, String>> dataObjects = new ArrayList<>();
 
 
@@ -62,7 +61,7 @@ public class CrawlerService {
 
                 }
             }
-            System.out.println(thailandLinks);
+//            System.out.println(thailandLinks);
             for (Map.Entry<String, String> entry : thailandLinks.entrySet()) {
                 String key = entry.getKey();
                 String value = entry.getValue();
@@ -75,10 +74,10 @@ public class CrawlerService {
                     ThailandCondensateProductionScraper condensateProductionExcelScraper = new ThailandCondensateProductionScraper(value, key);
                     dataObjects = condensateProductionExcelScraper.scrapeThailand();
                 }
-//                if (value.contains("T02_01_03")) {
-//                    ThailandCrudeOilImportScraper crudeOilImportScraper = new ThailandCrudeOilImportScraper(value, key);
-//                    dataObjects = crudeOilImportScraper.scrapeThailand();
-//                }
+                if (value.contains("T02_01_03")) {
+                    ThailandCrudeOilImportScraper crudeOilImportScraper = new ThailandCrudeOilImportScraper(value, key);
+                    dataObjects = crudeOilImportScraper.scrapeThailand();
+                }
             }
         } catch (IOException e) { // Same as the above - if URL cannot be found
             System.err.println("For '" + URL + "': " + e.getMessage());

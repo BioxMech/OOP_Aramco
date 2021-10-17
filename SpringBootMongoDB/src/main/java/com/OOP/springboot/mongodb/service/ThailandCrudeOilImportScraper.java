@@ -22,10 +22,11 @@ public class ThailandCrudeOilImportScraper {
         this.rowName = rowName;
     }
 
-    public List<Map<String, List<Map<String, Map<String, Integer>>>>> scrapeThailand() {
-        List<Map<String, List<Map<String, Map<String, Integer>>>>> dataObjects = new ArrayList<>();
+    public List<Map<String,String>> scrapeThailand() {
+//        List<Map<String, List<Map<String, Map<String, Integer>>>>> dataObjects = new ArrayList<>();
+        List<Map<String,String>> dataObjects = new ArrayList<>();
 //        List<Map<String, String>> headerObjects = new ArrayList<>();
-        Map<String, List<Map<String, Map<String, Integer>>>> currYearData = new HashMap<>();
+//        Map<String, List<Map<String, Map<String, Integer>>>> currYearData = new HashMap<>();
         String unit;
         String productType = "import";
         String commodityType = "Crude Oil";
@@ -80,10 +81,11 @@ public class ThailandCrudeOilImportScraper {
                     }
                 }
                 rowTotal--;
-                System.out.println(rowTotal);
+//                System.out.println(rowTotal);
                 String year = null;
                 int bottomCell = rowTotal;
-                for (int yearRow = 4; yearRow < 5; yearRow+=6) {
+                int latestThreeYear = bottomCell - (3*6);
+                for (int yearRow = latestThreeYear; yearRow < rowTotal; yearRow+=6) {
                     Row currRow = sheet.getRow((yearRow));
                     Cell yearCell = currRow.getCell(0);
                     if (yearCell.getCellType() == CellType.BLANK) {
@@ -92,11 +94,11 @@ public class ThailandCrudeOilImportScraper {
                     switch(yearCell.getCellType()) {
                         case NUMERIC:
                             year = (int)yearCell.getNumericCellValue() + "";
-                            System.out.println(year);
+//                            System.out.println(year);
                             break;
                         case STRING:
                             year = yearCell.getStringCellValue();
-                            System.out.println(year);
+//                            System.out.println(year);
                             break;
                     }
 
@@ -104,7 +106,7 @@ public class ThailandCrudeOilImportScraper {
                     for (int dataRow = 2; dataRow < 6; dataRow++) {
                         Row nextRow = sheet.getRow((yearRow+dataRow));
                         String continent = nextRow.getCell(0).getStringCellValue();
-                        System.out.println(continent);
+//                        System.out.println(continent);
                         Map<String, String> extractedData = new HashMap<>();
                         extractedData.put("year", year);
                         extractedData.put("type", productType);
@@ -114,33 +116,30 @@ public class ThailandCrudeOilImportScraper {
 
                         // for loop to loop through each column for the row
                         for (int col = 1; col < 14; col++) {
-                            System.out.println(monthHeaders[col-1]);
+//                            System.out.println(monthHeaders[col-1]);
                             extractedData.put("month", monthHeaders[col-1]);
                             Cell cell = nextRow.getCell(col);
                             switch(cell.getCellType()) {
                                 case BLANK:
                                     extractedData.put(monthHeaders[col-1], "0");
-                                    System.out.println(0);
+//                                    System.out.println(0);
                                     break;
                                 case NUMERIC:
                                     extractedData.put(monthHeaders[col-1], String.valueOf(cell.getNumericCellValue()));
-                                    System.out.println(cell.getNumericCellValue());
+//                                    System.out.println(cell.getNumericCellValue());
                                     break;
                                 case STRING:
                                     extractedData.put(monthHeaders[col-1], cell.getStringCellValue());
-                                    System.out.println(cell.getStringCellValue());
+//                                    System.out.println(cell.getStringCellValue());
                                     break;
                             }
                         }
-                        System.out.println(extractedData);
+//                        System.out.println(extractedData);
+                        dataObjects.add(extractedData);
 
                     }
 
                 }
-
-
-
-
 
             } catch (IOException e) {
                 System.err.println("For '" + URL + "': " + e.getMessage());

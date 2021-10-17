@@ -47,13 +47,13 @@ public class ResponseMsg {
 		this.error = error;
 	}
 
-	public List<Map<String, List<Map<String, Map<String, Integer>>>>> getCurrYearObjects() {
-		return currYearData;
-	}
+//	public List<Map<String, List<Map<String, Map<String, Integer>>>>> getCurrYearObjects() {
+//		return currYearData;
+//	}
 
-	public void setCurrYearObjects(List<Map<String, List<Map<String, Map<String, Integer>>>>> currYearData) {
-		this.currYearData = currYearData;
-	}
+//	public void setCurrYearObjects(List<Map<String, List<Map<String, Map<String, Integer>>>>> currYearData) {
+//		this.currYearData = currYearData;
+//	}
 
 	public List<Map<String,String>> getDataObjects() {
 		return dataObjects;

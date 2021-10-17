@@ -87,7 +87,7 @@ public class ThailandCrudeOilProductionScraper {
                             break;
                     }
                 }
-                System.out.println(tableHeaders);
+//                System.out.println(tableHeaders);
 
                 // Extracting the data
                 // loop to get the number of rows containing necessary data
@@ -103,7 +103,7 @@ public class ThailandCrudeOilProductionScraper {
                     }
                 }
                 rowTotal--;
-                System.out.println(rowTotal);
+//                System.out.println(rowTotal);
                 int bottomCell = rowTotal;
                 int latestThreeYear = bottomCell - (3*14);
                 for (int yearRow = latestThreeYear; yearRow < rowTotal; yearRow+=14) {
