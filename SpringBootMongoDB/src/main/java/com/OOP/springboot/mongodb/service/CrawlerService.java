@@ -19,9 +19,9 @@ public class CrawlerService {
     private final List<String> links;
     private final HashMap<String, String> thailandLinks = new HashMap<>();
     private final List<String> thailandDataRequiredTitle = new ArrayList<>(Arrays.asList(
-//            "Table 2.1-1: Production of Crude Oil"
+            "Table 2.1-1: Production of Crude Oil"
 //            "Table 2.1-2: Production of Condensate"
-            "Table 2.1-3: Import of Crude Oil Classified by Sources"
+//            "Table 2.1-3: Import of Crude Oil Classified by Sources"
 //            "Table 2.1-4: Quantity and Value of Petroleum Products Import",
 //            "Table 2.1-5: Quantity and Value of Petroleum Products Export",
 //            "Table 2.2-2: Material Intake",
