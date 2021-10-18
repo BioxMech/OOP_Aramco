@@ -60,5 +60,6 @@ public class ChinaService {
     public List<String> getAllDistinctYears(){
         return repo.findDistinctYears();
     }
+
     public void deleteAll() { repo.deleteAll(); }
 }

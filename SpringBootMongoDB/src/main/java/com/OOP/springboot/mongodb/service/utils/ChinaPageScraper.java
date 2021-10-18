@@ -54,6 +54,7 @@ public abstract class ChinaPageScraper {
 
     public List<Map<String, String>> extractData() {
         List<Map<String,String>> data = new ArrayList<>();
+        UnitConverter unitConverter = new UnitConverter();
         for (String commodity: requiredCommodities) {
             Map<String, String> extractedData = new HashMap<>();
             extractedData.put("commodity", commodity);
@@ -64,8 +65,8 @@ public abstract class ChinaPageScraper {
             String selector = String.format("td:contains(%s)", commodity);
             try {
                 Elements row = table.select(selector).first().parent().select("td");
-                extractedData.put("unit", row.get(1).text());
-                extractedData.put("quantity", row.get(2).text());
+                String qty = unitConverter.convertToKbd(row.get(2).text(), 10000, "T", commodity, year, month);
+                extractedData.put("quantity", qty);
                 extractedData.put("value", row.get(3).text());
                 extractedData.put("percent_change_quantity", row.get(row.size()-2).text());
                 extractedData.put("percent_change_value", row.get(row.size()-1).text());
