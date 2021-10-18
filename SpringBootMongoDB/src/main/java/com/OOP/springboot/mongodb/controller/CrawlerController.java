@@ -38,23 +38,4 @@ public class CrawlerController {
         }
     }
 
-    // TODO: China web scraping controller
-    @GetMapping("/china")
-    public ResponseEntity<ResponseMsg> getChinaScrapeData(HttpServletRequest request) {
-        try {
-
-            List<Map<String, String>> dataObjects;
-            // get all documents for MongoDB database
-            dataObjects = crawlerService.scrapeChina("http://english.customs.gov.cn/statics/report/monthly.html");
-
-            String message = "China - Crawling successfully!";
-
-            return new ResponseEntity<ResponseMsg>(new ResponseMsg(message,
-                    request.getRequestURI(), dataObjects, true, "China"), HttpStatus.OK);
-        } catch(Exception e) {
-            String message = "Crawling failed";
-            return new ResponseEntity<ResponseMsg>(new ResponseMsg(message, request.getRequestURI(),
-                    e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
 }

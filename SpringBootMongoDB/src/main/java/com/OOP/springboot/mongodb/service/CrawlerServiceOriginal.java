@@ -15,17 +15,16 @@ import java.io.IOException;
 import java.util.*;
 
 @Service
-public class CrawlerService {
+public class CrawlerServiceOriginal {
 
     private final List<String> links;
     private final List<String> thailandDataRequiredTitle = new ArrayList<>(Arrays.asList(
-//            "Table 2.1-1: Production of Crude Oil",
-//            "Table 2.1-2: Production of Condensate",
-//            "Table 2.1-4: Quantity and Value of Petroleum Products Import",
-//            "Table 2.1-5: Quantity and Value of Petroleum Products Export",
-//            "Table 2.2-2: Material Intake",
-//            "Table 2.3-2: Production of Petroleum Products (Barrel/Day)",
-            "Table 2.3-9: Export of Petroleum Products (Barrel/Day)"
+            "Table 2.1-1: Production of Crude Oil",
+            "Table 2.1-2: Production of Condensate",
+            "Table 2.1-4: Quantity and Value of Petroleum Products Import",
+            "Table 2.1-5: Quantity and Value of Petroleum Products Export",
+            "Table 2.2-2: Material Intake",
+            "Table 2.3-2: Production of Petroleum Products (Barrel/Day)"
     ));
     private final List<String> chinaDataRequiredTitle = new ArrayList<>(Arrays.asList(
             "（13）Major Export Commodities in Quantity and Value",
@@ -43,7 +42,7 @@ public class CrawlerService {
             "Aviation kerosene",
             "Diesel oil"
     ));
-    public CrawlerService(List<String> links) {
+    public CrawlerServiceOriginal(List<String> links) {
         this.links = new ArrayList<>();
     }
 
@@ -65,9 +64,7 @@ public class CrawlerService {
                 // Check if it is the right row we are looking for
                 if (thailandDataRequiredTitle.contains(rowName)) {
                     // Obtain the link
-//                    link = e.selectFirst("a").absUrl("href");
-                    link = e.getElementsByIndexEquals(2).select("a").attr("abs:href");
-
+                    link = e.selectFirst("a").absUrl("href");
                     // Returning purpose
                     links.add(link);
 
@@ -104,67 +101,57 @@ public class CrawlerService {
                         Workbook wb = new HSSFWorkbook(excel_file);
                         Sheet sheet = wb.getSheetAt(0);
                         Iterator<Row> rows = sheet.iterator();
-                        ///////////////////////////////////////////
-                        //////////////EXCEL INFO!!!////////////////
-                        ///////////////////////////////////////////
-                        List<String> colData = Arrays.asList("Month", "gasolineTotal", "gasolineReg", "gasolinePremium", "Kerosene", "dieselTotal", "dieselHSD", "dieselLSD", "JP", "fuelOil", "LPG", "Total");
+                        int dateColIndex = 0;
+                        int totalColIndex = 0;
+                        boolean found = false;
+                        double ytd_total = 0;
+                        boolean current_year_section = false;
 
-                        int currentYear = 0;
-                        int rowCount = sheet.getPhysicalNumberOfRows();
-                        System.out.println("Row Count Total: " + rowCount);
-                        int lastRow = 0;
+                        Outer:
+                        while (rows.hasNext()) {
+                            Row currentRow = rows.next();
 
-                        for (int r=rowCount; r >= 0; r--) {
-                            Row row = sheet.getRow(r);
-                            if (row != null) {
-                                Cell cell = sheet.getRow(r).getCell(0, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK);
-                                if (cell.getStringCellValue().equals("YTD")) {
-                                    lastRow = r;
-                                    break;
+                            if (!current_year_section && currentRow.getCell(dateColIndex) != null) {
+                                if (currentRow.getCell(dateColIndex).getCellType() == CellType.STRING &&
+                                        currentRow.getCell(dateColIndex).getStringCellValue().trim().equals("2021")) {
+                                    current_year_section = true;
+                                }
+                                else if (currentRow.getCell(dateColIndex).getCellType() == CellType.NUMERIC &&
+                                        currentRow.getCell(dateColIndex).getNumericCellValue() == current_year) {
+                                    current_year_section = true;
                                 }
                             }
-                        }
 
-//                        Chunks of year-data existing in the sheet (15: 12 months + YTD + 2 header rows)
-                        int chunksToLoop = rowCount/16;
-//                        Starting row to evaluate latest year data
-                        int latestChunk = lastRow - 15;
+                            if (!found) {
+                                Iterator<Cell> cellsInRow = currentRow.iterator();
 
-                        currentYear = (int) sheet.getRow(latestChunk).getCell(0).getNumericCellValue();
-                        System.out.println("Current Year:" + currentYear);
-                        System.out.println("The data is updated to Year " + (chunksToLoop + 1989));
-                        System.out.println("Last row is :" + lastRow);
-                        System.out.println("Row Count: " + rowCount);
-
-//                        Looping each row in the chunk, 1 for each month + YTD (SINGLE YEAR CHUNK)
-                        for (int i=0; i < 13; i ++) {
-//                            Add 3 because of the 3 header rows
-                            int currentRow = latestChunk + 3 + i;
-//                            Looping each column of each row
-                            for (int col=0; col < colData.size(); col++) {
-                                Cell currentCell = sheet.getRow(currentRow).getCell(col, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK);
-                                System.out.println(currentCell);
+                                // To find the "Total" column index in the excel file
+                                while (cellsInRow.hasNext()) {
+                                    Cell currentCell = cellsInRow.next();
+                                    if (currentCell.getCellType() == CellType.STRING && currentCell.getStringCellValue().equals("Total")) {
+                                        totalColIndex = currentCell.getColumnIndex();
+                                        found = true;
+                                        continue Outer;
+                                    }
+                                }
+                            }
+                            // Checking if the current row is "YTD"
+                            else if (current_year_section && currentRow.getCell(dateColIndex).getCellType() == CellType.STRING &&
+                                    currentRow.getCell(dateColIndex).getStringCellValue().trim().equals("YTD")) {
+                                ytd_total = currentRow.getCell(totalColIndex).getNumericCellValue();
+                                links.add(ytd_total + "");
                             }
                         }
-
-                        for (int chunksLooped = 0; chunksLooped < chunksToLoop; chunksLooped++) {
-                            System.out.println(chunksLooped + 1989);
-                        }
-
-                        System.out.println(lastRow);
-                        int newLastRow = lastRow - 16;
-                        int newLatestChunk = newLastRow-15;
-                        System.out.println(lastRow-16);
 
                         // Close the workbook and stream
                         wb.close();
                         excel_file.close();
 
-    //                        // Delete the files after reading it
-    //                        File f = new File("./excel_files/" + savedFileName);
-    //                        if (f.delete()) {
-    //                            System.out.println("Successful");
-    //                        }
+                        // Delete the files after reading it
+                        File f = new File("./excel_files/" + savedFileName);
+                        if (f.delete()) {
+                            System.out.println("Successful");
+                        }
 
                     } catch (IOException err) { // if file/link failed to be found, it will throw a checked error
                         System.err.println("Could not read the file at '" + link);
