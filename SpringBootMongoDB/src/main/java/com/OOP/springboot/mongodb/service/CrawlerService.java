@@ -16,6 +16,9 @@ import java.util.*;
 public class CrawlerService {
     @Autowired
     ChinaService chinaService;
+    @Autowired
+    ThailandCrudeOilService thailandCrudeOilService;
+
     private final List<String> links;
     private final HashMap<String, String> thailandLinks = new HashMap<>();
     private final List<String> thailandDataRequiredTitle = new ArrayList<>(Arrays.asList(
@@ -66,9 +69,15 @@ public class CrawlerService {
                 String key = entry.getKey();
                 String value = entry.getValue();
                 if (value.contains("T02_01_01")) {
-                    System.out.println("Crude Oil Production Scraper Called");
-                    ThailandCrudeOilProductionScraper crudeOilProductionExcelScraper = new ThailandCrudeOilProductionScraper(value, key);
-                    dataObjects = crudeOilProductionExcelScraper.scrapeThailand();
+                    try {
+                        System.out.println("Crude Oil Production Scraper Called");
+                        ThailandCrudeOilProductionScraper crudeOilProductionExcelScraper = new ThailandCrudeOilProductionScraper(value, key);
+                        dataObjects = crudeOilProductionExcelScraper.scrapeThailand();
+//                        thailandCrudeOilService.saveListThailandCrudeOil(dataObjects);
+                    } catch (Exception e) {
+                        System.err.println(e.getMessage());
+                    }
+
                 }
                 if (value.contains("T02_01_02")) {
                     ThailandCondensateProductionScraper condensateProductionExcelScraper = new ThailandCondensateProductionScraper(value, key);

@@ -1,36 +1,41 @@
-package com.OOP.springboot.mongodb.service;
+package com.OOP.springboot.mongodb.service.utils;
 
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
 import org.jsoup.Jsoup;
+//import org.jsoup.nodes.Document;
+//import org.jsoup.nodes.Element;
+//import org.jsoup.select.Elements;
+//import org.springframework.stereotype.Service;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.*;
 
-public class ThailandCondensateProductionScraper {
+public class ThailandCrudeOilProductionScraper {
     private String URL;
     private String rowName;
     private static final String[] monthHeaders = {"JAN", "FEB", "MAR", "APR", "MAY", "JUN",
             "JUL", "AUG", "SEP", "OCT", "NOV", "DEC", "YTD"
     };
 
-    public ThailandCondensateProductionScraper(String URL, String rowName) {
+    public ThailandCrudeOilProductionScraper(String URL, String rowName) {
         this.URL = URL;
         this.rowName = rowName;
     }
-
     public List<Map<String,String>> scrapeThailand() {
+        // Initialize list
         List<Map<String,String>> dataObjects = new ArrayList<>();
-        List<String> tableHeaders = new ArrayList<>();
+        List<String> tableHeaders = new ArrayList<String>();
         Map<String, String> extractedData = null;
         String unit;
         String productType = "production";
-        String commodityType = "Condensate";
-        int tableRows;
+        String commodityType = "Crude Oil";
 
         try {
+            // To obtain the raw bytes of the excel file from the link
             byte[] bytes = Jsoup.connect(URL)
                     .header("Accept-Encoding", "xls")
                     .userAgent("Mozilla/5.0 (Windows NT 6.1; WOW64; rv:23.0) Gecko/20100101 Firefox/23.0")
@@ -40,7 +45,6 @@ public class ThailandCondensateProductionScraper {
                     .timeout(600000)
                     .execute()
                     .bodyAsBytes();
-
             try {
                 // Name of the file - taken from the website
                 String savedFileName = rowName.substring(13);
@@ -49,6 +53,7 @@ public class ThailandCondensateProductionScraper {
                     savedFileName = savedFileName.replace("/", " per ");
                 }
                 savedFileName = savedFileName.concat(".xls");
+//                            if (!savedFileName.endsWith(".xls")) savedFileName.concat(".xls");
 
                 // To create the file (set in the excel_files folder)
                 FileOutputStream fos = new FileOutputStream("./excel_files/" + savedFileName);
@@ -85,21 +90,23 @@ public class ThailandCondensateProductionScraper {
 //                System.out.println(tableHeaders);
 
                 // Extracting the data
-                int rowTotal = 5;
+                // loop to get the number of rows containing necessary data
+                int rowTotal = 4;
                 while (true) {
                     Row currRow = sheet.getRow(rowTotal);
-                    Cell yearCell = currRow.getCell(0);
-                    if (yearCell.getCellType() == CellType.BLANK) {
+                    Cell firstCol = currRow.getCell(0);
+                    if (firstCol.getCellType() == CellType.STRING && firstCol.getStringCellValue().contains("Source")) {
                         break;
                     }
                     else {
-                        rowTotal+=1;
+                        rowTotal++;
                     }
                 }
+                rowTotal--;
 //                System.out.println(rowTotal);
                 int bottomCell = rowTotal;
-                int latestFourYear = bottomCell - (4*14);
-                for (int yearRow = latestFourYear; yearRow < rowTotal; yearRow+=14) {
+                int latestThreeYear = bottomCell - (3*14);
+                for (int yearRow = latestThreeYear; yearRow < rowTotal; yearRow+=14) {
                     Row currRow = sheet.getRow(yearRow);
                     Cell yearCell = currRow.getCell(0);
 
@@ -146,6 +153,7 @@ public class ThailandCondensateProductionScraper {
                     }
 
                 }
+
                 // Close the workbook and stream
                 wb.close();
                 excel_file.close();
@@ -156,12 +164,12 @@ public class ThailandCondensateProductionScraper {
                     System.out.println("Successful");
                 }
 
-
-            } catch (IOException err) {
+            } catch (IOException err) { // if file/link failed to be found, it will throw a checked error
+                System.err.println("Could not read the file at '" + URL);
                 System.err.println("System error message: " + err.getMessage());
             }
 
-        } catch (IOException e) {
+        } catch (IOException e) { // Same as the above - if URL cannot be found
             System.err.println("For '" + URL + "': " + e.getMessage());
         }
 
