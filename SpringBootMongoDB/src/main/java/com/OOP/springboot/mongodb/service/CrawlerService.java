@@ -104,7 +104,7 @@ public class CrawlerService {
                     try {
                         ThailandCrudeOilImportScraper crudeOilImportScraper = new ThailandCrudeOilImportScraper(value, key);
                         dataObjects = crudeOilImportScraper.scrapeThailand();
-                        thailandCrudeOilService.saveListThailandCrudeOil(dataObjects);
+//                        thailandCrudeOilService.saveListThailandCrudeOil(dataObjects);
                     } catch (Exception e) {
                         System.err.println(e.getMessage());
                     }
@@ -113,7 +113,7 @@ public class CrawlerService {
                     try {
                         ThailandPetroleumProductsProductionScraper petroleumProductsProductionScraper = new ThailandPetroleumProductsProductionScraper(value, key);
                         dataObjects = petroleumProductsProductionScraper.scrapeThailand();
-                        thailandPetroleumProductsService.saveListThailandPetroleumProducts(dataObjects);
+//                        thailandPetroleumProductsService.saveListThailandPetroleumProducts(dataObjects);
                     } catch (Exception e) {
                         System.err.println(e.getMessage());
                     }
@@ -122,7 +122,7 @@ public class CrawlerService {
                     try {
                         ThailandPetroleumProductsSalesScraper petroleumProductsSalesScraper = new ThailandPetroleumProductsSalesScraper(value, key);
                         dataObjects = petroleumProductsSalesScraper.scrapeThailand();
-                        thailandPetroleumProductsService.saveListThailandPetroleumProducts(dataObjects);
+//                        thailandPetroleumProductsService.saveListThailandPetroleumProducts(dataObjects);
                     } catch (Exception e) {
                         System.err.println(e.getMessage());
                     }
