@@ -4,9 +4,9 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Map;
-@Document(collection = "ThailandCrudeOil")
+@Document(collection = "ThailandCondensate")
 
-public class ThailandCrudeOil {
+public class ThailandCondensate {
     @Id
     private String id;
     private String type;
@@ -26,9 +26,9 @@ public class ThailandCrudeOil {
     private String OCT;
     private String NOV;
     private String DEC;
-    public String YTD;
+    private String YTD;
 
-    public ThailandCrudeOil(String id, String type, String commodity, String unit, String year, String region, String JAN, String FEB, String MAR, String APR, String MAY, String JUN, String JUL, String AUG, String SEP, String OCT, String NOV, String DEC, String YTD) {
+    public ThailandCondensate(String id, String type, String commodity, String unit, String year, String region, String JAN, String FEB, String MAR, String APR, String MAY, String JUN, String JUL, String AUG, String SEP, String OCT, String NOV, String DEC, String YTD) {
         this.id = id;
         this.type = type;
         this.commodity = commodity;
@@ -49,7 +49,8 @@ public class ThailandCrudeOil {
         this.DEC = DEC;
         this.YTD = YTD;
     }
-    public ThailandCrudeOil(Map<String, String> dataArray) {
+
+    public ThailandCondensate(Map<String, String> dataArray) {
         this.id = dataArray.get("id");
         this.type = dataArray.get("type");
         this.commodity = dataArray.get("commodity");
@@ -207,19 +208,19 @@ public class ThailandCrudeOil {
         this.NOV = NOV;
     }
 
-    public String getYTD() {
-        return YTD;
-    }
-
-    public void setYTD(String YTD) {
-        this.YTD = YTD;
-    }
-
     public String getDEC() {
         return DEC;
     }
 
     public void setDEC(String DEC) {
         this.DEC = DEC;
+    }
+
+    public String getYTD() {
+        return YTD;
+    }
+
+    public void setYTD(String YTD) {
+        this.YTD = YTD;
     }
 }

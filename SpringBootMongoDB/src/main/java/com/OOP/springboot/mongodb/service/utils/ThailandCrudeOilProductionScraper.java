@@ -126,15 +126,16 @@ public class ThailandCrudeOilProductionScraper {
 
                     for (int a = 1; a <= tableHeaders.size(); a++) {
                         String region = tableHeaders.get(a-1);
-                        extractedData = new HashMap<>();
-                        extractedData.put("year", year);
-                        extractedData.put("type", productType);
-                        extractedData.put("commodity", commodityType);
-                        extractedData.put("unit", unit);
-                        extractedData.put("region", region);
+
 
                         for (int b = 1; b < 14; b++) {
                             String month = monthHeaders[b-1];
+                            extractedData = new HashMap<>();
+                            extractedData.put("year", year);
+                            extractedData.put("type", productType);
+                            extractedData.put("commodity", commodityType);
+                            extractedData.put("unit", unit);
+                            extractedData.put("region", region);
                             Row row = sheet.getRow(yearRow+b);
                             Cell cell = row.getCell(a);
                             switch(cell.getCellType()) {
@@ -147,8 +148,9 @@ public class ThailandCrudeOilProductionScraper {
 //                                case STRING:
 //                                    System.out.println(cell.getStringCellValue());
                             }
+                            dataObjects.add(extractedData);
                         }
-                        dataObjects.add(extractedData);
+//                        dataObjects.add(extractedData);
 //                        System.out.println(extractedData);
                     }
 
