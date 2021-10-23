@@ -1,6 +1,7 @@
 package com.OOP.springboot.mongodb.model;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.PersistenceConstructor;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Map;
@@ -21,8 +22,8 @@ public class China {
     private String link;
     private String error;
 
-    public China(String id, String type, String commodity, String unit, String value, String quantity, String percent_change_value, String percent_change_quantity, String month, String year, String link, String error) {
-        this.id = id;
+    @PersistenceConstructor
+    public China(String type, String commodity, String unit, String value, String quantity, String percent_change_value, String percent_change_quantity, String month, String year, String link, String error) {
         this.type = type;
         this.commodity = commodity;
         this.unit = unit;

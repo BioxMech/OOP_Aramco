@@ -7,6 +7,8 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -18,6 +20,8 @@ public class CrawlerService {
     ChinaService chinaService;
     @Autowired
     ThailandCrudeOilService thailandCrudeOilService;
+    @Autowired
+    ApplicationContext appContext;
 
     private final List<String> links;
     private final HashMap<String, String> thailandLinks = new HashMap<>();
@@ -34,7 +38,7 @@ public class CrawlerService {
 //            "Table 2.3-9: Export of Petroleum Products (Barrel/Day)",
 //            "Table 2.3-11: Net Export of Petroleum Products (Barrel/Day)"
     ));
-
+    private ChinaLinkScraper chinaLinkScraper;
     public CrawlerService(List<String> links) {
         this.links = new ArrayList<>();
     }
@@ -372,13 +376,12 @@ public class CrawlerService {
     //  China Web scraping service
 //    @Scheduled(cron = "0 00 03 * * ?") // 3 Am everyday
     public List<Map<String, String>> scrapeChina() throws IOException {
-
         // Initialize list
         List<Map<String,String>> dataObjects = new ArrayList<>();
 
         try {
-            ChinaLinkScraper linkScraper = new ChinaLinkScraper();
-            links.addAll(linkScraper.scrapeAll());
+            chinaLinkScraper = appContext.getBean(ChinaLinkScraper.class);
+            links.addAll(chinaLinkScraper.scrapeMissing());
             /* Retrieve data from the extracted links */
             for (String url: links){
                 ChinaPageScraper pageScraper = ChinaPageScraper.getInstance(url);

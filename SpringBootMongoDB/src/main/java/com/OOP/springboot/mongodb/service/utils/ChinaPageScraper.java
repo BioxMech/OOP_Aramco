@@ -19,9 +19,6 @@ public abstract class ChinaPageScraper {
     private final Elements table;
     private final String url;
     private final String type;
-//    private int unitIndex;
-//    private int quantityIndex; = 0
-//    private int valueIndex;
 
     public ChinaPageScraper(String url, Document doc, Element header, String[] requiredCommodities, String type) {
         this.url = url;
@@ -30,7 +27,6 @@ public abstract class ChinaPageScraper {
         this.table = doc.select("table");
         this.requiredCommodities = requiredCommodities;
         this.type = type;
-//        initializeIndices();
     }
 
     public static ChinaPageScraper getInstance(String url) throws IOException {
@@ -49,28 +45,16 @@ public abstract class ChinaPageScraper {
         if (month.contains("-")) {
             month = StringUtils.substringAfter(month,"-");
         }
-        return month;
+        return month.trim();
     }
 
     private String getYearFromHeader(Element header) {
-        return StringUtils.substringAfter(header.text(),".");
+        return StringUtils.substringAfter(header.text(),".").trim();
     }
-
-//    private void initializeIndices() {
-//        Elements headerRow = table.select("td:contains(Commodity)").first().parent().select("td");
-//        for (int i = 0; i < headerRow.size(); i++) {
-//            String cellText = headerRow.get(i).text();
-//            if (cellText.contains("Quantity Unit")) {
-//                this.unitIndex = i;
-//            } else if (cellText.equals(month)) {
-//                this.quantityIndex = i;
-//                this.valueIndex = i + 1;
-//            }
-//        }
-//    }
 
     public List<Map<String, String>> extractData() {
         List<Map<String,String>> data = new ArrayList<>();
+        UnitConverter unitConverter = new UnitConverter();
         for (String commodity: requiredCommodities) {
             Map<String, String> extractedData = new HashMap<>();
             extractedData.put("commodity", commodity);
@@ -81,14 +65,11 @@ public abstract class ChinaPageScraper {
             String selector = String.format("td:contains(%s)", commodity);
             try {
                 Elements row = table.select(selector).first().parent().select("td");
-                extractedData.put("unit", row.get(1).text());
-                extractedData.put("quantity", row.get(2).text());
+                String qty = unitConverter.convertToKbd(row.get(2).text(), 10000, "T", commodity, year, month);
+                extractedData.put("quantity", qty);
                 extractedData.put("value", row.get(3).text());
                 extractedData.put("percent_change_quantity", row.get(row.size()-2).text());
                 extractedData.put("percent_change_value", row.get(row.size()-1).text());
-//                extractedData.put("unit", row.get(unitIndex).text());
-//                extractedData.put("quantity", row.get(quantityIndex).text());
-//                extractedData.put("value", row.get(valueIndex).text());
             } catch (RuntimeException e) {
                 extractedData.put("error", "Commodity Not Found");
             }

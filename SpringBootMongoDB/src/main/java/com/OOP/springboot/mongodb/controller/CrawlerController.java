@@ -43,8 +43,6 @@ public class CrawlerController {
         try {
 
             List<Map<String, String>> dataObjects;
-            // get all documents for MongoDB database
-//            dataObjects = crawlerService.scrapeChina("http://english.customs.gov.cn/statics/report/monthly.html");
             dataObjects = crawlerService.scrapeChina();
             String message = "China - Crawling successfully!";
 
