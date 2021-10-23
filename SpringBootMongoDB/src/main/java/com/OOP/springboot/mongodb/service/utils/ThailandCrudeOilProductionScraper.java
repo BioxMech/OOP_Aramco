@@ -20,6 +20,7 @@ public class ThailandCrudeOilProductionScraper {
     private static final String[] monthHeaders = {"JAN", "FEB", "MAR", "APR", "MAY", "JUN",
             "JUL", "AUG", "SEP", "OCT", "NOV", "DEC", "YTD"
     };
+    private static final String[] thirtyOneDays = {"JAN","MAR","MAY","JUL", "AUG","OCT","DEC"};
 
     public ThailandCrudeOilProductionScraper(String URL, String rowName) {
         this.URL = URL;
@@ -105,8 +106,8 @@ public class ThailandCrudeOilProductionScraper {
                 rowTotal--;
 //                System.out.println(rowTotal);
                 int bottomCell = rowTotal;
-                int latestThreeYear = bottomCell - (3*14);
-                for (int yearRow = latestThreeYear; yearRow < rowTotal; yearRow+=14) {
+                int latestFourYear = bottomCell - (4*14);
+                for (int yearRow = latestFourYear; yearRow < rowTotal; yearRow+=14) {
                     Row currRow = sheet.getRow(yearRow);
                     Cell yearCell = currRow.getCell(0);
 
@@ -134,26 +135,24 @@ public class ThailandCrudeOilProductionScraper {
                             extractedData.put("year", year);
                             extractedData.put("type", productType);
                             extractedData.put("commodity", commodityType);
-                            extractedData.put("unit", unit);
+                            extractedData.put("unit", "Kilobarrels/day");
                             extractedData.put("region", region);
+                            extractedData.put("month", b+"");
                             Row row = sheet.getRow(yearRow+b);
                             Cell cell = row.getCell(a);
                             switch(cell.getCellType()) {
                                 case BLANK:
 //                                    System.out.println("0");
-                                    extractedData.put(month, "0");
+                                    extractedData.put("quantity", "0");
                                 case NUMERIC:
 //                                    System.out.println((int)cell.getNumericCellValue()+"");
-                                    extractedData.put(month, (int)cell.getNumericCellValue()+"");
+                                    extractedData.put("quantity", String.format("%.4f",cell.getNumericCellValue()/1000));
 //                                case STRING:
 //                                    System.out.println(cell.getStringCellValue());
                             }
                             dataObjects.add(extractedData);
                         }
-//                        dataObjects.add(extractedData);
-//                        System.out.println(extractedData);
                     }
-
                 }
 
                 // Close the workbook and stream

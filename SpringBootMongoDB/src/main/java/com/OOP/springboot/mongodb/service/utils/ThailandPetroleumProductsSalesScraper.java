@@ -108,33 +108,34 @@ public class ThailandPetroleumProductsSalesScraper {
                     for (int a = 1; a<= colData.size(); a++) {
                         String product = colData.get(a-1);
 //                        System.out.println(product);
-                        extractedData = new HashMap<>();
-                        extractedData.put("year", year);
-                        extractedData.put("type", productType);
-                        extractedData.put("commodity", product);
-                        extractedData.put("unit", unit);
-
                         for (int b = 1; b < 14; b++) {
                             String month = monthHeaders[b-1];
 //                            System.out.println(month);
+                            extractedData = new HashMap<>();
+                            extractedData.put("year", year);
+                            extractedData.put("type", productType);
+                            extractedData.put("commodity", product);
+                            extractedData.put("unit", "Kilobarrels/day");
+                            extractedData.put("month", b+"");
                             Row row = sheet.getRow(yearRow+2+b);
                             Cell cell = row.getCell(a);
                             switch(cell.getCellType()) {
                                 case BLANK:
 //                                    System.out.println("0");
-                                    extractedData.put(month, "0");
+                                    extractedData.put("quantity", "0");
                                     break;
                                 case NUMERIC:
 //                                    System.out.println((int)cell.getNumericCellValue()+"");
-                                    extractedData.put(month, cell.getNumericCellValue()+"");
+                                    extractedData.put("quantity", String.format("%.4f",cell.getNumericCellValue()/1000));
                                     break;
                                 case STRING:
 //                                    System.out.println(cell.getStringCellValue());
-                                    extractedData.put(month, cell.getStringCellValue());
+                                    extractedData.put("quantity", String.format("%.4f",Double.parseDouble(cell.getStringCellValue())/1000 ));
                                     break;
                             }
+                            dataObjects.add(extractedData);
                         }
-                        dataObjects.add(extractedData);
+
                     }
                 }
 

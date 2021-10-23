@@ -14,7 +14,7 @@ public class ThailandCrudeOilImportScraper {
     private String URL;
     private String rowName;
     private static final String[] monthHeaders = {"JAN", "FEB", "MAR", "APR", "MAY", "JUN",
-            "JUL", "AUG", "SEP", "OCT", "NOV", "DEC", "TOTAL"
+            "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"
     };
 
     public ThailandCrudeOilImportScraper(String URL, String rowName) {
@@ -23,15 +23,12 @@ public class ThailandCrudeOilImportScraper {
     }
 
     public List<Map<String,String>> scrapeThailand() {
-//        List<Map<String, List<Map<String, Map<String, Integer>>>>> dataObjects = new ArrayList<>();
         List<Map<String,String>> dataObjects = new ArrayList<>();
 //        List<Map<String, String>> headerObjects = new ArrayList<>();
-//        Map<String, List<Map<String, Map<String, Integer>>>> currYearData = new HashMap<>();
         String unit;
         String productType = "import";
         String commodityType = "Crude Oil";
-
-
+        UnitConverter unitConverter = new UnitConverter();
 
         try {
             byte[] bytes = Jsoup.connect(URL)
@@ -88,9 +85,6 @@ public class ThailandCrudeOilImportScraper {
                 for (int yearRow = latestThreeYear; yearRow < rowTotal; yearRow+=6) {
                     Row currRow = sheet.getRow((yearRow));
                     Cell yearCell = currRow.getCell(0);
-//                    if (yearCell.getCellType() == CellType.BLANK) {
-//                        break;
-//                    }
                     switch(yearCell.getCellType()) {
                         case BLANK:
                             break;
@@ -109,17 +103,16 @@ public class ThailandCrudeOilImportScraper {
                         Row nextRow = sheet.getRow((yearRow+dataRow));
                         String continent = nextRow.getCell(0).getStringCellValue();
 //                        System.out.println(continent);
-                        Map<String, String> extractedData = new HashMap<>();
-                        extractedData.put("year", year);
-                        extractedData.put("type", productType);
-                        extractedData.put("commodity", commodityType);
-                        extractedData.put("unit", unit);
-                        extractedData.put("continent", continent);
 
                         // for loop to loop through each column for the row
-                        for (int col = 1; col < 14; col++) {
+                        for (int col = 1; col < 13; col++) {
 //                            System.out.println(monthHeaders[col-1]);
-//                            extractedData.put("month", monthHeaders[col-1]);
+                            Map<String, String> extractedData = new HashMap<>();
+                            extractedData.put("year", year);
+                            extractedData.put("type", productType);
+                            extractedData.put("commodity", commodityType);
+                            extractedData.put("unit", "Kilobarrels/day");
+                            extractedData.put("continent", continent);
                             Cell cell = nextRow.getCell(col);
                             switch(cell.getCellType()) {
                                 case BLANK:
@@ -127,7 +120,9 @@ public class ThailandCrudeOilImportScraper {
 //                                    System.out.println(0);
                                     break;
                                 case NUMERIC:
-                                    extractedData.put(monthHeaders[col-1], String.valueOf(cell.getNumericCellValue()));
+//                                    extractedData.put(monthHeaders[col-1], String.valueOf(cell.getNumericCellValue()));
+                                    String qty = unitConverter.convertToKbd(String.valueOf(cell.getNumericCellValue()),1000, "KL", commodityType, year, col+"");
+                                    extractedData.put(col+"", qty);
 //                                    System.out.println(cell.getNumericCellValue());
                                     break;
                                 case STRING:
@@ -135,12 +130,10 @@ public class ThailandCrudeOilImportScraper {
 //                                    System.out.println(cell.getStringCellValue());
                                     break;
                             }
+                            dataObjects.add(extractedData);
                         }
 //                        System.out.println(extractedData);
-                        dataObjects.add(extractedData);
-
                     }
-
                 }
 
             } catch (IOException e) {

@@ -14,40 +14,18 @@ public class ThailandCondensate {
     private String unit;
     private String year;
     private String region;
-    private String JAN;
-    private String FEB;
-    private String MAR;
-    private String APR;
-    private String MAY;
-    private String JUN;
-    private String JUL;
-    private String AUG;
-    private String SEP;
-    private String OCT;
-    private String NOV;
-    private String DEC;
-    private String YTD;
+    private String quantity;
+    private String month;
 
-    public ThailandCondensate(String id, String type, String commodity, String unit, String year, String region, String JAN, String FEB, String MAR, String APR, String MAY, String JUN, String JUL, String AUG, String SEP, String OCT, String NOV, String DEC, String YTD) {
+    public ThailandCondensate(String id, String type, String commodity, String unit, String year, String region, String quantity, String month) {
         this.id = id;
         this.type = type;
         this.commodity = commodity;
         this.unit = unit;
         this.year = year;
         this.region = region;
-        this.JAN = JAN;
-        this.FEB = FEB;
-        this.MAR = MAR;
-        this.APR = APR;
-        this.MAY = MAY;
-        this.JUN = JUN;
-        this.JUL = JUL;
-        this.AUG = AUG;
-        this.SEP = SEP;
-        this.OCT = OCT;
-        this.NOV = NOV;
-        this.DEC = DEC;
-        this.YTD = YTD;
+        this.quantity = quantity;
+        this.month = month;
     }
 
     public ThailandCondensate(Map<String, String> dataArray) {
@@ -57,19 +35,9 @@ public class ThailandCondensate {
         this.unit = dataArray.get("unit");
         this.year = dataArray.get("year");
         this.region = dataArray.get("region");
-        this.JAN = dataArray.get("JAN");
-        this.FEB = dataArray.get("FEB");
-        this.MAR = dataArray.get("MAR");
-        this.APR = dataArray.get("APR");
-        this.MAY = dataArray.get("MAY");
-        this.JUN = dataArray.get("JUN");
-        this.JUL = dataArray.get("JUL");
-        this.AUG = dataArray.get("AUG");
-        this.SEP = dataArray.get("SEP");
-        this.OCT = dataArray.get("OCT");
-        this.NOV = dataArray.get("NOV");
-        this.DEC = dataArray.get("DEC");
-        this.YTD = dataArray.get("YTD");
+        this.quantity = dataArray.get("quantity");
+        this.month = dataArray.get("month");
+
     }
 
     public String getId() {
@@ -120,107 +88,19 @@ public class ThailandCondensate {
         this.region = region;
     }
 
-    public String getJAN() {
-        return JAN;
+    public String getQuantity() {
+        return quantity;
     }
 
-    public void setJAN(String JAN) {
-        this.JAN = JAN;
+    public void setQuantity(String quantity) {
+        this.quantity = quantity;
     }
 
-    public String getFEB() {
-        return FEB;
+    public String getMonth() {
+        return month;
     }
 
-    public void setFEB(String FEB) {
-        this.FEB = FEB;
-    }
-
-    public String getMAR() {
-        return MAR;
-    }
-
-    public void setMAR(String MAR) {
-        this.MAR = MAR;
-    }
-
-    public String getAPR() {
-        return APR;
-    }
-
-    public void setAPR(String APR) {
-        this.APR = APR;
-    }
-
-    public String getMAY() {
-        return MAY;
-    }
-
-    public void setMAY(String MAY) {
-        this.MAY = MAY;
-    }
-
-    public String getJUN() {
-        return JUN;
-    }
-
-    public void setJUN(String JUN) {
-        this.JUN = JUN;
-    }
-
-    public String getJUL() {
-        return JUL;
-    }
-
-    public void setJUL(String JUL) {
-        this.JUL = JUL;
-    }
-
-    public String getAUG() {
-        return AUG;
-    }
-
-    public void setAUG(String AUG) {
-        this.AUG = AUG;
-    }
-
-    public String getSEP() {
-        return SEP;
-    }
-
-    public void setSEP(String SEP) {
-        this.SEP = SEP;
-    }
-
-    public String getOCT() {
-        return OCT;
-    }
-
-    public void setOCT(String OCT) {
-        this.OCT = OCT;
-    }
-
-    public String getNOV() {
-        return NOV;
-    }
-
-    public void setNOV(String NOV) {
-        this.NOV = NOV;
-    }
-
-    public String getDEC() {
-        return DEC;
-    }
-
-    public void setDEC(String DEC) {
-        this.DEC = DEC;
-    }
-
-    public String getYTD() {
-        return YTD;
-    }
-
-    public void setYTD(String YTD) {
-        this.YTD = YTD;
+    public void setMonth(String month) {
+        this.month = month;
     }
 }
