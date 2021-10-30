@@ -1,6 +1,7 @@
 package com.OOP.springboot.mongodb.model;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.PersistenceConstructor;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Map;
@@ -16,6 +17,7 @@ public class ThailandPetroleumProducts {
     private String quantity;
     private String month;
 
+    @PersistenceConstructor
     public ThailandPetroleumProducts(String id, String type, String commodity, String unit, String year, String quantity, String month) {
         this.id = id;
         this.type = type;

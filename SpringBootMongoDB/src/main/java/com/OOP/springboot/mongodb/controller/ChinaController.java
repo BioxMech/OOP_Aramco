@@ -66,6 +66,18 @@ public class ChinaController {
         }
     }
 
+    @GetMapping("/{year}/{month}")
+    public ResponseEntity<List<China>> getAllChinaByYearAndMonth(@PathVariable String year, @PathVariable String month, HttpServletRequest request) {
+        try {
+
+            List<China> china = chinaService.retrieveAllChinaByYearAndMonth(year, month);
+            return new ResponseEntity<>(china, HttpStatus.OK);
+        }catch(Exception e) {
+            System.out.println(e);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     @GetMapping("/{year}/{type}/{commodity}")
     public ResponseEntity<List<China>> getAllChinaByYear(@PathVariable String year, @PathVariable String commodity, @PathVariable String type, HttpServletRequest request) {
         try {

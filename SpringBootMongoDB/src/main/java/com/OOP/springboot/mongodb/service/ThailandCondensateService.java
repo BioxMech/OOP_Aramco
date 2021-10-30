@@ -21,13 +21,30 @@ public class ThailandCondensateService {
     public List<ThailandCondensate> saveListThailandCondensate(List<Map<String, String>> thailandCondensate) {
         List<ThailandCondensate> writeData = new ArrayList<>();
         for (Map<String, String> data: thailandCondensate) {
-            writeData.add(new ThailandCondensate(data));
+            List<ThailandCondensate> searchResult = this.retrieveAllCondensateByYearAndMonthAndRegion(data.get("year"), data.get("month"), data.get("region"));
+            if (searchResult.size() == 0) {
+                writeData.add(new ThailandCondensate(data));
+            }
+
         }
         return repo.saveAll(writeData);
     }
 
+
     public List<ThailandCondensate> retrieveAllThailandCondensate() {
         return repo.findAll();
+    }
+
+    public List<ThailandCondensate> retrieveAllCondensateByYear(String year) {
+        return repo.findByYear(year);
+    }
+
+    public List<ThailandCondensate> retrieveAllCondensateByYearAndMonth(String year, String month) {
+        return repo.findByYearAndMonth(year, month);
+    }
+
+    public List<ThailandCondensate> retrieveAllCondensateByYearAndMonthAndRegion(String year, String month, String region) {
+        return repo.findByYearAndMonthAndRegion(year, month, region);
     }
 
     public void deleteAll() {

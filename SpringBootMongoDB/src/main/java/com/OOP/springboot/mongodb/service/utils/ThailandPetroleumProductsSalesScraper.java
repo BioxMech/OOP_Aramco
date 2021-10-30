@@ -3,18 +3,13 @@ package com.OOP.springboot.mongodb.service.utils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
 import org.jsoup.Jsoup;
-//import org.jsoup.nodes.Document;
-//import org.jsoup.nodes.Element;
-//import org.jsoup.select.Elements;
-//import org.springframework.stereotype.Service;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.*;
 
-public class ThailandPetroleumProductsSalesScraper {
+public class ThailandPetroleumProductsSalesScraper{
     private String URL;
     private String rowName;
     private static final String[] monthHeaders = {"JAN", "FEB", "MAR", "APR", "MAY", "JUN",
@@ -24,6 +19,7 @@ public class ThailandPetroleumProductsSalesScraper {
     public ThailandPetroleumProductsSalesScraper(String URL, String rowName) {
         this.URL = URL;
         this.rowName = rowName;
+//        super(URL, rowName, monthHeaders);
     }
 
     public List<Map<String, String>> scrapeThailand() {
@@ -34,7 +30,6 @@ public class ThailandPetroleumProductsSalesScraper {
         List<String> colData = Arrays.asList("Gasoline Total", "Gasoline Regular", "Gasoline Premium", "Kerosene", "Diesel Total", "Diesel HSD", "Diesel LSD", "JP", "Fuel Oil", "LPG", "Total");
         String unit;
         String productType = "sales";
-//        String commodityType = "Crude Oil";
 
         try {
             byte[] bytes = Jsoup.connect(URL)
@@ -105,9 +100,10 @@ public class ThailandPetroleumProductsSalesScraper {
 //                            System.out.println(year);
                             break;
                     }
+
                     for (int a = 1; a<= colData.size(); a++) {
                         String product = colData.get(a-1);
-//                        System.out.println(product);
+
                         for (int b = 1; b < 14; b++) {
                             String month = monthHeaders[b-1];
 //                            System.out.println(month);
@@ -135,8 +131,17 @@ public class ThailandPetroleumProductsSalesScraper {
                             }
                             dataObjects.add(extractedData);
                         }
-
                     }
+                }
+
+                // Close the workbook and stream
+                wb.close();
+                excel_file.close();
+
+                // Delete the files after reading it
+                File f = new File("./excel_files/" + savedFileName);
+                if (f.delete()) {
+                    System.out.println("Successful");
                 }
 
             } catch (IOException e) {

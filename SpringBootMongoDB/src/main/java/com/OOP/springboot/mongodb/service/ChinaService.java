@@ -38,6 +38,10 @@ public class ChinaService {
         return repo.findByYearAndCommodity(year, commodity);
     }
 
+    public List<China> retrieveAllChinaByYearAndMonth(String year, String month){
+        return repo.findByYearAndMonth(year, month);
+    }
+
     public List<China> retrieveAllChinaByYearAndTypeAndCommodity(String year, String type, String commodity){
         return repo.findByYearAndTypeAndCommodity(year, type, commodity);
     }

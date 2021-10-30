@@ -21,6 +21,8 @@ public interface ChinaRepository extends MongoRepository<China, String>{
 
     List<China> findFirstByOrderByYearDescMonthDesc();
 
+    List<China> findByYearAndMonth(String year, String month);
+
     @Aggregation(pipeline = { "{ '$group': { '_id' : '$commodity' } }" })
     List<String> findDistinctCommodities();
 

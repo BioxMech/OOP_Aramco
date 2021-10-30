@@ -1,11 +1,12 @@
 package com.OOP.springboot.mongodb.model;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.PersistenceConstructor;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Map;
-@Document(collection = "ThailandCondensate")
 
+@Document(collection = "ThailandCondensate")
 public class ThailandCondensate {
     @Id
     private String id;
@@ -17,6 +18,7 @@ public class ThailandCondensate {
     private String quantity;
     private String month;
 
+    @PersistenceConstructor
     public ThailandCondensate(String id, String type, String commodity, String unit, String year, String region, String quantity, String month) {
         this.id = id;
         this.type = type;

@@ -1,12 +1,11 @@
 package com.OOP.springboot.mongodb.service.utils;
 
+import com.OOP.springboot.mongodb.service.ThailandCrudeOilService;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
+import org.bson.types.ObjectId;
 import org.jsoup.Jsoup;
-//import org.jsoup.nodes.Document;
-//import org.jsoup.nodes.Element;
-//import org.jsoup.select.Elements;
-//import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -14,26 +13,30 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.*;
 
-public class ThailandCrudeOilProductionScraper {
+import static com.OOP.springboot.mongodb.service.utils.HexUtils.convertStringToHex;
+
+
+public class ThailandCrudeOilProductionScraper{
     private String URL;
     private String rowName;
     private static final String[] monthHeaders = {"JAN", "FEB", "MAR", "APR", "MAY", "JUN",
             "JUL", "AUG", "SEP", "OCT", "NOV", "DEC", "YTD"
     };
-    private static final String[] thirtyOneDays = {"JAN","MAR","MAY","JUL", "AUG","OCT","DEC"};
 
     public ThailandCrudeOilProductionScraper(String URL, String rowName) {
         this.URL = URL;
         this.rowName = rowName;
+//        super(URL, rowName, monthHeaders);
     }
     public List<Map<String,String>> scrapeThailand() {
         // Initialize list
         List<Map<String,String>> dataObjects = new ArrayList<>();
         List<String> tableHeaders = new ArrayList<String>();
         Map<String, String> extractedData = null;
-        String unit;
         String productType = "production";
         String commodityType = "Crude Oil";
+//        String URL = this.getURL();
+//        String rowName = this.getRowName();
 
         try {
             // To obtain the raw bytes of the excel file from the link
@@ -54,7 +57,6 @@ public class ThailandCrudeOilProductionScraper {
                     savedFileName = savedFileName.replace("/", " per ");
                 }
                 savedFileName = savedFileName.concat(".xls");
-//                            if (!savedFileName.endsWith(".xls")) savedFileName.concat(".xls");
 
                 // To create the file (set in the excel_files folder)
                 FileOutputStream fos = new FileOutputStream("./excel_files/" + savedFileName);
@@ -71,7 +73,6 @@ public class ThailandCrudeOilProductionScraper {
                 //obtaining the unit
                 Row unitRow = sheet.getRow(2);
                 Cell unitCell = unitRow.getCell(0);
-                unit = unitCell.getStringCellValue().split(":")[1].trim();
 
                 // Map out the headers in the excel file
                 int i = 1;
@@ -128,10 +129,11 @@ public class ThailandCrudeOilProductionScraper {
                     for (int a = 1; a <= tableHeaders.size(); a++) {
                         String region = tableHeaders.get(a-1);
 
-
                         for (int b = 1; b < 14; b++) {
                             String month = monthHeaders[b-1];
                             extractedData = new HashMap<>();
+//                            ObjectId id = new ObjectId(convertStringToHex(year + "_" + b));
+//                            extractedData.put("_id", new ObjectId(convertStringToHex(year + "_" + b)).toHexString());
                             extractedData.put("year", year);
                             extractedData.put("type", productType);
                             extractedData.put("commodity", commodityType);
@@ -175,6 +177,7 @@ public class ThailandCrudeOilProductionScraper {
         }
 
 //        System.out.println(dataObjects);
+//        thailandCrudeOilService.saveListThailandCrudeOil(dataObjects);
         return dataObjects;
     }
 }

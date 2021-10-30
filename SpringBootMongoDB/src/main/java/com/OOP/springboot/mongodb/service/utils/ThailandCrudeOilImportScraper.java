@@ -113,6 +113,7 @@ public class ThailandCrudeOilImportScraper {
                             extractedData.put("commodity", commodityType);
                             extractedData.put("unit", "Kilobarrels/day");
                             extractedData.put("continent", continent);
+                            extractedData.put("month", String.valueOf(col));
                             Cell cell = nextRow.getCell(col);
                             switch(cell.getCellType()) {
                                 case BLANK:
@@ -122,7 +123,8 @@ public class ThailandCrudeOilImportScraper {
                                 case NUMERIC:
 //                                    extractedData.put(monthHeaders[col-1], String.valueOf(cell.getNumericCellValue()));
                                     String qty = unitConverter.convertToKbd(String.valueOf(cell.getNumericCellValue()),1000, "KL", commodityType, year, col+"");
-                                    extractedData.put(col+"", qty);
+                                    extractedData.put("quantity", qty);
+
 //                                    System.out.println(cell.getNumericCellValue());
                                     break;
                                 case STRING:
