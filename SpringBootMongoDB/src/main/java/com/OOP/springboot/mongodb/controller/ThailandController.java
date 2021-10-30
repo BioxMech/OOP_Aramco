@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/thailand")
@@ -127,8 +126,6 @@ public class ThailandController {
     }
 
 
-
-
     /* Petroleum Products Retrieval*/
     @GetMapping("/petroleumProducts")
     public ResponseEntity<List<ThailandPetroleumProducts>> getAllPetroleum(HttpServletRequest request) {
@@ -166,7 +163,8 @@ public class ThailandController {
     @GetMapping("/petroleumProducts/{year}/{commodity}")
     public ResponseEntity<List<ThailandPetroleumProducts>> getAllPetroleumProductsByYearAndCommodity(@PathVariable String year, @PathVariable String commodity, HttpServletRequest request) {
         try {
-            List<ThailandPetroleumProducts> petroleum = thailandPetroleumProductsService.retrieveAllPetroleumProductsByYearAndCommodity(year, commodity);
+            String convertedCommodity = commodity.replaceAll("[%20]", " ");
+            List<ThailandPetroleumProducts> petroleum = thailandPetroleumProductsService.retrieveAllPetroleumProductsByYearAndCommodity(year, convertedCommodity);
             return new ResponseEntity<>(petroleum, HttpStatus.OK);
         }catch(Exception e) {
             System.out.println(e);
@@ -177,7 +175,8 @@ public class ThailandController {
     @GetMapping("/petroleumProducts/{year}/{month}/{commodity}")
     public ResponseEntity<List<ThailandPetroleumProducts>> getAllPetroleumProductsByYearAndMonthAndCommodity(@PathVariable String year, @PathVariable String month,@PathVariable String commodity, HttpServletRequest request) {
         try {
-            List<ThailandPetroleumProducts> petroleum = thailandPetroleumProductsService.retrieveAllPetroleumProductsByYearAndMonthAndCommodity(year, month, commodity);
+            String convertedCommodity = commodity.replaceAll("[%20]", " ");
+            List<ThailandPetroleumProducts> petroleum = thailandPetroleumProductsService.retrieveAllPetroleumProductsByYearAndMonthAndCommodity(year, month, convertedCommodity);
             return new ResponseEntity<>(petroleum, HttpStatus.OK);
         }catch(Exception e) {
             System.out.println(e);
@@ -185,21 +184,11 @@ public class ThailandController {
         }
     }
 
-//    @GetMapping("/petroleumProducts/{year}/{month}/{region}")
-//    public ResponseEntity<List<ThailandPetroleumProducts>> getAllPetroleumProductsByYearAndMonthAndRegion(@PathVariable String year, @PathVariable String month, @PathVariable String region, HttpServletRequest request) {
-//        try {
-//            List<ThailandPetroleumProducts> petroleum = thailandPetroleumProductsService.retrieveAllPetroleumProductsByYearAndMonthAndRegion(year, month, region);
-//            return new ResponseEntity<>(petroleum, HttpStatus.OK);
-//        }catch(Exception e) {
-//            System.out.println(e);
-//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-//        }
-//    }
 
     @GetMapping("/petroleumProducts/{year}/{month}/{commodity}/{type}")
     public ResponseEntity<List<ThailandPetroleumProducts>> getAllPetroleumProductsByYearAndMonthAndCommodityAndType(@PathVariable String year, @PathVariable String month, @PathVariable String commodity, @PathVariable String type, HttpServletRequest request) {
         try {
-            String convertedCommodity = commodity.replaceAll("[+]", " ");
+            String convertedCommodity = commodity.replaceAll("[%20]", " ");
             System.out.println(convertedCommodity);
             List<ThailandPetroleumProducts> petroleum = thailandPetroleumProductsService.retrieveAllPetroleumProductsByYearAndMonthAndCommodityAndType(year, month, convertedCommodity, type);
             return new ResponseEntity<>(petroleum, HttpStatus.OK);
