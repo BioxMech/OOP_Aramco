@@ -25,11 +25,9 @@ public class ThailandCondensateService {
             if (searchResult.size() == 0) {
                 writeData.add(new ThailandCondensate(data));
             }
-
         }
         return repo.saveAll(writeData);
     }
-
 
     public List<ThailandCondensate> retrieveAllThailandCondensate() {
         return repo.findAll();

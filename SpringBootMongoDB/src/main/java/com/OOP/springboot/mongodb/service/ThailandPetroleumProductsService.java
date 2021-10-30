@@ -25,7 +25,6 @@ public class ThailandPetroleumProductsService {
             if (searchResult.size() == 0) {
                 writeData.add(new ThailandPetroleumProducts(data));
             }
-
         }
         return repo.saveAll(writeData);
     }
@@ -47,14 +46,6 @@ public class ThailandPetroleumProductsService {
     public List<ThailandPetroleumProducts> retrieveAllPetroleumProductsByYearAndMonthAndCommodity(String year, String month, String commodity) {
         return repo.findByYearAndMonthAndCommodity(year, month, commodity);
     }
-
-//    public List<ThailandPetroleumProducts> retrieveAllPetroleumProductsByYearAndMonthAndRegion(String year, String month, String region) {
-//        return repo.findByYearAndMonthAndRegion(year, month, region);
-//    }
-
-//    public List<ThailandPetroleumProducts> retrieveAllPetroleumProductsByYearAndMonthAndRegionAndType(String year, String month, String region, String type) {
-//        return repo.findByYearAndMonthAndRegionAndType(year, month, region, type);
-//    }
 
     public List<ThailandPetroleumProducts> retrieveAllPetroleumProductsByYearAndMonthAndCommodityAndType(String year, String month, String commodity, String type) {
         return repo.findByYearAndMonthAndCommodityAndType(year, month, commodity, type);

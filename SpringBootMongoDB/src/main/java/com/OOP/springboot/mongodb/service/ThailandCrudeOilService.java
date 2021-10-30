@@ -25,7 +25,6 @@ public class ThailandCrudeOilService {
             if (searchResult.size() == 0) {
                 writeData.add(new ThailandCrudeOil(data));
             }
-
         }
         return repo.saveAll(writeData);
     }
