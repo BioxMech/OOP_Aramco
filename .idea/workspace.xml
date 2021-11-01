@@ -5,7 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="aafd4c5e-d4f8-412f-b836-6e6140b3fe9f" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SpringBootMongoDB/src/main/java/com/OOP/springboot/mongodb/repository/ChinaRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/SpringBootMongoDB/src/main/java/com/OOP/springboot/mongodb/repository/ChinaRepository.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
