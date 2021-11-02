@@ -2,10 +2,14 @@ package com.OOP.springboot.mongodb.controller;
 
 import com.OOP.springboot.mongodb.model.China;
 import com.OOP.springboot.mongodb.model.Customer;
+import com.OOP.springboot.mongodb.model.s3;
 import com.OOP.springboot.mongodb.repository.ChinaRepository;
 import com.OOP.springboot.mongodb.repository.CustomerRepository;
 import com.OOP.springboot.mongodb.service.ChinaService;
 import com.OOP.springboot.mongodb.service.CustomerService;
+import com.OOP.springboot.mongodb.service.s3Service;
+import com.OOP.springboot.mongodb.service.utils.ChinaExcel;
+import com.OOP.springboot.mongodb.service.utils.ChinaLinkScraper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,8 +22,11 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/china")
 public class ChinaController {
+
     @Autowired
     ChinaService chinaService;
+
+
 
     public String saveChina(China china) {
         try {
@@ -98,5 +105,17 @@ public class ChinaController {
             System.out.println(e);
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    @GetMapping("/saveallexcel")
+    public String saveAllExcelFiles() {
+
+        try {
+            chinaService.saveAllExcelFiles();
+            return "Successfully uploaded all excel files";
+        } catch (Exception e){
+            return e.getMessage();
+        }
+
     }
 }
