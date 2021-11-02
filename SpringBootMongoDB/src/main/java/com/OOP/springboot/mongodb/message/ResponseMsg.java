@@ -5,12 +5,15 @@ import java.util.List;
 import java.util.Map;
 
 import com.OOP.springboot.mongodb.model.Customer;
+import com.OOP.springboot.mongodb.model.s3;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 public class ResponseMsg {
 	private String message;
 	private String url;
 	private String error = "";
+	private Map<String,String> s3Links;
 	private List<Customer> customers = new ArrayList<Customer>();
 	private List<String> links = new ArrayList<>();
 	private List<Map<String,String>> dataObjects = new ArrayList<>();
@@ -26,6 +29,11 @@ public class ResponseMsg {
 		this.message = message;
 		this.url = url;
 		this.dataObjects = dataObjects;
+	}
+
+	public ResponseMsg(String message, Map<String, String> s3Links){
+		this.message = message;
+		this.s3Links = s3Links;
 	}
 
 //	public ResponseMsg(String message, String url, List<String> links, boolean isCrawl) {

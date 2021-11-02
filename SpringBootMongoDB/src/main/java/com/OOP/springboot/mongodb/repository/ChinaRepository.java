@@ -1,6 +1,7 @@
 package com.OOP.springboot.mongodb.repository;
 
 import com.OOP.springboot.mongodb.model.China;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.repository.Aggregation;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
@@ -14,7 +15,7 @@ public interface ChinaRepository extends MongoRepository<China, String>{
     List <China> findByYear(String year);
 
     // Find all data in the specified year according to the commodity
-    List <China> findByYearAndCommodity(String year, String commodity);
+    List <China> findByYearAndCommodity(String year, String commodity, Sort sort);
 
     // Find all data in the specified year according to the commodity and type
     List <China> findByYearAndTypeAndCommodity(String year, String type, String commodity);
