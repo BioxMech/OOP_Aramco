@@ -81,8 +81,8 @@ public class ThailandCrudeOilImportScraper {
                 System.out.println(rowTotal);
                 String year = null;
                 int bottomCell = rowTotal;
-                int latestThreeYear = bottomCell - (3*6);
-                for (int yearRow = latestThreeYear; yearRow < rowTotal; yearRow+=6) {
+                int latestFourYear = bottomCell - (4*6);
+                for (int yearRow = latestFourYear; yearRow < rowTotal; yearRow+=6) {
                     Row currRow = sheet.getRow((yearRow));
                     Cell yearCell = currRow.getCell(0);
                     switch(yearCell.getCellType()) {
@@ -101,8 +101,13 @@ public class ThailandCrudeOilImportScraper {
                     // for loop to get each row for the continents
                     for (int dataRow = 2; dataRow < 6; dataRow++) {
                         Row nextRow = sheet.getRow((yearRow+dataRow));
-                        String continent = nextRow.getCell(0).getStringCellValue();
-//                        System.out.println(continent);
+                        String Oldcontinent = nextRow.getCell(0).getStringCellValue();
+                        String[] splitted = Oldcontinent.toLowerCase().split(" ");
+                        for (int i = 0; i < splitted.length; i++) {
+                            String A = splitted[i];
+                            splitted[i] = A.toUpperCase().charAt(0)+A.substring(1);
+                        }
+                        String continent = String.join(" ", splitted);
 
                         // for loop to loop through each column for the row
                         for (int col = 1; col < 13; col++) {
