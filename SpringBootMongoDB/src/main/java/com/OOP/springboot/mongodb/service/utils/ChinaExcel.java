@@ -189,7 +189,7 @@ public class ChinaExcel {
 
         // File Name
         String curr = java.time.LocalDate.now().toString();
-        String fileName = curr + "/" + commodity;
+        String fileName = curr + "/China/" + commodity;
 
 
         // Upload excel to S3
