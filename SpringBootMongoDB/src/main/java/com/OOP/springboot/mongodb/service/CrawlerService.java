@@ -18,13 +18,9 @@ public class CrawlerService {
     @Autowired
     ChinaService chinaService;
     @Autowired
-    ThailandCrudeOilService thailandCrudeOilService;
-    @Autowired
     ApplicationContext appContext;
     @Autowired
-    ThailandCondensateService thailandCondensateService;
-    @Autowired
-    ThailandPetroleumProductsService thailandPetroleumProductsService;
+    ThailandService thailandService;
 
     private final List<String> links;
     private final HashMap<String, String> thailandLinks = new HashMap<>();
@@ -80,10 +76,9 @@ public class CrawlerService {
                 String value = entry.getValue();
                 if (value.contains("T02_01_01")) {
                     try {
-                        System.out.println("Crude Oil Production Scraper Called");
+//                        System.out.println("Crude Oil Production Scraper Called");
                         ThailandCrudeOilProductionScraper crudeOilProductionExcelScraper = new ThailandCrudeOilProductionScraper(value, key);
-                        dataObjects = crudeOilProductionExcelScraper.scrapeThailand();
-                        thailandCrudeOilService.saveListThailandCrudeOil(dataObjects);
+                        dataObjects.addAll(crudeOilProductionExcelScraper.scrapeThailand());
                     } catch (Exception e) {
                         System.err.println(e.getMessage());
                     }
@@ -92,8 +87,7 @@ public class CrawlerService {
                 if (value.contains("T02_01_02")) {
                     try {
                         ThailandCondensateProductionScraper condensateProductionExcelScraper = new ThailandCondensateProductionScraper(value, key);
-                        dataObjects = condensateProductionExcelScraper.scrapeThailand();
-                        thailandCondensateService.saveListThailandCondensate(dataObjects);
+                        dataObjects.addAll(condensateProductionExcelScraper.scrapeThailand());
                     } catch (Exception e) {
                         System.err.println(e.getMessage());
                     }
@@ -101,8 +95,7 @@ public class CrawlerService {
                 if (value.contains("T02_01_03")) {
                     try {
                         ThailandCrudeOilImportScraper crudeOilImportScraper = new ThailandCrudeOilImportScraper(value, key);
-                        dataObjects = crudeOilImportScraper.scrapeThailand();
-                        thailandCrudeOilService.saveListThailandCrudeOil(dataObjects);
+                        dataObjects.addAll(crudeOilImportScraper.scrapeThailand());
                     } catch (Exception e) {
                         System.err.println(e.getMessage());
                     }
@@ -110,8 +103,7 @@ public class CrawlerService {
                 if (value.contains("T02_03_02")) {
                     try {
                         ThailandPetroleumProductsProductionScraper petroleumProductsProductionScraper = new ThailandPetroleumProductsProductionScraper(value, key);
-                        dataObjects = petroleumProductsProductionScraper.scrapeThailand();
-                        thailandPetroleumProductsService.saveListThailandPetroleumProducts(dataObjects);
+                        dataObjects.addAll(petroleumProductsProductionScraper.scrapeThailand());
                     } catch (Exception e) {
                         System.err.println(e.getMessage());
                     }
@@ -119,18 +111,17 @@ public class CrawlerService {
                 if (value.contains("T02_03_04")) {
                     try {
                         ThailandPetroleumProductsSalesScraper petroleumProductsSalesScraper = new ThailandPetroleumProductsSalesScraper(value, key);
-                        dataObjects = petroleumProductsSalesScraper.scrapeThailand();
-                        thailandPetroleumProductsService.saveListThailandPetroleumProducts(dataObjects);
+                        dataObjects.addAll(petroleumProductsSalesScraper.scrapeThailand());
                     } catch (Exception e) {
                         System.err.println(e.getMessage());
                     }
                 }
             }
+            thailandService.saveListThailand(dataObjects);
         } catch (IOException e) { // Same as the above - if URL cannot be found
             System.err.println("For '" + URL + "': " + e.getMessage());
         }
 
-//        System.out.println(dataObjects);
         return dataObjects;
     }
 
@@ -152,7 +143,7 @@ public class CrawlerService {
                 ChinaPageScraper pageScraper = ChinaPageScraper.getInstance(url);
                 dataObjects.addAll(pageScraper.extractData());
             }
-//            chinaService.saveListChina(dataObjects);
+            chinaService.saveListChina(dataObjects);
         } catch (IOException e) {
             System.err.println(e.getMessage());
         }
