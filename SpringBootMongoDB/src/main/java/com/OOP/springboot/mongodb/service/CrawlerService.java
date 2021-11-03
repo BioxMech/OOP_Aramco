@@ -7,7 +7,6 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -25,14 +24,14 @@ public class CrawlerService {
     private final List<String> links;
     private final HashMap<String, String> thailandLinks = new HashMap<>();
     private final List<String> thailandDataRequiredTitle = new ArrayList<>(Arrays.asList(
-            "Table 2.1-1: Production of Crude Oil",
-            "Table 2.1-2: Production of Condensate",
-            "Table 2.1-3: Import of Crude Oil Classified by Sources",
+//            "Table 2.1-1: Production of Crude Oil",
+//            "Table 2.1-2: Production of Condensate",
+//            "Table 2.1-3: Import of Crude Oil Classified by Sources",
 //            "Table 2.1-4: Quantity and Value of Petroleum Products Import",
 //            "Table 2.1-5: Quantity and Value of Petroleum Products Export",
 //            "Table 2.2-2: Material Intake",
-            "Table 2.3-2: Production of Petroleum Products (Barrel/Day)",
-            "Table 2.3-4: Sale of Petroleum Products (Barrel/Day)"
+//            "Table 2.3-2: Production of Petroleum Products (Barrel/Day)",
+//            "Table 2.3-4: Sale of Petroleum Products (Barrel/Day)",
 //            "Table 2.3-7: Import of Petroleum Products (Barrel/Day)",
 //            "Table 2.3-9: Export of Petroleum Products (Barrel/Day)",
 //            "Table 2.3-11: Net Export of Petroleum Products (Barrel/Day)"
@@ -74,6 +73,7 @@ public class CrawlerService {
             for (Map.Entry<String, String> entry : thailandLinks.entrySet()) {
                 String key = entry.getKey();
                 String value = entry.getValue();
+
                 if (value.contains("T02_01_01")) {
                     try {
 //                        System.out.println("Crude Oil Production Scraper Called");
@@ -116,6 +116,37 @@ public class CrawlerService {
                         System.err.println(e.getMessage());
                     }
                 }
+
+//                EK ADDED HERE
+//                Petroleum Products (Export & Import)
+                if ((value.contains("T02_03_09")) || (value.contains("T02_03_07"))) {
+                    try {
+                        ThailandPetroleumProductsImportExportScraper petroleumProductsImportExportScraper = new ThailandPetroleumProductsImportExportScraper(value, key);
+                        dataObjects.addAll(petroleumProductsImportExportScraper.scrapeThailand());
+                    } catch (Exception e) {
+                        System.err.println(e.getMessage());
+                    }
+                }
+
+//                Quantity and Value of Crude Oil / Petroleum Products
+                if ((value.contains("T02_01_04")) || (value.contains("T02_01_05"))){
+                    try {
+                        ThailandCrudeOilPetroleumProductsQtyValImportExportScraper crudeOilPetroleumProductsQtyValImportExportScraper = new ThailandCrudeOilPetroleumProductsQtyValImportExportScraper(value, key);
+                        dataObjects.addAll(crudeOilPetroleumProductsQtyValImportExportScraper.scrapeThailand());
+                    } catch (Exception e) {
+                        System.err.println(e.getMessage());
+                    }
+                }
+
+//                if (value.contains("T02_03_11")) {
+//                    try {
+//                        ThailandPetroleumProductsNetExportScraper petroleumProductsNetExportScraper = new ThailandPetroleumProductsNetExportScraper(value, key);
+//                        dataObjects.addAll(petroleumProductsNetExportScraper.scrapeThailand());
+//                    } catch (Exception e) {
+//                        System.err.println(e.getMessage());
+//                    }
+//                }
+
             }
             thailandService.saveListThailand(dataObjects);
         } catch (IOException e) { // Same as the above - if URL cannot be found
