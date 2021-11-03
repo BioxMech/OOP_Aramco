@@ -36,6 +36,14 @@ public class ThailandService {
                         writeData.add(new Thailand(data));
                     }
                 }
+
+                if (type.equals("export")) {
+                    List<Thailand> searchResult = this.retrieveAllThailandByYearAndMonthAndTypeAndCommodity(data.get("year"), data.get("month"), type, commodity);
+                    if (searchResult.size() == 0) {
+                        writeData.add(new Thailand(data));
+                    }
+                }
+
             } else {
                 List<Thailand> searchResult = this.retrieveAllThailandByYearAndMonthAndTypeAndCommodity(data.get("year"), data.get("month"), type, commodity);
                 if (searchResult.size() == 0) {

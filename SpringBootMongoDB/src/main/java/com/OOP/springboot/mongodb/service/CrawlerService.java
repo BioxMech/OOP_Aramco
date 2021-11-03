@@ -147,7 +147,7 @@ public class CrawlerService {
                 }
 
             }
-//            thailandService.saveListThailand(dataObjects);
+            thailandService.saveListThailand(dataObjects);
         } catch (IOException e) { // Same as the above - if URL cannot be found
             System.err.println("For '" + URL + "': " + e.getMessage());
         }
