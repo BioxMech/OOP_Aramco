@@ -121,12 +121,18 @@ public class ThailandCrudeOilPetroleumProductsQtyValImportExportScraper {
                         Cell rowTitleCell = sheet.getRow(currentRow).getCell(0, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK);
                         String rowTitle = rowTitleCell.getStringCellValue();
 //                                if (rowTitle.contains("$/BBL") || rowTitle.contains("US$") || rowTitle.contains("BBL/D") || rowTitle.contains("CRUDE OIL") || rowTitle.contains("PETROLEUM PRODUCTS") || rowTitle.contains("OTHERS") || rowTitle.contains("TOTAL PETROLEUM")) {
-                        if (rowTitle.contains("CRUDE OIL") || rowTitle.contains("PETROLEUM PRODUCTS") || rowTitle.contains("OTHERS") || rowTitle.contains("TOTAL PETROLEUM")) {
-                            Cell titleCell = sheet.getRow(currentRow).getCell(0);
-                            product = rowTitle.substring(2);
+                        if (rowTitle.contains("CRUDE OIL")) {
+                            product = "Crude Oil";
+                        } else if (rowTitle.contains("PETROLEUM PRODUCTS")) {
+                            product = "Petroleum Products";
+                        } else if (rowTitle.contains("OTHERS")) {
+                            product = "Others";
+                        } else if (rowTitle.contains("TOTAL PETROLEUM")) {
+                            product = "Total Petroleum";
+                        }
 //                            System.out.println(product);
 //                            System.out.println(titleCell);
-                        }
+
 
                         //Looping each column of each row
                         if (rowTitle.contains("BBL/D")) {

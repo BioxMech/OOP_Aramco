@@ -136,6 +136,7 @@ public class CrawlerService {
                     }
                 }
 
+//                Net Exports
                 if (value.contains("T02_03_11")) {
                     try {
                         ThailandPetroleumProductsNetExportScraper petroleumProductsNetExportScraper = new ThailandPetroleumProductsNetExportScraper(value, key);
@@ -146,7 +147,7 @@ public class CrawlerService {
                 }
 
             }
-            thailandService.saveListThailand(dataObjects);
+//            thailandService.saveListThailand(dataObjects);
         } catch (IOException e) { // Same as the above - if URL cannot be found
             System.err.println("For '" + URL + "': " + e.getMessage());
         }
