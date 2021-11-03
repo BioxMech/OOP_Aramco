@@ -34,7 +34,7 @@ public class CrawlerService {
 //            "Table 2.3-4: Sale of Petroleum Products (Barrel/Day)",
 //            "Table 2.3-7: Import of Petroleum Products (Barrel/Day)",
 //            "Table 2.3-9: Export of Petroleum Products (Barrel/Day)",
-//            "Table 2.3-11: Net Export of Petroleum Products (Barrel/Day)"
+            "Table 2.3-11: Net Export of Petroleum Products (Barrel/Day)"
     ));
     private ChinaLinkScraper chinaLinkScraper;
     public CrawlerService(List<String> links) {
@@ -138,14 +138,14 @@ public class CrawlerService {
                     }
                 }
 
-//                if (value.contains("T02_03_11")) {
-//                    try {
-//                        ThailandPetroleumProductsNetExportScraper petroleumProductsNetExportScraper = new ThailandPetroleumProductsNetExportScraper(value, key);
-//                        dataObjects.addAll(petroleumProductsNetExportScraper.scrapeThailand());
-//                    } catch (Exception e) {
-//                        System.err.println(e.getMessage());
-//                    }
-//                }
+                if (value.contains("T02_03_11")) {
+                    try {
+                        ThailandPetroleumProductsNetExportScraper petroleumProductsNetExportScraper = new ThailandPetroleumProductsNetExportScraper(value, key);
+                        dataObjects.addAll(petroleumProductsNetExportScraper.scrapeThailand());
+                    } catch (Exception e) {
+                        System.err.println(e.getMessage());
+                    }
+                }
 
             }
             thailandService.saveListThailand(dataObjects);
