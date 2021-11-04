@@ -43,7 +43,11 @@ public class ThailandService {
                         writeData.add(new Thailand(data));
                     }
                 }
-
+            } else if (commodity.equals("Material")) {
+                List<Thailand> searchResult = this.retrieveAllThailandByYearAndMonthAndRefinery(data.get("year"), data.get("month"), data.get("refinery"));
+                if (searchResult.size() == 0) {
+                    writeData.add(new Thailand(data));
+                }
             } else {
                 List<Thailand> searchResult = this.retrieveAllThailandByYearAndMonthAndTypeAndCommodity(data.get("year"), data.get("month"), type, commodity);
                 if (searchResult.size() == 0) {
@@ -75,6 +79,9 @@ public class ThailandService {
         return repo.findByYearAndMonthAndTypeAndCommodity(year, month, type, commodity);
     }
 
+    public List<Thailand> retrieveAllThailandByYearAndMonthAndRefinery(String year, String month, String refinery) {
+        return repo.findByYearAndMonthAndRefinery(year, month, refinery);
+    }
 
     public List<Thailand> retrieveAllThailandByYearAndMonthAndTypeAndCommodityAndRegion(String year, String month, String type, String commodity, String region) {
         return repo.findByYearAndMonthAndTypeAndCommodityAndRegion(year, month, type, commodity, region);
@@ -89,6 +96,8 @@ public class ThailandService {
     public List<String> getAllDistinctRegions() { return repo.findDistinctRegions();}
 
     public List<String> getAllDistinctContinents() { return repo.findDistinctContinents();}
+
+    public List<String> getAllDistinctRefineries() { return repo.findDistinctRefineries();}
 
     public void deleteAll() {
         repo.deleteAll();

@@ -23,6 +23,9 @@ public interface ThailandRepository extends MongoRepository<Thailand, String> {
     // Find data in specified year, specified month and specified region
     List<Thailand> findByYearAndMonthAndRegion(String year, String month, String region);
 
+    // Find data in specified year, specified month and specified refinery
+    List<Thailand> findByYearAndMonthAndRefinery(String year, String month, String refinery);
+
     // Find data in specified year, specified month and specified region and type
     List<Thailand> findByYearAndMonthAndTypeAndCommodityAndRegion(String year, String month, String type, String commodity,String region);
 
@@ -37,6 +40,9 @@ public interface ThailandRepository extends MongoRepository<Thailand, String> {
 
     @Aggregation(pipeline = { "{ '$group': { '_id' : '$continent' } }" })
     List<String> findDistinctContinents();
+
+    @Aggregation(pipeline = { "{ '$group': { '_id' : '$refinery' } }" })
+    List<String> findDistinctRefineries();
 
 
     List<Thailand> findFirstByOrderByYearDescMonthDesc();
