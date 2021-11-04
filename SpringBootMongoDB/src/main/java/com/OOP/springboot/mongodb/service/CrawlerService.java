@@ -136,6 +136,7 @@ public class CrawlerService {
                     }
                 }
 
+//                Net Exports
                 if (value.contains("T02_03_11")) {
                     try {
                         ThailandPetroleumProductsNetExportScraper petroleumProductsNetExportScraper = new ThailandPetroleumProductsNetExportScraper(value, key);
