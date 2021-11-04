@@ -62,9 +62,17 @@ public class ThailandController {
     }
     @GetMapping("/{year}/{month}/{type}/{commodity}")
     public ResponseEntity<List<Thailand>> getAllThailandByYearAndMonthAndTypeAndCommodity(@PathVariable String year, @PathVariable String month, @PathVariable String type, @PathVariable String commodity, HttpServletRequest request) {
+        List<Thailand> thailand = null;
         try {
-            String convertedCommodity = commodity.replaceAll("[%20]", " ");
-            List<Thailand> thailand = thailandService.retrieveAllThailandByYearAndMonthAndTypeAndCommodity(year, month, type, convertedCommodity);
+            String convertedType = type.replaceAll("[%20]", " ");
+            String refinery = commodity;
+            if (convertedType.equals("Material Intake")) {
+                thailand = thailandService.retrieveAllThailandByYearAndMonthAndRefinery(year, month, refinery);
+            } else {
+                String convertedCommodity = commodity.replaceAll("[%20]", " ");
+                thailand = thailandService.retrieveAllThailandByYearAndMonthAndTypeAndCommodity(year, month, type, convertedCommodity);
+            }
+
             return new ResponseEntity<>(thailand, HttpStatus.OK);
         } catch (Exception e) {
             System.out.println(e);
@@ -123,6 +131,17 @@ public class ThailandController {
     public ResponseEntity<List<String>> getDistinctContinents() {
         try {
             List<String> distinctContinents = thailandService.getAllDistinctContinents();
+            return new ResponseEntity<>(distinctContinents, HttpStatus.OK);
+        } catch (Exception e) {
+            System.out.println(e);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/refineries")
+    public ResponseEntity<List<String>> getDistinctRefineries() {
+        try {
+            List<String> distinctContinents = thailandService.getAllDistinctRefineries();
             return new ResponseEntity<>(distinctContinents, HttpStatus.OK);
         } catch (Exception e) {
             System.out.println(e);
