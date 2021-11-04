@@ -17,9 +17,18 @@ public class Thailand {
     private String quantity;
     private String month;
     private String continent;
+    private String refinery;
+
+    public String getRefinery() {
+        return refinery;
+    }
+
+    public void setRefinery(String refinery) {
+        this.refinery = refinery;
+    }
 
     @PersistenceConstructor
-    public Thailand(String id, String type, String commodity, String unit, String year, String region, String quantity, String month, String continent) {
+    public Thailand(String id, String type, String commodity, String unit, String year, String region, String quantity, String month, String continent, String refinery) {
         this.id = id;
         this.type = type;
         this.commodity = commodity;
@@ -29,6 +38,7 @@ public class Thailand {
         this.quantity = quantity;
         this.month = month;
         this.continent = continent;
+        this.refinery = refinery;
     }
 
     public String getId() {
@@ -113,6 +123,7 @@ public class Thailand {
         this.quantity = dataArray.get("quantity");
         this.month = dataArray.get("month");
         this.continent = dataArray.get("continent");
+        this.refinery = dataArray.get("refinery");
     }
 
 
