@@ -51,9 +51,16 @@ public class ThailandController {
 
     @GetMapping("/{year}/{type}/{commodity}")
     public ResponseEntity<List<Thailand>> getAllThailandByYearAndTypeAndCommodity(@PathVariable String year, @PathVariable String type, @PathVariable String commodity, HttpServletRequest request) {
+        List<Thailand> thailand = null;
         try {
             String convertedCommodity = commodity.replaceAll("[%20]", " ");
-            List<Thailand> thailand = thailandService.retrieveAllThailandByYearAndTypeAndCommodity(year, type, convertedCommodity);
+            String convertedType = type.replaceAll("[%20]", " ");
+            String refinery = commodity;
+            if (convertedType.equals("Material Intake")) {
+                thailand = thailandService.retrieveAllThailandByYearAndRefinery(year, refinery);
+            } else {
+                thailand = thailandService.retrieveAllThailandByYearAndTypeAndCommodity(year, type, convertedCommodity);
+            }
             return new ResponseEntity<>(thailand, HttpStatus.OK);
         } catch (Exception e) {
             System.out.println(e);
@@ -157,6 +164,15 @@ public class ThailandController {
         } catch(Exception e) {
             System.out.println(e);
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    @GetMapping("/saveallexcel")
+    public String saveAllExcelFiles() {
+        try {
+            thailandService.saveAllExcelFiles();
+            return "Success";
+        } catch (Exception e) {
+            return e.getMessage();
         }
     }
 
