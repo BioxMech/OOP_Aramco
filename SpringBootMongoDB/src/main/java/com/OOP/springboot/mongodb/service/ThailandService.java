@@ -99,6 +99,8 @@ public class ThailandService {
 
     public List<String> getAllDistinctRefineries() { return repo.findDistinctRefineries();}
 
+    public List<String> getAllDistinctYears() { return repo.findDistinctYears();}
+
     public void deleteAll() {
         repo.deleteAll();
     }

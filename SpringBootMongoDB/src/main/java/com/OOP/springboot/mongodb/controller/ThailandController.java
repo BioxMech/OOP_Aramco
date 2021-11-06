@@ -149,4 +149,15 @@ public class ThailandController {
         }
     }
 
+    @GetMapping("/years")
+    public ResponseEntity<List<String>> getDistinctYears(){
+        try {
+            List<String> distinctCommodities = thailandService.getAllDistinctYears();
+            return new ResponseEntity<>(distinctCommodities, HttpStatus.OK);
+        } catch(Exception e) {
+            System.out.println(e);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 }

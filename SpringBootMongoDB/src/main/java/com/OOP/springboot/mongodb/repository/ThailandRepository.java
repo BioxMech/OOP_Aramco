@@ -44,6 +44,8 @@ public interface ThailandRepository extends MongoRepository<Thailand, String> {
     @Aggregation(pipeline = { "{ '$group': { '_id' : '$refinery' } }" })
     List<String> findDistinctRefineries();
 
+    @Aggregation(pipeline = { "{ '$group': { '_id' : '$year' } }" })
+    List<String> findDistinctYears();
 
     List<Thailand> findFirstByOrderByYearDescMonthDesc();
 }
