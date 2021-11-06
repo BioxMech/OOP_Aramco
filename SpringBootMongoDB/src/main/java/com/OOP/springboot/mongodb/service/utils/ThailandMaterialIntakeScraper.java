@@ -23,7 +23,7 @@ public class ThailandMaterialIntakeScraper {
         List<String> tableHeaders = new ArrayList<String>();
         Map<String, String> extractedData = null;
         List<String> colData = Arrays.asList("Fang", "Thai Oil", "Bangchak", "Esso","TPI_IRPC","RRC_PTTAR_PTTGC", "SPRC", "RPC", "Total");
-        String productType = "material intake";
+        String productType = "Material Intake";
 
         try {
             byte[] bytes = Jsoup.connect(URL)

@@ -83,6 +83,10 @@ public class ThailandService {
         return repo.findByYearAndMonthAndRefinery(year, month, refinery);
     }
 
+    public List<Thailand> retrieveAllThailandByYearAndRefinery(String year, String refinery) {
+        return repo.findByYearAndRefinery(year, refinery);
+    }
+
     public List<Thailand> retrieveAllThailandByYearAndMonthAndTypeAndCommodityAndRegion(String year, String month, String type, String commodity, String region) {
         return repo.findByYearAndMonthAndTypeAndCommodityAndRegion(year, month, type, commodity, region);
     }
@@ -100,6 +104,24 @@ public class ThailandService {
     public List<String> getAllDistinctRefineries() { return repo.findDistinctRefineries();}
 
     public List<String> getAllDistinctYears() { return repo.findDistinctYears();}
+
+    public List<String> getLatestYear() {
+        List<Thailand> latestEntry = repo.findFirstByOrderByYearDescMonthDesc();
+        if (latestEntry.size() < 1) {
+            return null;
+        }
+        List<String> latestYearMonth = new ArrayList<>();
+        latestYearMonth.add(latestEntry.get(0).getYear());
+//        latestYearMonth.add(latestEntry.get(0).getMonth());
+        return latestYearMonth;
+    }
+
+    public void saveAllExcelFiles() {
+        System.out.println(getLatestYear());
+//        for (int = 2017; i < Integer.parseInt(getLatestYearMonth().get(0)) + 1; i++) {
+//
+//        }
+    }
 
     public void deleteAll() {
         repo.deleteAll();
