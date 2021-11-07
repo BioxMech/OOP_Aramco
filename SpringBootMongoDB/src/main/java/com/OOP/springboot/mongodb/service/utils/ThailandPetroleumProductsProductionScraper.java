@@ -112,7 +112,11 @@ public class ThailandPetroleumProductsProductionScraper{
                             extractedData.put("type", productType);
                             extractedData.put("commodity", product);
                             extractedData.put("unit", "Kilobarrels/day");
-                            extractedData.put("month", b+"");
+                            if (b == 13){
+                                extractedData.put("month", "YTD");
+                            } else {
+                                extractedData.put("month", b+"");
+                            }
                             Row row = sheet.getRow(yearRow+2+b);
                             Cell cell = row.getCell(a);
                             switch(cell.getCellType()) {
