@@ -129,7 +129,11 @@ public class ThailandCondensateProductionScraper {
                             extractedData.put("commodity", commodityType);
                             extractedData.put("unit", "Kilobarrels/day");
                             extractedData.put("region", region);
-                            extractedData.put("month", b+"");
+                            if (b == 13){
+                                extractedData.put("month", "YTD");
+                            } else {
+                                extractedData.put("month", b+"");
+                            }
                             Row row = sheet.getRow(yearRow+b);
                             Cell cell = row.getCell(a);
                             switch(cell.getCellType()) {
