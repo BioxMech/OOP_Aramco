@@ -104,7 +104,11 @@ public class ThailandMaterialIntakeScraper {
                             extractedData.put("refinery", product);
                             extractedData.put("commodity", "Material");
                             extractedData.put("unit", "Kilobarrels/day");
-                            extractedData.put("month", b+"");
+                            if (b == 13){
+                                extractedData.put("month", "YTD");
+                            } else {
+                                extractedData.put("month", b+"");
+                            }
                             Row row = sheet.getRow(yearRow+1+b);
                             Cell cell = row.getCell(a);
                             switch(cell.getCellType()) {
