@@ -4,13 +4,22 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import com.OOP.springboot.mongodb.model.China;
 import com.OOP.springboot.mongodb.model.Thailand;
 import com.OOP.springboot.mongodb.repository.ThailandRepository;
+import com.OOP.springboot.mongodb.service.utils.ThailandExcel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ThailandService {
+    private final String[] crudeOilTypes = {"import", "production"};
+    private final  String[] condensateTypes = {"production"};
+    private final String[] petroleumProductsTypes = {"import", "production", "sales", "export", "net export"};
+    private final String[] commodityParents = {"Crude Oil", "Condensate","Gasoline", "Kerosene", "Diesel", "JP", "Fuel Oil", "LPG", "Total"};
+    private final String[] petroleumProductsParents = {"Gasoline", "Kerosene", "Diesel", "JP", "Fuel Oil", "LPG", "Total"};
+    ArrayList<List<Thailand>> listByYear = null;
+
     @Autowired
     ThailandRepository repo;
 
@@ -97,6 +106,17 @@ public class ThailandService {
 
     public List<String> getAllDistinctCommodities() { return repo.findDistinctCommodities();}
 
+    public List<String> getSubCommoditiesByParent(String parent) {
+        List<String> result = new ArrayList<>();
+        List<String> allCommodities = getAllDistinctCommodities();
+        for (String ele: allCommodities) {
+            if (ele.contains(parent)) {
+                result.add(ele);
+            }
+        }
+        return result;
+    }
+
     public List<String> getAllDistinctRegions() { return repo.findDistinctRegions();}
 
     public List<String> getAllDistinctContinents() { return repo.findDistinctContinents();}
@@ -110,18 +130,83 @@ public class ThailandService {
         if (latestEntry.size() < 1) {
             return null;
         }
-        List<String> latestYearMonth = new ArrayList<>();
-        latestYearMonth.add(latestEntry.get(0).getYear());
-//        latestYearMonth.add(latestEntry.get(0).getMonth());
-        return latestYearMonth;
+        List<String> latestYear = new ArrayList<>();
+        latestYear.add(latestEntry.get(0).getYear());
+        return latestYear;
     }
 
-    public void saveAllExcelFiles() {
-        System.out.println(getLatestYear());
-//        for (int = 2017; i < Integer.parseInt(getLatestYearMonth().get(0)) + 1; i++) {
+//    public void saveAllExcelFiles() {
+//        List<String> distinctCommodities = getAllDistinctCommodities();
+//        for (String commodity:distinctCommodities) {
+//            ArrayList<List<Thailand>> listByYear = new ArrayList<>();
 //
+//            for (int i = 2017; i < Integer.parseInt(getLatestYear().get(0)) + 1; i++) {
+//                List<Thailand> commodityByYear = retrieveAllThailandByYearAndCommodity(String.valueOf(i),  commodity);
+//                listByYear.add(commodityByYear);
+//            }
+//            ThailandExcel excel = new ThailandExcel(listByYear, commodity);
+//            excel.saveAllByYear();
 //        }
+//    }
+
+    public void saveExcelFilesByType() {
+        List<String> distinctCommodities = getAllDistinctCommodities();
+        for (String commodity: commodityParents) {
+//            System.out.println(Integer.parseInt(getLatestYear().get(0)) + 1);
+
+            if (commodity.equals("Crude Oil")) {
+                for (String type: crudeOilTypes) {
+                    listByYear = new ArrayList<>();
+                    for (int i = 2017; i < Integer.parseInt(getLatestYear().get(0)) + 1; i++) {
+//                        System.out.println(i);
+                        List<Thailand> commodityByYear = retrieveAllThailandByYearAndTypeAndCommodity(String.valueOf(i), type,  commodity);
+                        listByYear.add(commodityByYear);
+                    }
+                    ThailandExcel excel = new ThailandExcel(listByYear, type, commodity);
+                    excel.saveAll();
+                }
+            }
+            else if (commodity.equals("Condensate")) {
+                String type = "production";
+                listByYear = new ArrayList<>();
+                for (int i = 2017; i < Integer.parseInt(getLatestYear().get(0)) + 1; i++) {
+                    List<Thailand> commodityByYear = retrieveAllThailandByYearAndTypeAndCommodity(String.valueOf(i), type,  commodity);
+                    listByYear.add(commodityByYear);
+                }
+                ThailandExcel excel = new ThailandExcel(listByYear, type, commodity);
+                excel.saveAll();
+            }
+            else {
+//                System.out.println(commodity);
+                for (String type: petroleumProductsTypes) {
+                    listByYear = new ArrayList<>();
+                    for (int i = 2017; i < Integer.parseInt(getLatestYear().get(0)) + 1; i++) {
+//                        System.out.println(i);
+                        List<Thailand> commodityByYear = retrieveAllThailandByYearAndTypeAndCommodity(String.valueOf(i), type,  commodity);
+                        listByYear.add(commodityByYear);
+                    }
+                    ThailandExcel excel = new ThailandExcel(listByYear, type, commodity);
+                    excel.saveAll();
+                }
+//                listByYear = new ArrayList<>();
+//                List<String> subComms = getSubCommoditiesByParent(commodity);
+//                System.out.println(subComms);
+//                for (String subComm: subComms) {
+//                    for (String type: petroleumProductsTypes) {
+//                        for (int i = 2017; i < Integer.parseInt(getLatestYear().get(0)) + 1; i++) {
+//                            List<Thailand> commodityByYear = retrieveAllThailandByYearAndTypeAndCommodity(String.valueOf(i), type,  subComm);
+//                            listByYear.add(commodityByYear);
+//                        }
+//                        ThailandExcel excel = new ThailandExcel(listByYear, type, commodity);
+//                        excel.saveAll();
+//                    }
+//                }
+
+            }
+        }
     }
+
+
 
     public void deleteAll() {
         repo.deleteAll();
