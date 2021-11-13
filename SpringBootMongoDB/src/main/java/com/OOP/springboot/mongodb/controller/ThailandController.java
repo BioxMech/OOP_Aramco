@@ -169,7 +169,7 @@ public class ThailandController {
     @GetMapping("/saveallexcel")
     public String saveAllExcelFiles() {
         try {
-            thailandService.saveAllExcelFiles();
+            thailandService.saveExcelFilesByType();
             return "Success";
         } catch (Exception e) {
             return e.getMessage();

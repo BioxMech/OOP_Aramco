@@ -139,8 +139,16 @@ public class ThailandCrudeOilImportScraper {
                             }
                             dataObjects.add(extractedData);
                         }
-//                        System.out.println(extractedData);
                     }
+                }
+                // Close the workbook and stream
+                wb.close();
+                excel_file.close();
+
+                // Delete the files after reading it
+                File f = new File("./excel_files/" + savedFileName);
+                if (f.delete()) {
+                    System.out.println("Successful");
                 }
 
             } catch (IOException e) {

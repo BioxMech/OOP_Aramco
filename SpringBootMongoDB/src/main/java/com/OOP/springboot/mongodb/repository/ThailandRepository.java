@@ -53,4 +53,5 @@ public interface ThailandRepository extends MongoRepository<Thailand, String> {
     List<String> findDistinctYears();
 
 
+
 }
