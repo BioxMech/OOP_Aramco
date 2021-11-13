@@ -63,13 +63,13 @@ public class s3Controller {
             List<Map<String, String>> returnVal = new ArrayList<>();
             List<s3> result = s3Service.retrieveS3LinksByCountryAndCommodity("Thailand", commodity);
             System.out.println(result);
+            Map<String, String> temp = new HashMap<>();
             for (s3 ele: result) {
-                Map<String, String> temp = new HashMap<>();
                 String[] splitted = ele.getS3Link().split("[/]");
                 String key = splitted[splitted.length-1].split("[.]")[0];
                 temp.put(key, ele.getS3Link());
-                returnVal.add(temp);
             }
+            returnVal.add(temp);
             return new ResponseEntity<ResponseMsg>(new ResponseMsg("S3 Link found successfully", returnVal), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
