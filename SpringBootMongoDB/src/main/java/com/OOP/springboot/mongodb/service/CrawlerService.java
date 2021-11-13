@@ -7,6 +7,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -41,7 +42,7 @@ public class CrawlerService {
     }
 
     // Thailand Web Scraping Service
-    // @Scheduled(cron = "0 00 03 * * ?") // 3 Am everyday
+     @Scheduled(cron = "0 30 16 * * *") // 3 Am everyday
     public List<Map<String, String>> scrapeThailand() {
         String URL = "http://www.eppo.go.th/index.php/en/en-energystatistics/petroleum-statistic";
         // Initialize list
