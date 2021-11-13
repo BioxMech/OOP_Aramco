@@ -1,11 +1,14 @@
 package com.OOP.springboot.mongodb.service;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 import com.OOP.springboot.mongodb.model.China;
 import com.OOP.springboot.mongodb.model.Thailand;
+import com.OOP.springboot.mongodb.model.s3;
 import com.OOP.springboot.mongodb.repository.ThailandRepository;
 import com.OOP.springboot.mongodb.service.utils.ThailandExcel;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +25,9 @@ public class ThailandService {
 
     @Autowired
     ThailandRepository repo;
+
+    @Autowired
+    s3Service s3Service;
 
     public Thailand saveThailand(Thailand thailand) {
         return repo.save(thailand);
@@ -135,73 +141,72 @@ public class ThailandService {
         return latestYear;
     }
 
-//    public void saveAllExcelFiles() {
-//        List<String> distinctCommodities = getAllDistinctCommodities();
-//        for (String commodity:distinctCommodities) {
-//            ArrayList<List<Thailand>> listByYear = new ArrayList<>();
-//
-//            for (int i = 2017; i < Integer.parseInt(getLatestYear().get(0)) + 1; i++) {
-//                List<Thailand> commodityByYear = retrieveAllThailandByYearAndCommodity(String.valueOf(i),  commodity);
-//                listByYear.add(commodityByYear);
-//            }
-//            ThailandExcel excel = new ThailandExcel(listByYear, commodity);
-//            excel.saveAllByYear();
-//        }
-//    }
+    private String reformatType(String type) {
+        String[] typeSplit = type.split(" ");
+        for (int i = 0; i < typeSplit.length; i++) {
+            String reformatted = typeSplit[i].substring(0,1).toUpperCase() + typeSplit[i].substring(1);
+            typeSplit[i] = reformatted;
+        }
+        String reformattedType = String.join("",typeSplit);
+        return reformattedType;
+    }
 
     public void saveExcelFilesByType() {
         List<String> distinctCommodities = getAllDistinctCommodities();
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        String dateFormatted = df.format(new Date());
+
         for (String commodity: commodityParents) {
 //            System.out.println(Integer.parseInt(getLatestYear().get(0)) + 1);
 
             if (commodity.equals("Crude Oil")) {
                 for (String type: crudeOilTypes) {
                     listByYear = new ArrayList<>();
+                    String reformattedType = reformatType(type);
                     for (int i = 2017; i < Integer.parseInt(getLatestYear().get(0)) + 1; i++) {
 //                        System.out.println(i);
                         List<Thailand> commodityByYear = retrieveAllThailandByYearAndTypeAndCommodity(String.valueOf(i), type,  commodity);
                         listByYear.add(commodityByYear);
                     }
-                    ThailandExcel excel = new ThailandExcel(listByYear, type, commodity);
+                    ThailandExcel excel = new ThailandExcel(listByYear, reformattedType, commodity);
                     excel.saveAll();
+                    String fileName =  String.join("",commodity.split(" ")) + reformattedType;
+                    String replacedCommodity = commodity.replace(" ", "+");
+                    s3 news3 = new s3(replacedCommodity, "Thailand", dateFormatted + "/Thailand/" + replacedCommodity + "/" + fileName + ".csv", dateFormatted);
+                    s3Service.saves3(news3);
                 }
             }
             else if (commodity.equals("Condensate")) {
                 String type = "production";
+                String reformattedType = reformatType(type);
                 listByYear = new ArrayList<>();
                 for (int i = 2017; i < Integer.parseInt(getLatestYear().get(0)) + 1; i++) {
                     List<Thailand> commodityByYear = retrieveAllThailandByYearAndTypeAndCommodity(String.valueOf(i), type,  commodity);
                     listByYear.add(commodityByYear);
                 }
-                ThailandExcel excel = new ThailandExcel(listByYear, type, commodity);
+                ThailandExcel excel = new ThailandExcel(listByYear, reformattedType, commodity);
                 excel.saveAll();
+                String fileName =  String.join("",commodity.split(" ")) + reformattedType;
+                String replacedCommodity = commodity.replace(" ", "+");
+                s3 news3 = new s3(replacedCommodity, "Thailand", dateFormatted + "/Thailand/" + replacedCommodity + "/" + fileName + ".csv", dateFormatted);
+                s3Service.saves3(news3);
             }
             else {
-//                System.out.println(commodity);
                 for (String type: petroleumProductsTypes) {
+                    /* reformattedType is NetExport, Sales, Production etc.*/
+                    String reformattedType = reformatType(type);
                     listByYear = new ArrayList<>();
                     for (int i = 2017; i < Integer.parseInt(getLatestYear().get(0)) + 1; i++) {
-//                        System.out.println(i);
                         List<Thailand> commodityByYear = retrieveAllThailandByYearAndTypeAndCommodity(String.valueOf(i), type,  commodity);
                         listByYear.add(commodityByYear);
                     }
-                    ThailandExcel excel = new ThailandExcel(listByYear, type, commodity);
+                    ThailandExcel excel = new ThailandExcel(listByYear, reformattedType, commodity);
                     excel.saveAll();
+                    String fileName =  String.join("",commodity.split(" ")) + reformattedType;
+                    String replacedCommodity = commodity.replace(" ", "+");
+                    s3 news3 = new s3(replacedCommodity, "Thailand", dateFormatted + "/Thailand/" + "Petroleum+Products" + "/" + fileName + ".csv", dateFormatted);
+                    s3Service.saves3(news3);
                 }
-//                listByYear = new ArrayList<>();
-//                List<String> subComms = getSubCommoditiesByParent(commodity);
-//                System.out.println(subComms);
-//                for (String subComm: subComms) {
-//                    for (String type: petroleumProductsTypes) {
-//                        for (int i = 2017; i < Integer.parseInt(getLatestYear().get(0)) + 1; i++) {
-//                            List<Thailand> commodityByYear = retrieveAllThailandByYearAndTypeAndCommodity(String.valueOf(i), type,  subComm);
-//                            listByYear.add(commodityByYear);
-//                        }
-//                        ThailandExcel excel = new ThailandExcel(listByYear, type, commodity);
-//                        excel.saveAll();
-//                    }
-//                }
-
             }
         }
     }

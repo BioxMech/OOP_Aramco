@@ -11,9 +11,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api/s3")
@@ -54,5 +55,24 @@ public class s3Controller {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
+    }
+
+    @GetMapping("retrieves3link/thailand/{commodity}")
+    public ResponseEntity<ResponseMsg> retrieveS3Link( @PathVariable String commodity) {
+        try {
+            List<Map<String, String>> returnVal = new ArrayList<>();
+            List<s3> result = s3Service.retrieveS3LinksByCountryAndCommodity("Thailand", commodity);
+            System.out.println(result);
+            for (s3 ele: result) {
+                Map<String, String> temp = new HashMap<>();
+                String[] splitted = ele.getS3Link().split("[/]");
+                String key = splitted[splitted.length-1].split("[.]")[0];
+                temp.put(key, ele.getS3Link());
+                returnVal.add(temp);
+            }
+            return new ResponseEntity<ResponseMsg>(new ResponseMsg("S3 Link found successfully", returnVal), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }

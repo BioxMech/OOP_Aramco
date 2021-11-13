@@ -3,6 +3,7 @@ package com.OOP.springboot.mongodb.service.utils;
 import com.OOP.springboot.mongodb.model.Thailand;
 import com.opencsv.CSVWriter;
 
+
 import java.io.*;
 import java.util.*;
 
@@ -23,20 +24,14 @@ public class ThailandExcel {
     }
 
     public void saveAll() {
-        String[] typeSplit = type.split(" ");
-        for (int i = 0; i < typeSplit.length; i++) {
-            String reformatted = typeSplit[i].substring(0,1).toUpperCase() + typeSplit[i].substring(1);
-            typeSplit[i] = reformatted;
-        }
-        String reformattedType = String.join("",typeSplit);
         // Create the excel file. Naming convention --> Commodity
         if (commodity.equals("Crude Oil") || commodity.equals("Condensate")) {
             commodityPath = commodity + "/";
-            fileName =  String.join("",commodity.split(" ")) + reformattedType +".csv";
+            fileName =  String.join("",commodity.split(" ")) + type +".csv";
         }
         else {
             commodityPath = "Petroleum Products/";
-            fileName = String.join("",commodity.split(" ")) + reformattedType +".csv";;
+            fileName = String.join("",commodity.split(" ")) + type +".csv";;
         }
 
         try {
@@ -79,5 +74,6 @@ public class ThailandExcel {
         System.out.println(s3FilePath);
         S3Upload newUpload = new S3Upload(localPath+commodityPath+fileName, "csv", s3FilePath);
         newUpload.uploadFile();
+
     }
 }
