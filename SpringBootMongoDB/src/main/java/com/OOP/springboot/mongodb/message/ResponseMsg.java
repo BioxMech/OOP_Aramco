@@ -14,10 +14,11 @@ public class ResponseMsg {
 	private String url;
 	private String error = "";
 	private Map<String,String> s3Links;
+	private List<Map<String, String>> s3LinksList;
 	private List<Customer> customers = new ArrayList<Customer>();
 	private List<String> links = new ArrayList<>();
 	private List<Map<String,String>> dataObjects = new ArrayList<>();
-	private List<Map<String, List<Map<String, Map<String, Integer>>>>> currYearData = new ArrayList<>();
+
 
 	public ResponseMsg(String message, String url, List<Customer> customers) {
 		this.message = message;
@@ -36,11 +37,10 @@ public class ResponseMsg {
 		this.s3Links = s3Links;
 	}
 
-//	public ResponseMsg(String message, String url, List<String> links, boolean isCrawl) {
-//		this.message = message;
-//		this.url = url;
-//		this.links = links;
-//	}
+	public ResponseMsg(String message, List<Map<String, String>> s3LinksList) {
+		this.message = message;
+		this.s3LinksList = s3LinksList;
+	}
 
 	// Constructor for China
 	public ResponseMsg(String message, String url, List<Map<String,String>> dataObjects, boolean sCrawl, String country) {
@@ -55,13 +55,6 @@ public class ResponseMsg {
 		this.error = error;
 	}
 
-//	public List<Map<String, List<Map<String, Map<String, Integer>>>>> getCurrYearObjects() {
-//		return currYearData;
-//	}
-
-//	public void setCurrYearObjects(List<Map<String, List<Map<String, Map<String, Integer>>>>> currYearData) {
-//		this.currYearData = currYearData;
-//	}
 
 	public List<Map<String,String>> getDataObjects() {
 		return dataObjects;
@@ -111,6 +104,13 @@ public class ResponseMsg {
 		return links;
 	}
 
+	public List<Map<String, String>> getS3LinksList() {
+		return s3LinksList;
+	}
+
+	public void setS3LinksList(List<Map<String, String>> s3LinksList) {
+		this.s3LinksList = s3LinksList;
+	}
 //	public void setLinks(List<String> links) {
 //		this.links = links;
 //	}
