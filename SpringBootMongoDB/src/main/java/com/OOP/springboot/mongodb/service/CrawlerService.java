@@ -44,7 +44,7 @@ public class CrawlerService {
     }
 
     // Thailand Web Scraping Service
-     @Scheduled(cron = "0 01 17 * * ?") // 3 Am everyday
+     @Scheduled(cron = "0 30 16 * * *") // 3 Am everyday
     public List<Map<String, String>> scrapeThailand() {
         String URL = thailandURL;
         // Initialize list
