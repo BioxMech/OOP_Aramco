@@ -72,7 +72,6 @@ public class CrawlerService {
                     link = e.getElementsByIndexEquals(2).select("a").attr("abs:href");
                     thailandLinks.put(rowName, link);
                     thailandLinks.put(rowName+" FirstCol", link2);
-//                    links.add(link);
                     links.add(link2);
                 }
             }
@@ -177,6 +176,9 @@ public class CrawlerService {
                         if (value.contains("-1")) {
                             ThailandCrudeOilPetroleumProductsQtyValImportExportScraper crudeOilPetroleumProductsQtyValImportExportScraper = new ThailandCrudeOilPetroleumProductsQtyValImportExportScraper(value, key);
                             dataObjects.addAll(crudeOilPetroleumProductsQtyValImportExportScraper.scrapeThailand());
+                        } else {
+                            ThailandCrudeOilPetroleumProductsQtyValImportExportScraperFirstCol crudeOilPetroleumProductsQtyValImportExportScraperFirstCol = new ThailandCrudeOilPetroleumProductsQtyValImportExportScraperFirstCol(value, key);
+                            dataObjects.addAll(crudeOilPetroleumProductsQtyValImportExportScraperFirstCol.scrapeThailand());
                         }
 
                     } catch (Exception e) {
@@ -204,7 +206,6 @@ public class CrawlerService {
         } catch (IOException e) { // Same as the above - if URL cannot be found
             System.err.println("For '" + URL + "': " + e.getMessage());
         }
-
         return dataObjects;
     }
 
