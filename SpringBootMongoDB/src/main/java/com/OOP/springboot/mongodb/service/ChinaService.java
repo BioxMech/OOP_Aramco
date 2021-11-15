@@ -90,7 +90,6 @@ public class ChinaService {
             }
 
             if (!(commodity.equals("Kerosene"))){
-                System.out.println(commodity);
                 // Each excel file is for ONE commodity;
                 chinaExcel.saveAllByYear(listByYear, commodity);
 

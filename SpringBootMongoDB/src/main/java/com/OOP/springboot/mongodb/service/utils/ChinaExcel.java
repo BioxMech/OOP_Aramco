@@ -37,8 +37,6 @@ public class ChinaExcel {
             // Loop through all the years to create excel for each year
             for (List<China> yearlyChinaList : chinaList) {
 
-                System.out.println(filepath);
-
                 // Check whether commodity has one or two types
                 // If 1 only --> single function
                 // If both import and export --> merged sheet
@@ -94,7 +92,6 @@ public class ChinaExcel {
                 // To store the import and export object
                 List<China> yearAndMonthList = new ArrayList<>();
 
-
                 // To retrieve the year month and save to hashmap
                 String year = chinaObj.getYear();
                 String month = chinaObj.getMonth();
@@ -102,7 +99,6 @@ public class ChinaExcel {
                 String key = year + month;
 
                 yearAndMonthList.add(chinaObj);
-
 
                 for (China chinaObj2: yearlyChinaList){
 
@@ -115,15 +111,10 @@ public class ChinaExcel {
                         yearAndMonthList.add(chinaObj2);
                     }
                 }
-
                 yearlyHashMap.put(year + "," + month, yearAndMonthList);
             }
-
             keroseneData.add(yearlyHashMap);
-
         }
-
-        System.out.println(keroseneData);
 
         // Create the excel file. Naming convention --> Commodity
         String filepath = "./excel_files/China/" + commodity + ".csv";
