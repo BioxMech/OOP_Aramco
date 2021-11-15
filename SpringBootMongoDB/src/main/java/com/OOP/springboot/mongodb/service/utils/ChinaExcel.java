@@ -2,25 +2,23 @@ package com.OOP.springboot.mongodb.service.utils;
 
 import com.OOP.springboot.mongodb.model.China;
 import com.opencsv.CSVWriter;
-
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import java.io.*;
 import java.util.*;
 
-
+@Component
 public class ChinaExcel {
+    @Autowired
+    S3Upload s3Upload;
 
     private ArrayList<List<China>> chinaList;
     private String commodity;
-//    private String[] header = {"Month", "Value", "Quantity", "% Change Value", "% Change Quantity"};
     private String[] yearHeader = {"Year", "Month", "Value", "Quantity", "% Change Value", "% Change Quantity"};
     private String[] keroseneHeader = {"Year", "Month", "Value (Import)", "Value (Export)", "Quantity (Import)", "Quantity(Export)", "% Change Value (Import)", "% Change Value (Export)", "% Change Quantity (Import)", "% Change Quantity (Export)"};
 
-    public ChinaExcel(ArrayList<List<China>> chinaList, String commodity) {
-        this.chinaList = chinaList;
-        this.commodity = commodity;
-    }
 
-    public void saveAllByYear() {
+    public void saveAllByYear(ArrayList<List<China>> chinaList, String commodity) {
 
         // Create the excel file. Naming convention --> Commodity
         String filepath = "./excel_files/China/" + commodity + ".csv";
@@ -38,8 +36,6 @@ public class ChinaExcel {
 
             // Loop through all the years to create excel for each year
             for (List<China> yearlyChinaList : chinaList) {
-
-                System.out.println(filepath);
 
                 // Check whether commodity has one or two types
                 // If 1 only --> single function
@@ -74,12 +70,13 @@ public class ChinaExcel {
 
         //TODO save this filename into the database
 
-        S3Upload newUpload = new S3Upload(filepath, "csv", fileName);
-        newUpload.uploadFile();
+//        S3Upload newUpload = new S3Upload(filepath, "csv", fileName);
+//        newUpload.uploadFile();
+        s3Upload.uploadFile(filepath, "csv", fileName);
 
     }
 
-    public void saveKerosene(){
+    public void saveKerosene(ArrayList<List<China>> chinaList, String commodity){
 
         // Process the data
         // List to store data
@@ -95,7 +92,6 @@ public class ChinaExcel {
                 // To store the import and export object
                 List<China> yearAndMonthList = new ArrayList<>();
 
-
                 // To retrieve the year month and save to hashmap
                 String year = chinaObj.getYear();
                 String month = chinaObj.getMonth();
@@ -103,7 +99,6 @@ public class ChinaExcel {
                 String key = year + month;
 
                 yearAndMonthList.add(chinaObj);
-
 
                 for (China chinaObj2: yearlyChinaList){
 
@@ -116,15 +111,10 @@ public class ChinaExcel {
                         yearAndMonthList.add(chinaObj2);
                     }
                 }
-
                 yearlyHashMap.put(year + "," + month, yearAndMonthList);
             }
-
             keroseneData.add(yearlyHashMap);
-
         }
-
-        System.out.println(keroseneData);
 
         // Create the excel file. Naming convention --> Commodity
         String filepath = "./excel_files/China/" + commodity + ".csv";
@@ -173,8 +163,6 @@ public class ChinaExcel {
 
                     writer.writeNext(individualData);
 
-
-
                 }
             }
 
@@ -192,9 +180,9 @@ public class ChinaExcel {
 
 
         // Upload excel to S3
-        S3Upload newUpload = new S3Upload(filepath, "csv", fileName);
-        newUpload.uploadFile();
-
+//        S3Upload newUpload = new S3Upload(filepath, "csv", fileName);
+//        newUpload.uploadFile();
+        s3Upload.uploadFile(filepath, "csv", fileName);
 
     }
 }

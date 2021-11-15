@@ -4,7 +4,6 @@ import com.OOP.springboot.mongodb.model.s3;
 import com.OOP.springboot.mongodb.repository.s3Repository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 @Service
@@ -18,12 +17,13 @@ public class s3Service {
     }
 
     public List<s3> retrieveS3LinksByCountryAndCommodity(String country, String commodity){
-
         return repo.findByCountryAndCommodityLikeOrderByDateDesc(country, commodity);
     }
 
+    public List<s3> retrieveThailandS3LinksByCountryAndCommodity(String country, String commodity){
+        return repo.findByCountryAndCommodityLikeOrderByDateAsc(country, commodity);
+    }
+
     public s3 saves3(s3 s3) { return repo.save(s3); }
-
-
 
 }

@@ -1,8 +1,8 @@
 package com.OOP.springboot.mongodb.service.utils;
+
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
 import org.jsoup.Jsoup;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -58,7 +58,6 @@ public class ThailandPetroleumProductsNetExportScraper {
 
                 int currentYear = 0;
                 int rowCount = sheet.getPhysicalNumberOfRows();
-//                System.out.println("Row Count Total: " + rowCount);
                 int lastRow = 0;
 
                 for (int r=rowCount; r >= 0; r--) {
@@ -78,28 +77,20 @@ public class ThailandPetroleumProductsNetExportScraper {
                 int latestChunk = lastRow - 15;
 
                 currentYear = (int) sheet.getRow(latestChunk).getCell(0).getNumericCellValue();
-//                System.out.println("Current Year:" + currentYear);
-//                System.out.println("The data is updated to Year " + (chunksToLoop + 1986));
-//                System.out.println("Last row is :" + lastRow);
-//                System.out.println("Row Count: " + rowCount);
 
                 // chunksToLoop = 3;
                 for (int chunksLooped = 0; chunksLooped < chunksToLoop; chunksLooped++) {
                     currentYear = (int) sheet.getRow(latestChunk).getCell(0).getNumericCellValue();
-                    // System.out.println("BREAK");
-//                            System.out.println(chunksLooped + 1986);
-                    //                        Looping each row in the chunk, 1 for each month + YTD (SINGLE YEAR CHUNK)
+//                  Looping each row in the chunk, 1 for each month + YTD (SINGLE YEAR CHUNK)
                     for (int i=0; i < 13; i ++) {
 //                            Add 3 because of the 3 header rows
                         int currentRow = latestChunk + 3 + i;
 //                            Looping each column of each row
                         for (int col=1; col < colData.size(); col++) {
-//                            System.out.println(currentYear);
                             Map<String, String> extractedData = new HashMap<>();
                             extractedData.put("year", currentYear+"");
                             extractedData.put("type", productType);
                             commodityType = colData.get(col);
-//                            System.out.print("Commodity: " + commodityType + " ");
                             extractedData.put("commodity", commodityType);
                             extractedData.put("unit", "Kilobarrels/day");
                             extractedData.put("month", (i+1)+"");
@@ -108,13 +99,11 @@ public class ThailandPetroleumProductsNetExportScraper {
                             if ((currentCell.getCellType() == CellType.NUMERIC) && (currentCell.getNumericCellValue() != 0.0)) {
                                 toSave = currentCell.getNumericCellValue()/1000;
                                 extractedData.put("quantity", String.format("%.4f", toSave));
-//                                System.out.print(toSave + " ");
                             } else {
                                 extractedData.put("quantity", "0");
                             }
                             dataObjects.add(extractedData);
                         }
-//                        System.out.println();
                     }
                     latestChunk -= 16;
                 }
@@ -136,7 +125,6 @@ public class ThailandPetroleumProductsNetExportScraper {
         } catch (IOException e) {
             System.err.println(e.getMessage());
         }
-
         return dataObjects;
     }
 }

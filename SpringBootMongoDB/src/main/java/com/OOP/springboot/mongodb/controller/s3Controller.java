@@ -57,12 +57,12 @@ public class s3Controller {
 
     }
 
-    @GetMapping("retrieves3link/thailand/{commodity}")
+    @GetMapping("/retrieves3link/thailand/{commodity}")
     public ResponseEntity<ResponseMsg> retrieveS3Link( @PathVariable String commodity) {
         try {
             List<Map<String, String>> returnVal = new ArrayList<>();
-            List<s3> result = s3Service.retrieveS3LinksByCountryAndCommodity("Thailand", commodity);
-            System.out.println(result);
+            List<s3> result = s3Service.retrieveThailandS3LinksByCountryAndCommodity("Thailand", commodity);
+
             Map<String, String> temp = new HashMap<>();
             for (s3 ele: result) {
                 String[] splitted = ele.getS3Link().split("[/]");
