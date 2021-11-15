@@ -78,7 +78,7 @@ public class ThailandCrudeOilImportScraper {
                     }
                 }
                 rowTotal--;
-                System.out.println(rowTotal);
+//                System.out.println(rowTotal);
                 String year = null;
                 int bottomCell = rowTotal;
                 int latestFourYear = bottomCell - (4*6);
