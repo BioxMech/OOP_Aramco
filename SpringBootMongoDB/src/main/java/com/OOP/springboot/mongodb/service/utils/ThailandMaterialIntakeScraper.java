@@ -22,7 +22,8 @@ public class ThailandMaterialIntakeScraper {
         List<Map<String,String>> dataObjects = new ArrayList<>();
         List<String> tableHeaders = new ArrayList<String>();
         Map<String, String> extractedData = null;
-        List<String> colData = Arrays.asList("Fang", "Thai Oil", "Bangchak", "Esso","TPI_IRPC","RRC_PTTAR_PTTGC", "SPRC", "RPC", "Total");
+        List<String> colData = Arrays.asList("Fang", "Thai Oil", "Bangchak", "Esso","TPI_IRPC",
+                "RRC_PTTAR_PTTGC", "SPRC", "RPC", "Total");
         String productType = "Material Intake";
 
         try {
@@ -71,8 +72,13 @@ public class ThailandMaterialIntakeScraper {
                     }
                 }
                 String year = null;
+                int latestFourYear;
                 int bottomCell = rowTotal;
-                int latestFourYear = bottomCell - (4*15);
+                if (savedFileName.contains("FirstCol")) {
+                    latestFourYear = 3;
+                } else {
+                    latestFourYear = bottomCell - (4*15);
+                }
                 for (int yearRow = latestFourYear; yearRow < rowTotal; yearRow+=15) {
                     Row currRow = sheet.getRow(yearRow);
                     Cell yearCell = currRow.getCell(0);
@@ -87,10 +93,12 @@ public class ThailandMaterialIntakeScraper {
                             break;
                     }
 
-                    for (int a = 1; a<= colData.size(); a++) {
+                    OUTER: for (int a = 1; a<= colData.size(); a++) {
                         String product = colData.get(a-1);
-
-                        for (int b = 1; b < 14; b++) {
+                        if (product.equals("RPC")) {
+                            continue OUTER;
+                        }
+                         for (int b = 1; b < 14; b++) {
                             extractedData = new HashMap<>();
                             extractedData.put("year", year);
                             extractedData.put("type", productType);
@@ -103,7 +111,12 @@ public class ThailandMaterialIntakeScraper {
                                 extractedData.put("month", b+"");
                             }
                             Row row = sheet.getRow(yearRow+1+b);
-                            Cell cell = row.getCell(a);
+                            Cell cell;
+                            if (savedFileName.contains("FirstCol") && product.equals("Total")) {
+                                cell = row.getCell(8);
+                            } else {
+                                cell = row.getCell(a);
+                            }
                             switch(cell.getCellType()) {
                                 case BLANK:
                                     extractedData.put("quantity", "0");

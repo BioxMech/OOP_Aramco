@@ -49,7 +49,6 @@ public class s3Controller {
             List<s3> result = s3Service.retrieveS3LinksByCountryAndCommodity(country, commodity);
             s3 latestS3 = result.get(0);
             String s3Link = latestS3.getS3Link();
-            System.out.println(s3Link);
             return new ResponseEntity<ResponseMsg>(new ResponseMsg("S3 Link found successfully", s3Link), HttpStatus.OK);
         }catch(Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
