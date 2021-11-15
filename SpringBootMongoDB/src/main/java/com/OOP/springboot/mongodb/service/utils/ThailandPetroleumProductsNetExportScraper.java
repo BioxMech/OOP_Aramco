@@ -79,7 +79,7 @@ public class ThailandPetroleumProductsNetExportScraper {
                 currentYear = (int) sheet.getRow(latestChunk).getCell(0).getNumericCellValue();
 
                 // chunksToLoop = 3;
-                for (int chunksLooped = 0; chunksLooped < chunksToLoop; chunksLooped++) {
+                for (int chunksLooped = 0; chunksLooped < 4; chunksLooped++) {
                     currentYear = (int) sheet.getRow(latestChunk).getCell(0).getNumericCellValue();
 //                  Looping each row in the chunk, 1 for each month + YTD (SINGLE YEAR CHUNK)
                     for (int i=0; i < 13; i ++) {
