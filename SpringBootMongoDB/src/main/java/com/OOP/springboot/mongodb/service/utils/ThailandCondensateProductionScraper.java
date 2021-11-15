@@ -83,7 +83,6 @@ public class ThailandCondensateProductionScraper {
                             break;
                     }
                 }
-//                System.out.println(tableHeaders);
 
                 // Extracting the data
                 int rowTotal = 5;
@@ -97,7 +96,7 @@ public class ThailandCondensateProductionScraper {
                         rowTotal+=1;
                     }
                 }
-//                System.out.println(rowTotal);
+
                 int bottomCell = rowTotal;
                 int latestFourYear = bottomCell - (4*14);
                 for (int yearRow = latestFourYear; yearRow < rowTotal; yearRow+=14) {
@@ -110,11 +109,9 @@ public class ThailandCondensateProductionScraper {
                             break;
                         case NUMERIC:
                             year = ((int)yearCell.getNumericCellValue()) + "";
-//                            System.out.println(year);
                             break;
                         case STRING:
-                            year = yearCell.getStringCellValue();
-//                            System.out.println(year);
+                            year = yearCell.getStringCellValue();;
                             break;
                     }
 
@@ -138,17 +135,12 @@ public class ThailandCondensateProductionScraper {
                             Cell cell = row.getCell(a);
                             switch(cell.getCellType()) {
                                 case BLANK:
-//                                    System.out.println("0");
                                     extractedData.put("quantity", "0");
                                 case NUMERIC:
-//                                    System.out.println((int)cell.getNumericCellValue()+"");
                                     extractedData.put("quantity", String.format("%.4f",cell.getNumericCellValue()/1000));
-//                                case STRING:
-//                                    System.out.println(cell.getStringCellValue());
                             }
                             dataObjects.add(extractedData);
                         }
-//                        System.out.println(extractedData);
                     }
                 }
                 // Close the workbook and stream
@@ -170,7 +162,6 @@ public class ThailandCondensateProductionScraper {
             System.err.println("For '" + URL + "': " + e.getMessage());
         }
 
-//        System.out.println(dataObjects);
         return dataObjects;
     }
 }

@@ -2,12 +2,17 @@ package com.OOP.springboot.mongodb.service.utils;
 
 import com.OOP.springboot.mongodb.model.Thailand;
 import com.opencsv.CSVWriter;
-
-
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import java.io.*;
 import java.util.*;
 
+@Component
 public class ThailandExcel {
+
+    @Autowired
+    S3Upload s3Upload;
+
     private ArrayList<List<Thailand>> thailandList;
     private String commodity;
     private String type;
@@ -17,21 +22,16 @@ public class ThailandExcel {
     private final String localPath = "./excel_files/Thailand/";
     private String curr = java.time.LocalDate.now().toString();
 
-    public ThailandExcel(ArrayList<List<Thailand>> thailandList, String type, String commodity) {
-        this.thailandList = thailandList;
-        this.commodity = commodity;
-        this.type = type;
-    }
 
-    public void saveAll() {
+
+    public void saveAll(ArrayList<List<Thailand>> thailandList, String type, String commodity) {
         // Create the excel file. Naming convention --> Commodity
+        fileName = String.join("",commodity.split(" ")) + type +".csv";;
         if (commodity.equals("Crude Oil") || commodity.equals("Condensate")) {
             commodityPath = commodity + "/";
-            fileName =  String.join("",commodity.split(" ")) + type +".csv";
         }
         else {
             commodityPath = "Petroleum Products/";
-            fileName = String.join("",commodity.split(" ")) + type +".csv";;
         }
 
         try {
@@ -70,10 +70,8 @@ public class ThailandExcel {
         }
 
         String s3FilePath = curr + "/" + "Thailand/" + commodityPath + fileName.split("[.]")[0];
-
-        System.out.println(s3FilePath);
-        S3Upload newUpload = new S3Upload(localPath+commodityPath+fileName, "csv", s3FilePath);
-        newUpload.uploadFile();
-
+//        S3Upload newUpload = new S3Upload(localPath+commodityPath+fileName, "csv", s3FilePath);
+//        newUpload.uploadFile();
+        s3Upload.uploadFile(localPath+commodityPath+fileName, "csv", s3FilePath);
     }
 }

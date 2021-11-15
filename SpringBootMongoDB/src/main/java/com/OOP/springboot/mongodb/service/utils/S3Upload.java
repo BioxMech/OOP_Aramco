@@ -1,37 +1,28 @@
 package com.OOP.springboot.mongodb.service.utils;
 
-import com.OOP.springboot.mongodb.model.s3;
-import com.OOP.springboot.mongodb.service.s3Service;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
-
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.text.SimpleDateFormat;
 import java.util.Base64;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+
+@Component
 public class S3Upload {
 
+    @Value("${app.S3URL}")
+    private String S3URL;
     private String fileName;
     private String localFilePath;
     private String fileExtension;
 
-    private String url = "https://jrqbtfbdg0.execute-api.us-east-1.amazonaws.com/beta/uploadfile";
-
-    public S3Upload(String localFilePath, String fileExtension, String fileName){
-        this.fileName = fileName;
-        this.fileExtension = fileExtension;
-        this.localFilePath = localFilePath;
-    }
-
-    public void uploadFile(){
+    public void uploadFile(String localFilePath, String fileExtension, String fileName){
 
         try {
 
@@ -48,7 +39,7 @@ public class S3Upload {
             map.put("fileExtension", fileExtension);
             map.put("content", encodedString);
 
-            ResponseEntity<Void> response = restTemplate.postForEntity(url, map, Void.class);
+            ResponseEntity<Void> response = restTemplate.postForEntity(S3URL, map, Void.class);
 
             if (response.getStatusCode() == HttpStatus.OK){
                 System.out.println(response);
@@ -56,9 +47,6 @@ public class S3Upload {
             } else {
                 System.out.println("Request Failed");
             }
-
-
-
 
         } catch (IOException e) {
             System.out.println("Error occurred in uploading to S3");

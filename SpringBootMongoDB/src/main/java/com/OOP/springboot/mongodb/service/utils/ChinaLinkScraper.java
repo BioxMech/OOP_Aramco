@@ -6,6 +6,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -15,7 +16,8 @@ import java.util.List;
 
 @Component
 public class ChinaLinkScraper {
-    private static final String rootUrl = "http://english.customs.gov.cn/statics/report/monthly";
+    @Value("${app.chinaRootURL}")
+    private String rootUrl;
     private final String[] requiredTitles= {
         "Major Export Commodities in Quantity and Value",
         "Major Import Commodities in Quantity and Value"

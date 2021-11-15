@@ -3,7 +3,6 @@ package com.OOP.springboot.mongodb.service.utils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
 import org.jsoup.Jsoup;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -67,7 +66,6 @@ public class ThailandPetroleumProductsImportExportScraper {
 
                 int currentYear;
                 int rowCount = sheet.getPhysicalNumberOfRows();
-//                System.out.println("Row Count Total: " + rowCount);
                 int lastRow = 0;
 
                 for (int r=rowCount; r >= 0; r--) {
@@ -87,20 +85,13 @@ public class ThailandPetroleumProductsImportExportScraper {
                 int latestChunk = lastRow - 15;
 
                 currentYear = (int) sheet.getRow(latestChunk).getCell(0).getNumericCellValue();
-//                System.out.println("Current Year:" + currentYear);
-//                System.out.println("The data is updated to Year " + (chunksToLoop + 1989));
-//                System.out.println("Last row is :" + lastRow);
-//                System.out.println("Row Count: " + rowCount);
 
-//                        for (int chunksLooped = 0; chunksLooped < 2; chunksLooped++) {
                 for (int chunksLooped = 0; chunksLooped < chunksToLoop; chunksLooped++) {
-//                    System.out.println(chunksLooped + 1989);
-                    //                        Looping each row in the chunk, 1 for each month + YTD (SINGLE YEAR CHUNK)
+//                  Looping each row in the chunk, 1 for each month + YTD (SINGLE YEAR CHUNK)
                     for (int i=0; i < 13; i ++) {
 //                            Add 3 because of the 3 header rows
                         int currentRow = latestChunk + 3 + i;
-//                        System.out.println("Current Row: " + (i+1));
-//                            Looping each column of each row
+//                      Looping each column of each row
                         for (int col=1; col < colData.size(); col++) {
                             extractedData = new HashMap<>();
                             String product = colData.get(col);
@@ -112,14 +103,10 @@ public class ThailandPetroleumProductsImportExportScraper {
 
                             Cell currentCell = sheet.getRow(currentRow).getCell(col, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK);
                             double toSave = 0;
-//                                System.out.println(currentCell);
+
                             if ((currentCell.getCellType() == CellType.NUMERIC) && (currentCell != null)) {
                                 toSave = currentCell.getNumericCellValue()/1000;
-//                                System.out.print("Product: " + product + " Column: " + col + " ");
-//                                System.out.print("CurrentCell: " + currentCell + " ");
-//                                System.out.println("toSave: " + toSave + " ");
-
-//                                Adding the data into the hashmap
+//                              Adding the data into the hashmap
                                 extractedData.put("quantity", String.format("%.4f",toSave));
                             }
                             else {
@@ -130,7 +117,6 @@ public class ThailandPetroleumProductsImportExportScraper {
                     }
                     latestChunk -= 16;
                     currentYear -= 1;
-//                    System.out.println("Updated Chunk: " + latestChunk);
                 }
 
 //                Close workbook and stream

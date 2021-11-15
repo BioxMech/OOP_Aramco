@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-
 import com.OOP.springboot.mongodb.model.China;
 import com.OOP.springboot.mongodb.model.s3;
 import com.OOP.springboot.mongodb.repository.ChinaRepository;
@@ -13,7 +12,6 @@ import com.OOP.springboot.mongodb.service.utils.ChinaExcel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-
 
 @Service
 public class ChinaService {
@@ -23,6 +21,9 @@ public class ChinaService {
 
     @Autowired
     s3Service s3Service;
+
+    @Autowired
+    ChinaExcel chinaExcel;
 
     public China saveChina(China china) { return repo.save(china); }
 
@@ -74,38 +75,27 @@ public class ChinaService {
         // Retrieve all commodities and loop through them
         List<String> distinctCommodities = getAllDistinctCommodities();
 
-
-
         for (String commodity: distinctCommodities){
 
             // Create ArrayList to pass to ChinaExcel to save data
             ArrayList<List<China>> listByYear = new ArrayList<>();
 
-
             // In each iteration --> Loop through the years that we want
             for (int i=2018; i < Integer.parseInt(getLatestYearMonth().get(0)) + 1; i++){
-
                 // Kerosene --> Special case. Has both imports and exports. Hence, have to call a separate method in ChinaExcel.
-
-//                    System.out.println(i);
 
                 // Retrieve data for each year and add it to the listByYear
                 List<China> commodityByYear = retrieveAllChinaByYearAndCommodity(String.valueOf(i), commodity);
                 listByYear.add(commodityByYear);
-
             }
-
-
 
             if (!(commodity.equals("Kerosene"))){
                 System.out.println(commodity);
-                // Each excel file is for ONE commodity
-                ChinaExcel excel = new ChinaExcel(listByYear, commodity);
-                excel.saveAllByYear();
+                // Each excel file is for ONE commodity;
+                chinaExcel.saveAllByYear(listByYear, commodity);
 
             } else {
-                ChinaExcel excel = new ChinaExcel(listByYear, commodity);
-                excel.saveKerosene();
+                chinaExcel.saveKerosene(listByYear, commodity);
             }
 
             SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
@@ -121,17 +111,7 @@ public class ChinaService {
                 s3 news3 = new s3(commodity, "China", dateFormatted + "/China/" + commodity + ".csv", dateFormatted);
                 s3Service.saves3(news3);
             }
-
-
         }
-
-
-
-
-
-
-
-
     }
 
     public void deleteAll() { repo.deleteAll(); }

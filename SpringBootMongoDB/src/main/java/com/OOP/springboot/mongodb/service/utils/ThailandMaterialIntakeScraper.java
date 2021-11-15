@@ -43,7 +43,6 @@ public class ThailandMaterialIntakeScraper {
                     savedFileName = savedFileName.replace("/", " per ");
                 }
                 savedFileName = savedFileName.concat(".xls");
-//                            if (!savedFileName.endsWith(".xls")) savedFileName.concat(".xls");
 
                 // To create the file (set in the excel_files folder)
                 FileOutputStream fos = new FileOutputStream("./excel_files/" + savedFileName);
@@ -71,7 +70,6 @@ public class ThailandMaterialIntakeScraper {
                         rowTotal++;
                     }
                 }
-                System.out.println(rowTotal);
                 String year = null;
                 int bottomCell = rowTotal;
                 int latestFourYear = bottomCell - (4*15);
@@ -83,21 +81,16 @@ public class ThailandMaterialIntakeScraper {
                             break;
                         case NUMERIC:
                             year = (int)yearCell.getNumericCellValue() + "";
-//                            System.out.println(year);
                             break;
                         case STRING:
                             year = yearCell.getStringCellValue();
-//                            System.out.println(year);
                             break;
                     }
 
                     for (int a = 1; a<= colData.size(); a++) {
                         String product = colData.get(a-1);
-//                        System.out.println(product);
 
                         for (int b = 1; b < 14; b++) {
-//                            String month = monthHeaders[b-1];
-//                            System.out.println(month);
                             extractedData = new HashMap<>();
                             extractedData.put("year", year);
                             extractedData.put("type", productType);
@@ -113,18 +106,12 @@ public class ThailandMaterialIntakeScraper {
                             Cell cell = row.getCell(a);
                             switch(cell.getCellType()) {
                                 case BLANK:
-//                                    System.out.println("0");
-//                                    System.out.println(b);
                                     extractedData.put("quantity", "0");
                                     break;
                                 case NUMERIC:
-//                                    System.out.println(b);
-//                                    System.out.println((int)cell.getNumericCellValue()+"");
                                     extractedData.put("quantity", String.format("%.4f",cell.getNumericCellValue()/1000));
                                     break;
                                 case STRING:
-//                                    System.out.println(cell.getStringCellValue());
-//                                    System.out.println(b);
                                     extractedData.put("quantity", String.format("%.4f",Double.parseDouble(cell.getStringCellValue())/1000 ));
                                     break;
                             }
