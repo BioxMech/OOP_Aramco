@@ -3,7 +3,6 @@ package com.OOP.springboot.mongodb.service.utils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
 import org.jsoup.Jsoup;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -24,7 +23,6 @@ public class ThailandCrudeOilPetroleumProductsQtyValImportExportScraper {
         List<Map<String, String>> dataObjects = new ArrayList<>();
         String productType;
         List<String> colData = Arrays.asList("", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12");
-//        System.out.println(rowName);
         if (rowName.contains("Import")) {
             productType = "import";
         } else {
@@ -65,9 +63,7 @@ public class ThailandCrudeOilPetroleumProductsQtyValImportExportScraper {
 //                Start of extracting data from excel sheet
                 int currentYear = 0;
                 int rowCount = sheet.getPhysicalNumberOfRows();
-//                System.out.println("Row Count Total: " + rowCount);
                 Cell testLastRow = sheet.getRow(rowCount).getCell(0, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK);
-//                System.out.println("lastRow found: " + testLastRow);
                 int lastRow = 0;
 
                 for (int r=rowCount; r >= 0; r--) {
@@ -78,12 +74,9 @@ public class ThailandCrudeOilPetroleumProductsQtyValImportExportScraper {
                     }
 
                     if (row != null) {
-//                                System.out.println(sheet.getRow(r));
-//                        System.out.println(r);
                         Cell cell = sheet.getRow(r).getCell(0, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK);
                         if (cell.getStringCellValue().equals(" -PRICE  ($/BBL)")) {
                             lastRow = r;
-//                                    System.out.println("LAST ROW: " + lastRow);
                             Cell celltest = sheet.getRow(r).getCell(0, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK);
                             break;
                         }
@@ -94,12 +87,8 @@ public class ThailandCrudeOilPetroleumProductsQtyValImportExportScraper {
                 int chunksToLoop = rowCount/29;
 //                        Starting row to evaluate latest year data
                 int latestChunk = lastRow - 28;
-//                        System.out.println("THE FIRST ROW OF THE CHUNK IS THIS:" + latestChunk);
 
                 currentYear = (int) sheet.getRow(latestChunk).getCell(0).getNumericCellValue();
-//                System.out.println("Current Year:" + currentYear);
-//                System.out.println("The data is updated to Year " + (chunksToLoop + 1986 - 1));
-//                System.out.println("Last row is :" + lastRow);
 
                 List<Integer> importantRows = Arrays.asList(5,6,7,12,13,14,19,20,21,26,27,28);
                 List<Integer> titleRows = Arrays.asList(2,9,16,23);
@@ -112,7 +101,6 @@ public class ThailandCrudeOilPetroleumProductsQtyValImportExportScraper {
                     }
                     Cell yearChunkCell = sheet.getRow(latestChunk).getCell(0, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK);
                     double yearChunkNum = yearChunkCell.getNumericCellValue();
-//                    System.out.println((int)yearChunkNum);
                     //Looping each row in the chunk, 1 for Each Row
                     for (int i=0; i < 27; i ++) {
 //                            Add 2 because of the 2 header rows
@@ -120,7 +108,6 @@ public class ThailandCrudeOilPetroleumProductsQtyValImportExportScraper {
 
                         Cell rowTitleCell = sheet.getRow(currentRow).getCell(0, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK);
                         String rowTitle = rowTitleCell.getStringCellValue();
-//                                if (rowTitle.contains("$/BBL") || rowTitle.contains("US$") || rowTitle.contains("BBL/D") || rowTitle.contains("CRUDE OIL") || rowTitle.contains("PETROLEUM PRODUCTS") || rowTitle.contains("OTHERS") || rowTitle.contains("TOTAL PETROLEUM")) {
                         if (rowTitle.contains("CRUDE OIL")) {
                             product = "Crude Oil";
                         } else if (rowTitle.contains("PETROLEUM PRODUCTS")) {
@@ -130,9 +117,6 @@ public class ThailandCrudeOilPetroleumProductsQtyValImportExportScraper {
                         } else if (rowTitle.contains("TOTAL PETROLEUM")) {
                             product = "Total Petroleum";
                         }
-//                            System.out.println(product);
-//                            System.out.println(titleCell);
-
 
                         //Looping each column of each row
                         if (rowTitle.contains("BBL/D")) {
@@ -148,15 +132,12 @@ public class ThailandCrudeOilPetroleumProductsQtyValImportExportScraper {
                                 if ((currentCell.getCellType() == CellType.NUMERIC) && (currentCell.getNumericCellValue() != 0.0)) {
                                     toSave = currentCell.getNumericCellValue()/1000;
                                     extractedData.put("quantity", String.format("%.4f", toSave));
-//                                    System.out.print("To Save: " + toSave + " ");
                                 } else {
                                     extractedData.put("quantity", "0");
                                 }
                                 dataObjects.add(extractedData);
                             }
-//                            System.out.println();
                         }
-
                     }
                 }
 
@@ -177,7 +158,6 @@ public class ThailandCrudeOilPetroleumProductsQtyValImportExportScraper {
         } catch (IOException e) {
             System.err.println(e.getMessage());
         }
-
         return dataObjects;
     }
 }

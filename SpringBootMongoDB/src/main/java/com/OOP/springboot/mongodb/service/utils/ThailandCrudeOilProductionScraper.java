@@ -1,19 +1,13 @@
 package com.OOP.springboot.mongodb.service.utils;
 
-//import com.OOP.springboot.mongodb.service.ThailandCrudeOilService;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
-import org.bson.types.ObjectId;
 import org.jsoup.Jsoup;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.*;
-
-import static com.OOP.springboot.mongodb.service.utils.HexUtils.convertStringToHex;
 
 
 public class ThailandCrudeOilProductionScraper{
@@ -26,7 +20,6 @@ public class ThailandCrudeOilProductionScraper{
     public ThailandCrudeOilProductionScraper(String URL, String rowName) {
         this.URL = URL;
         this.rowName = rowName;
-//        super(URL, rowName, monthHeaders);
     }
     public List<Map<String,String>> scrapeThailand() {
         // Initialize list
@@ -35,8 +28,6 @@ public class ThailandCrudeOilProductionScraper{
         Map<String, String> extractedData = null;
         String productType = "production";
         String commodityType = "Crude Oil";
-//        String URL = this.getURL();
-//        String rowName = this.getRowName();
 
         try {
             // To obtain the raw bytes of the excel file from the link
@@ -89,7 +80,6 @@ public class ThailandCrudeOilProductionScraper{
                             break;
                     }
                 }
-//                System.out.println(tableHeaders);
 
                 // Extracting the data
                 // loop to get the number of rows containing necessary data
@@ -105,24 +95,20 @@ public class ThailandCrudeOilProductionScraper{
                     }
                 }
                 rowTotal--;
-//                System.out.println(rowTotal);
                 int bottomCell = rowTotal;
                 int latestFourYear = bottomCell - (4*14);
                 for (int yearRow = latestFourYear; yearRow < rowTotal; yearRow+=14) {
                     Row currRow = sheet.getRow(yearRow);
                     Cell yearCell = currRow.getCell(0);
-
                     String year = null;
                     switch (yearCell.getCellType()) {
                         case BLANK:
                             break;
                         case NUMERIC:
                             year = ((int)yearCell.getNumericCellValue()) + "";
-//                            System.out.println(year);
                             break;
                         case STRING:
                             year = yearCell.getStringCellValue();
-//                            System.out.println(year);
                             break;
                     }
 
@@ -132,8 +118,6 @@ public class ThailandCrudeOilProductionScraper{
                         for (int b = 1; b < 14; b++) {
                             String month = monthHeaders[b-1];
                             extractedData = new HashMap<>();
-//                            ObjectId id = new ObjectId(convertStringToHex(year + "_" + b));
-//                            extractedData.put("_id", new ObjectId(convertStringToHex(year + "_" + b)).toHexString());
                             extractedData.put("year", year);
                             extractedData.put("type", productType);
                             extractedData.put("commodity", commodityType);
@@ -148,13 +132,10 @@ public class ThailandCrudeOilProductionScraper{
                             Cell cell = row.getCell(a);
                             switch(cell.getCellType()) {
                                 case BLANK:
-//                                    System.out.println("0");
                                     extractedData.put("quantity", "0");
                                 case NUMERIC:
-//                                    System.out.println((int)cell.getNumericCellValue()+"");
                                     extractedData.put("quantity", String.format("%.4f",cell.getNumericCellValue()/1000));
 //                                case STRING:
-//                                    System.out.println(cell.getStringCellValue());
                             }
                             dataObjects.add(extractedData);
                         }
@@ -180,8 +161,6 @@ public class ThailandCrudeOilProductionScraper{
             System.err.println("For '" + URL + "': " + e.getMessage());
         }
 
-//        System.out.println(dataObjects);
-//        thailandCrudeOilService.saveListThailandCrudeOil(dataObjects);
         return dataObjects;
     }
 }

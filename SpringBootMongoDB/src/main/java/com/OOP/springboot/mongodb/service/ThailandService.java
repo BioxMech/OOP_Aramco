@@ -5,8 +5,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-
-import com.OOP.springboot.mongodb.model.China;
 import com.OOP.springboot.mongodb.model.Thailand;
 import com.OOP.springboot.mongodb.model.s3;
 import com.OOP.springboot.mongodb.repository.ThailandRepository;
@@ -28,6 +26,9 @@ public class ThailandService {
 
     @Autowired
     s3Service s3Service;
+
+    @Autowired
+    ThailandExcel thailandExcel;
 
     public Thailand saveThailand(Thailand thailand) {
         return repo.save(thailand);
@@ -157,19 +158,16 @@ public class ThailandService {
         String dateFormatted = df.format(new Date());
 
         for (String commodity: commodityParents) {
-//            System.out.println(Integer.parseInt(getLatestYear().get(0)) + 1);
 
             if (commodity.equals("Crude Oil")) {
                 for (String type: crudeOilTypes) {
                     listByYear = new ArrayList<>();
                     String reformattedType = reformatType(type);
                     for (int i = 2017; i < Integer.parseInt(getLatestYear().get(0)) + 1; i++) {
-//                        System.out.println(i);
                         List<Thailand> commodityByYear = retrieveAllThailandByYearAndTypeAndCommodity(String.valueOf(i), type,  commodity);
                         listByYear.add(commodityByYear);
                     }
-                    ThailandExcel excel = new ThailandExcel(listByYear, reformattedType, commodity);
-                    excel.saveAll();
+                    thailandExcel.saveAll(listByYear, reformattedType, commodity);
                     String fileName =  String.join("",commodity.split(" ")) + reformattedType;
                     String replacedCommodity = commodity.replace(" ", "+");
                     s3 news3 = new s3(replacedCommodity, "Thailand", dateFormatted + "/Thailand/" + replacedCommodity + "/" + fileName + ".csv", dateFormatted);
@@ -184,8 +182,7 @@ public class ThailandService {
                     List<Thailand> commodityByYear = retrieveAllThailandByYearAndTypeAndCommodity(String.valueOf(i), type,  commodity);
                     listByYear.add(commodityByYear);
                 }
-                ThailandExcel excel = new ThailandExcel(listByYear, reformattedType, commodity);
-                excel.saveAll();
+                thailandExcel.saveAll(listByYear, reformattedType, commodity);
                 String fileName =  String.join("",commodity.split(" ")) + reformattedType;
                 String replacedCommodity = commodity.replace(" ", "+");
                 s3 news3 = new s3(replacedCommodity, "Thailand", dateFormatted + "/Thailand/" + replacedCommodity + "/" + fileName + ".csv", dateFormatted);
@@ -200,8 +197,7 @@ public class ThailandService {
                         List<Thailand> commodityByYear = retrieveAllThailandByYearAndTypeAndCommodity(String.valueOf(i), type,  commodity);
                         listByYear.add(commodityByYear);
                     }
-                    ThailandExcel excel = new ThailandExcel(listByYear, reformattedType, commodity);
-                    excel.saveAll();
+                    thailandExcel.saveAll(listByYear, reformattedType, commodity);
                     String fileName =  String.join("",commodity.split(" ")) + reformattedType;
                     String replacedCommodity = commodity.replace(" ", "+");
                     s3 news3 = new s3(replacedCommodity, "Thailand", dateFormatted + "/Thailand/" + "Petroleum+Products" + "/" + fileName + ".csv", dateFormatted);
@@ -210,8 +206,6 @@ public class ThailandService {
             }
         }
     }
-
-
 
     public void deleteAll() {
         repo.deleteAll();
