@@ -123,7 +123,7 @@ public class ThailandPetroleumProductsImportExportScraper {
                 wb.close();
                 excel_file.close();
 
-                File f= new File("./excel_files" + savedFileName);
+                File f= new File("./excel_files/" + savedFileName);
                 if (f.delete()) {
                     System.out.println("Successful");
                 }

@@ -1,12 +1,9 @@
 package com.OOP.springboot.mongodb.controller;
 
 import com.OOP.springboot.mongodb.model.China;
-import com.OOP.springboot.mongodb.model.Customer;
 import com.OOP.springboot.mongodb.model.s3;
 import com.OOP.springboot.mongodb.repository.ChinaRepository;
-import com.OOP.springboot.mongodb.repository.CustomerRepository;
 import com.OOP.springboot.mongodb.service.ChinaService;
-import com.OOP.springboot.mongodb.service.CustomerService;
 import com.OOP.springboot.mongodb.service.s3Service;
 import com.OOP.springboot.mongodb.service.utils.ChinaExcel;
 import com.OOP.springboot.mongodb.service.utils.ChinaLinkScraper;
@@ -25,8 +22,6 @@ public class ChinaController {
 
     @Autowired
     ChinaService chinaService;
-
-
 
     public String saveChina(China china) {
         try {

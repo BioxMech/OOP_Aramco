@@ -58,6 +58,7 @@ public class CrawlerService {
 
             // Store a local variable of the link when looping (for better debugging purpose too)
             String link;
+            String link2;
 
             for (Element e : elementData) {
                 // Go to the 1st div element and look at its text (in terms of js, value)
@@ -65,20 +66,30 @@ public class CrawlerService {
                 // Check if it is the right row we are looking for
                 if (thailandDataRequiredTitle.contains(rowName)) {
                     // Obtain the link
+                    // Obtain the link for first column
+                    link2 = e.getElementsByIndexEquals(1).select("a").attr("abs:href");
+//                    Obtain the link for the second column
                     link = e.getElementsByIndexEquals(2).select("a").attr("abs:href");
                     thailandLinks.put(rowName, link);
-                    links.add(link);
+                    thailandLinks.put(rowName+" FirstCol", link2);
+//                    links.add(link);
+                    links.add(link2);
                 }
             }
-//            System.out.println(thailandLinks);
+            System.out.println(thailandLinks);
             for (Map.Entry<String, String> entry : thailandLinks.entrySet()) {
                 String key = entry.getKey();
                 String value = entry.getValue();
 
                 if (value.contains("T02_01_01")) {
                     try {
-                        ThailandCrudeOilProductionScraper crudeOilProductionExcelScraper = new ThailandCrudeOilProductionScraper(value, key);
-                        dataObjects.addAll(crudeOilProductionExcelScraper.scrapeThailand());
+                        if (value.contains("-1")) {
+                            ThailandCrudeOilProductionScraper crudeOilProductionExcelScraper = new ThailandCrudeOilProductionScraper(value, key);
+                            dataObjects.addAll(crudeOilProductionExcelScraper.scrapeThailand());
+                        } else {
+                            ThailandCrudeOilProductionScraperFirstCol crudeOilProductionExcelScraperFirstCol = new ThailandCrudeOilProductionScraperFirstCol(value, key);
+                            dataObjects.addAll(crudeOilProductionExcelScraperFirstCol.scrapeThailand());
+                        }
                     } catch (Exception e) {
                         System.err.println(e.getMessage());
                     }
@@ -86,16 +97,27 @@ public class CrawlerService {
                 }
                 if (value.contains("T02_01_02")) {
                     try {
-                        ThailandCondensateProductionScraper condensateProductionExcelScraper = new ThailandCondensateProductionScraper(value, key);
-                        dataObjects.addAll(condensateProductionExcelScraper.scrapeThailand());
+                        if (value.contains("-1")) {
+                            ThailandCondensateProductionScraper condensateProductionExcelScraper = new ThailandCondensateProductionScraper(value, key);
+                            dataObjects.addAll(condensateProductionExcelScraper.scrapeThailand());
+                        } else {
+                            ThailandCondensateProductionScraperFirstCol condensateProductionExcelScraperFirstCol = new ThailandCondensateProductionScraperFirstCol(value, key);
+                            dataObjects.addAll(condensateProductionExcelScraperFirstCol.scrapeThailand());
+
+                        }
                     } catch (Exception e) {
                         System.err.println(e.getMessage());
                     }
                 }
                 if (value.contains("T02_01_03")) {
                     try {
-                        ThailandCrudeOilImportScraper crudeOilImportScraper = new ThailandCrudeOilImportScraper(value, key);
-                        dataObjects.addAll(crudeOilImportScraper.scrapeThailand());
+                        if (value.contains("-1")) {
+                            ThailandCrudeOilImportScraper crudeOilImportScraper = new ThailandCrudeOilImportScraper(value, key);
+                            dataObjects.addAll(crudeOilImportScraper.scrapeThailand());
+                        } else {
+                            ThailandCrudeOilImportScraperFirstCol crudeOilImportScraperFirstCol = new ThailandCrudeOilImportScraperFirstCol(value, key);
+                            dataObjects.addAll(crudeOilImportScraperFirstCol.scrapeThailand());
+                        }
                     } catch (Exception e) {
                         System.err.println(e.getMessage());
                     }
@@ -104,53 +126,74 @@ public class CrawlerService {
                     try {
                         ThailandMaterialIntakeScraper materialIntakeScraper = new ThailandMaterialIntakeScraper(value, key);
                         dataObjects.addAll(materialIntakeScraper.scrapeThailand());
+
                     } catch (Exception e) {
                         System.err.println(e.getMessage());
                     }
                 }
                 if (value.contains("T02_03_02")) {
                     try {
-                        ThailandPetroleumProductsProductionScraper petroleumProductsProductionScraper = new ThailandPetroleumProductsProductionScraper(value, key);
-                        dataObjects.addAll(petroleumProductsProductionScraper.scrapeThailand());
+                        if (value.contains("-1")) {
+                            ThailandPetroleumProductsProductionScraper petroleumProductsProductionScraper = new ThailandPetroleumProductsProductionScraper(value, key);
+                            dataObjects.addAll(petroleumProductsProductionScraper.scrapeThailand());
+                        } else {
+                            ThailandPetroleumProductsProductionScraperFirstCol petroleumProductsProductionScraperFirstCol = new ThailandPetroleumProductsProductionScraperFirstCol(value, key);
+                            dataObjects.addAll(petroleumProductsProductionScraperFirstCol.scrapeThailand());
+                        }
                     } catch (Exception e) {
                         System.err.println(e.getMessage());
                     }
                 }
                 if (value.contains("T02_03_04")) {
                     try {
-                        ThailandPetroleumProductsSalesScraper petroleumProductsSalesScraper = new ThailandPetroleumProductsSalesScraper(value, key);
-                        dataObjects.addAll(petroleumProductsSalesScraper.scrapeThailand());
+                        if (value.contains("-1")) {
+                            ThailandPetroleumProductsSalesScraper petroleumProductsSalesScraper = new ThailandPetroleumProductsSalesScraper(value, key);
+                            dataObjects.addAll(petroleumProductsSalesScraper.scrapeThailand());
+                        } else {
+                            ThailandPetroleumProductsSalesScraperFirstCol petroleumProductsSalesScraperFirstCol = new ThailandPetroleumProductsSalesScraperFirstCol(value, key);
+                            dataObjects.addAll(petroleumProductsSalesScraperFirstCol.scrapeThailand());
+                        }
                     } catch (Exception e) {
                         System.err.println(e.getMessage());
                     }
                 }
 
-//                EK ADDED HERE
-//                Petroleum Products (Export & Import)
                 if ((value.contains("T02_03_09")) || (value.contains("T02_03_07"))) {
                     try {
-                        ThailandPetroleumProductsImportExportScraper petroleumProductsImportExportScraper = new ThailandPetroleumProductsImportExportScraper(value, key);
-                        dataObjects.addAll(petroleumProductsImportExportScraper.scrapeThailand());
+                        if (value.contains("-1")) {
+                            ThailandPetroleumProductsImportExportScraper petroleumProductsImportExportScraper = new ThailandPetroleumProductsImportExportScraper(value, key);
+                            dataObjects.addAll(petroleumProductsImportExportScraper.scrapeThailand());
+                        } else {
+                            ThailandPetroleumProductsImportExportScraperFirstCol petroleumProductsImportExportScraperFirstCol = new ThailandPetroleumProductsImportExportScraperFirstCol(value, key);
+                            dataObjects.addAll(petroleumProductsImportExportScraperFirstCol.scrapeThailand());
+                        }
                     } catch (Exception e) {
                         System.err.println(e.getMessage());
                     }
                 }
 
-//                Quantity and Value of Crude Oil / Petroleum Products
                 if (value.contains("T02_01_05")){
                     try {
-                        ThailandCrudeOilPetroleumProductsQtyValImportExportScraper crudeOilPetroleumProductsQtyValImportExportScraper = new ThailandCrudeOilPetroleumProductsQtyValImportExportScraper(value, key);
-                        dataObjects.addAll(crudeOilPetroleumProductsQtyValImportExportScraper.scrapeThailand());
+                        if (value.contains("-1")) {
+                            ThailandCrudeOilPetroleumProductsQtyValImportExportScraper crudeOilPetroleumProductsQtyValImportExportScraper = new ThailandCrudeOilPetroleumProductsQtyValImportExportScraper(value, key);
+                            dataObjects.addAll(crudeOilPetroleumProductsQtyValImportExportScraper.scrapeThailand());
+                        }
+
                     } catch (Exception e) {
                         System.err.println(e.getMessage());
                     }
                 }
 
-//                Net Exports
                 if (value.contains("T02_03_11")) {
                     try {
-                        ThailandPetroleumProductsNetExportScraper petroleumProductsNetExportScraper = new ThailandPetroleumProductsNetExportScraper(value, key);
-                        dataObjects.addAll(petroleumProductsNetExportScraper.scrapeThailand());
+                        if (value.contains("-1")) {
+                            ThailandPetroleumProductsNetExportScraper petroleumProductsNetExportScraper = new ThailandPetroleumProductsNetExportScraper(value, key);
+                            dataObjects.addAll(petroleumProductsNetExportScraper.scrapeThailand());
+                        } else {
+                            ThailandPetroleumProductsNetExportScraperFirstCol petroleumProductsNetExportScraperFirstCol = new ThailandPetroleumProductsNetExportScraperFirstCol(value, key);
+                            dataObjects.addAll(petroleumProductsNetExportScraperFirstCol.scrapeThailand());
+                        }
+
                     } catch (Exception e) {
                         System.err.println(e.getMessage());
                     }
@@ -166,9 +209,6 @@ public class CrawlerService {
     }
 
 
-    // TODO: China Web scraping service
-
-        // TODO Retrieve and store XLS file
     //  China Web scraping service
 //    @Scheduled(cron = "0 00 03 * * ?") // 3 Am everyday
     public List<Map<String, String>> scrapeChina() throws IOException {
