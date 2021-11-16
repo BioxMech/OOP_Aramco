@@ -36,11 +36,12 @@ public class ImportExportRows {
         return output;
     }
 
-    public static  List<Map<String, String>> inputData(Sheet sheet, String rowName, String productType, String currentYear, int startRow, int rowsToCount, int startCol, int monthSplitNum) {
+    public static  List<Map<String, String>> inputData(Sheet sheet, String rowName, String currentYear, int startRow, int rowsToCount, int startCol, int monthSplitNum) {
         List<String> rowsToRead = Arrays.asList("rowsToReadPlaceholder");
         List<String> colData = Arrays.asList("colDataPlaceholder");
         List<Map<String, String>> dataObjects = new ArrayList<>();
         Map<String, String> extractedData;
+        String productType = "";
         int rowsTitleCount = -1;
 
         if (rowName.contains("Import")) {

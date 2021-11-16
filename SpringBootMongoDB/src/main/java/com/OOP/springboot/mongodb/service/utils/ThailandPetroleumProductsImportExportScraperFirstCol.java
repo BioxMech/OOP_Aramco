@@ -21,19 +21,6 @@ public class ThailandPetroleumProductsImportExportScraperFirstCol {
 
     public List<Map<String, String>> scrapeThailand() {
         List<Map<String, String>> dataObjects = new ArrayList<>();
-        Map<String, String> extractedData;
-        List<String> colData;
-        String productType;
-        List<String> rowsToRead = Arrays.asList("Placeholder");
-        if (rowName.contains("Import")) {
-            productType = "import";
-            rowsToRead = Arrays.asList("GASOLINE", " REGULAR", " PREMIUM", " BASE ULG", "KEROSENE", "DIESEL ", " HSD", " LSD", "J.P.    ", "FUEL OIL", "LPG", "TOTAL");
-            colData = Arrays.asList("Gasoline Total", "Gasoline Regular", "Gasoline Premium", "Gasoline Base ULG", "Kerosene", "Diesel Total", "Diesel HSD", "Diesel LSD", "JP", "Fuel Oil", "LPG", "Total");
-        } else {
-            productType = "export";
-            rowsToRead = Arrays.asList("GASOLINE", " REGULAR", " PREMIUM", "KEROSENE", "DIESEL ", " HSD", " LSD", "J.P.    ", "FUEL OIL", "LPG", "TOTAL");
-            colData = Arrays.asList("Gasoline Total", "Gasoline Regular", "Gasoline Premium", "Kerosene", "Diesel Total", "Diesel HSD", "Diesel LSD", "JP", "Fuel Oil", "LPG", "Total");
-        }
 
         try {
             // To obtain the raw bytes of the excel file from the link
@@ -79,7 +66,7 @@ public class ThailandPetroleumProductsImportExportScraperFirstCol {
                 int rowsToCount = 24;
                 int startCol = 10;
 
-                dataObjects = ImportExportRows.inputData(sheet, rowName, productType, currentYear, startRow, rowsToCount, startCol, monthSplitNum);
+                dataObjects = ImportExportRows.inputData(sheet, rowName, currentYear, startRow, rowsToCount, startCol, monthSplitNum);
 
 
 //                Close workbook and stream
