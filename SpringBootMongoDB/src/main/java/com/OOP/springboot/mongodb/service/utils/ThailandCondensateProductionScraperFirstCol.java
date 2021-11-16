@@ -3,7 +3,6 @@ package com.OOP.springboot.mongodb.service.utils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
 import org.jsoup.Jsoup;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -54,7 +53,6 @@ public class ThailandCondensateProductionScraperFirstCol {
                 fos.write(bytes);
                 fos.close();
 
-//                System.out.println(savedFileName + " has been downloaded.");
                 FileInputStream excel_file = new FileInputStream("./excel_files/" + savedFileName);
                 Workbook wb = new HSSFWorkbook(excel_file);
                 Sheet sheet = wb.getSheetAt(0);

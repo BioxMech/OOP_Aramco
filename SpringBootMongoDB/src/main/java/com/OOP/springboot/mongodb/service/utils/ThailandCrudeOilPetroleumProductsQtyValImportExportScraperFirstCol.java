@@ -59,19 +59,7 @@ public class ThailandCrudeOilPetroleumProductsQtyValImportExportScraperFirstCol 
                 Workbook wb = new HSSFWorkbook(excel_file);
                 Sheet sheet = wb.getSheetAt(0);
                 int rowTotal = 3;
-                while (true) {
-                    Row currRow = sheet.getRow(rowTotal);
-                    if (currRow == null) {
-                        break;
-                    }
-                    Cell firstCol = currRow.getCell(0);
-                    if (firstCol.getStringCellValue().contains("Source")) {
-                        break;
-                    }
-                    else {
-                        rowTotal++;
-                    }
-                }
+                rowTotal = ThailandPetroleumProductsScraperParent.getTotalNumRows(sheet, rowTotal);
                 rowTotal--;
                 int headerRowNum = 3;
 

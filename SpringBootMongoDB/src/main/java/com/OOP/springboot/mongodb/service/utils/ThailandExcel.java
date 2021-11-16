@@ -70,8 +70,6 @@ public class ThailandExcel {
         }
 
         String s3FilePath = curr + "/" + "Thailand/" + commodityPath + fileName.split("[.]")[0];
-//        S3Upload newUpload = new S3Upload(localPath+commodityPath+fileName, "csv", s3FilePath);
-//        newUpload.uploadFile();
         s3Upload.uploadFile(localPath+commodityPath+fileName, "csv", s3FilePath);
     }
 }
