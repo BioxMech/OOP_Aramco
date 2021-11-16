@@ -1,8 +1,6 @@
 package com.OOP.springboot.mongodb.service.utils;
 
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.jsoup.Jsoup;
@@ -24,16 +22,7 @@ public class ThailandPetroleumProductsProductionScraperFirstCol {
 
     public List<Map<String, String>> scrapeThailand() {
         List<Map<String, String>> dataObjects = new ArrayList<>();
-        Map<String, String> extractedData;
-        List<String> colData;
-        String productType;
-        List<String> rowsToRead = Arrays.asList("Placeholder");
-        productType = "production";
 
-//        Diesel has 2 trailing spaces
-        rowsToRead = Arrays.asList("GASOLINE", " REGULAR", " PREMIUM", "KEROSENE", "DIESEL  ", " HSD", " LSD", "J.P.    ", "FUEL OIL", "LPG", "TOTAL");
-        colData = Arrays.asList("Gasoline Total", "Gasoline Regular", "Gasoline Premium", "Kerosene", "Diesel Total", "Diesel HSD", "Diesel LSD", "JP", "Fuel Oil", "LPG", "Total");
-//        System.out.println(colData.get(7));
         try {
             // To obtain the raw bytes of the excel file from the link
             byte[] bytes = Jsoup.connect(URL)
@@ -59,7 +48,6 @@ public class ThailandPetroleumProductsProductionScraperFirstCol {
                 fos.write(bytes);
                 fos.close();
 
-//                System.out.println(savedFileName + " has been downloaded.");
                 FileInputStream excel_file = new FileInputStream("./excel_files/" + savedFileName);
                 Workbook wb = new HSSFWorkbook(excel_file);
                 Sheet sheet = wb.getSheetAt(0);
@@ -69,52 +57,15 @@ public class ThailandPetroleumProductsProductionScraperFirstCol {
                 int monthSplitNum = 0;
                 String currentYear = "";
 
-                for (int r=0; r < rowCount; r++) {
-                    Row row = sheet.getRow(r);
-                    if (row!= null) {
-                        Cell cell = sheet.getRow(r).getCell(0, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK);
-                        if (cell.getStringCellValue().equals("ENERGY")) {
-                            String monthSplitString = sheet.getRow(r).getCell(4).getStringCellValue().substring(0,2);
-                            currentYear = sheet.getRow(r).getCell(10).getStringCellValue();
-                            monthSplitNum = Integer.parseInt(monthSplitString.trim());
-                            continue;
-                        }
+                int[] setUp = ImportExportRows.getCurrentYearStartRowMonthSplitNum(sheet, rowCount, 4, "ENERGY", "GASOLINE");
+                currentYear = setUp[0] + "";
+                startRow = setUp[1];
+                monthSplitNum = setUp[2];
 
-                        if (cell.getStringCellValue().equals("GASOLINE")) {
-                            startRow = r;
-                            break;
-                        }
-                    }
-                }
                 int rowsToCount = 25;
                 int startCol = 10;
-                int rowTitleCount = -1;
 
-                for (int i=0; i < rowsToCount ; i++) {
-                    String cellTitle = sheet.getRow(startRow + i).getCell(0, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK).getStringCellValue();
-
-                    if (rowsToRead.contains(cellTitle)) {
-                        rowTitleCount++;
-
-                        for (int j=0; j < monthSplitNum; j++) {
-                            Cell cellToRead = sheet.getRow(startRow + i).getCell(startCol + j, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK);
-                            double cellValue = cellToRead.getNumericCellValue();
-                            double toSave = cellValue / 1000;
-                            extractedData = new HashMap<>();
-                            extractedData.put("year", currentYear + "");
-                            extractedData.put("type", productType);
-                            extractedData.put("commodity", colData.get(rowTitleCount));
-                            extractedData.put("unit", "Kilobarrels/day");
-                            extractedData.put("month", (j + 1) + "");
-                            if (toSave != 0.0) {
-                                extractedData.put("quantity", String.format("%.4f", toSave));
-                            } else {
-                                extractedData.put("quantity", "0");
-                            }
-                            dataObjects.add(extractedData);
-                        }
-                    }
-                }
+                dataObjects = ImportExportRows.inputData(sheet, rowName, currentYear, startRow, rowsToCount, startCol, monthSplitNum);
 
 //                Close workbook and stream
                 wb.close();
