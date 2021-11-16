@@ -21,8 +21,6 @@ public class ThailandPetroleumProductsNetExportScraperFirstCol {
 
     public List<Map<String, String>> scrapeThailand() {
         List<Map<String, String>> dataObjects = new ArrayList<>();
-        String productType;
-        productType = "net export";
 
         try {
             // To obtain the raw bytes of the excel file from the link
@@ -67,7 +65,7 @@ public class ThailandPetroleumProductsNetExportScraperFirstCol {
                 int rowsToCount = 25;
                 int startCol = 10;
 
-                dataObjects = ImportExportRows.inputData(sheet, rowName, productType, currentYear, startRow, rowsToCount, startCol, monthSplitNum);
+                dataObjects = ImportExportRows.inputData(sheet, rowName, currentYear, startRow, rowsToCount, startCol, monthSplitNum);
 
 
 //                Close workbook and stream

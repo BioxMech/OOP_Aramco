@@ -52,6 +52,7 @@ public class ImportExportRows {
         } else if (rowName.contains("Export")) {
             if (rowName.contains("Net")) {
                 //        Diesel has 2 trailing spaces
+                productType = "net export";
                 rowsToRead = Arrays.asList("GASOLINE", "REGULAR", "PREMIUM", "BASE ULG", "KEROSENE", "DIESEL", "HSD", "HSD 0.5 %", "LSD", "J.P.", "FUEL OIL", "LPG", "TOTAL");
                 colData = Arrays.asList("Gasoline Total", "Gasoline Regular", "Gasoline Premium", "Gasoline Base ULG", "Kerosene", "Diesel Total", "Diesel HSD", "Diesel HSD 0.5%", "Diesel LSD", "JP", "Fuel Oil", "LPG", "Total");
             } else {
