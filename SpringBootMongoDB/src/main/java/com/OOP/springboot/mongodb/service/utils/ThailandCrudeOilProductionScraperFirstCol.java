@@ -61,75 +61,16 @@ public class ThailandCrudeOilProductionScraperFirstCol {
                 Sheet sheet = wb.getSheetAt(0);
 
                 int rowCount = sheet.getPhysicalNumberOfRows();
-                int lastRow = 0;
-                int startRow = 0;
-                int titleRowNum = 0;
+                int lastRow;
+                int startRow;
+                int titleRowNum;
                 String region = "";
 
-                for (int r=rowCount; r >= 0; r--) {
-                    Row row = sheet.getRow(r);
-                    if (row != null) {
-                        Cell cell = sheet.getRow(r).getCell(0, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK);
-                        if (cell.getCellType() == CellType.STRING) {
-                            if (cell.getStringCellValue().trim().equals("YTD")) {
-                                lastRow = r;
-                            }
-
-                            if (cell.getStringCellValue().trim().equals("JAN")) {
-                                startRow = r-1;
-                                break;
-                            }
-                        }
-                    }
-                }
-
-                for (int i=0; i < 10; i++) {
-                    Row row = sheet.getRow(i);
-                    if (row != null) {
-                        Cell cell = sheet.getRow(i).getCell(0, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK);
-                        if (cell.getCellType() == CellType.STRING) {
-                            if (cell.getStringCellValue().trim().equals("Date")) {
-                                titleRowNum = i;
-                            }
-                        }
-                    }
-                }
-
+                lastRow = VerticalDataRows.getLastRow(sheet, rowCount, "YTD");
+                startRow = VerticalDataRows.getStartRow(sheet, rowCount);
+                titleRowNum = VerticalDataRows.getTitleRow(sheet, rowCount, "Date");
                 String currentYear = sheet.getRow(startRow).getCell(0,Row.MissingCellPolicy.CREATE_NULL_AS_BLANK).getStringCellValue();
-
-                for (int i=startRow+1; i < lastRow+1; i++) {
-                    int monthArrayIndex = (i-startRow-1);
-
-                    for (int j=1; j < (12+1) ; j++) {
-                        Cell cell = sheet.getRow(i).getCell(j, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK);
-//                        System.out.println(cell);
-                        double cellValue = cell.getNumericCellValue();
-
-                        double toSave = cellValue/1000;
-//                        System.out.print(toSave + " ");
-                        region = sheet.getRow(titleRowNum).getCell(j).getStringCellValue().trim();
-                        extractedData = new HashMap<>();
-                        extractedData.put("year", currentYear);
-                        extractedData.put("type", productType);
-                        extractedData.put("commodity", commodity);
-                        extractedData.put("unit", "Kilobarrels/day");
-                        extractedData.put("region", region);
-
-                        if (i == lastRow) {
-                            extractedData.put("month", "YTD");
-                        } else {
-                            extractedData.put("month", monthsConvert.get(monthArrayIndex));
-
-                        }
-
-                        if (toSave != 0.0) {
-                            extractedData.put("quantity", String.format("%.4f", toSave));
-                        } else {
-                            extractedData.put("quantity", "0");
-                        }
-                        dataObjects.add(extractedData);
-                    }
-                }
+                dataObjects = VerticalDataRows.inputData(sheet, productType, commodity, currentYear, startRow, lastRow, titleRowNum, 12, "region", "KB/D");
 
 //                Close workbook and stream
                 wb.close();
