@@ -70,7 +70,7 @@ public class CrawlerService {
                     link2 = e.getElementsByIndexEquals(1).select("a").attr("abs:href");
 //                    Obtain the link for the second column
                     link = e.getElementsByIndexEquals(2).select("a").attr("abs:href");
-//                    thailandLinks.put(rowName, link);
+                    thailandLinks.put(rowName, link);
                     thailandLinks.put(rowName+" FirstCol", link2);
                     links.add(link2);
                 }
@@ -211,7 +211,7 @@ public class CrawlerService {
 
 
     //  China Web scraping service
-    @Scheduled(cron = "0 50 02 * * ?") // 3 Am everyday
+    @Scheduled(cron = "0 50 02 * * ?") // 2:50 Am everyday
     public List<Map<String, String>> scrapeChina() throws IOException {
         // Initialize list
         List<Map<String,String>> dataObjects = new ArrayList<>();
