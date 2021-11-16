@@ -60,6 +60,15 @@ public class ImportExportRows {
                 rowsToRead = Arrays.asList("GASOLINE", "REGULAR", "PREMIUM", "KEROSENE", "DIESEL", "HSD", "LSD", "J.P.", "FUEL OIL", "LPG", "TOTAL");
                 colData = Arrays.asList("Gasoline Total", "Gasoline Regular", "Gasoline Premium", "Kerosene", "Diesel Total", "Diesel HSD", "Diesel LSD", "JP", "Fuel Oil", "LPG", "Total");
             }
+        } else if (rowName.contains("Production")) {
+            productType = "production";
+            rowsToRead = Arrays.asList("GASOLINE", "REGULAR", "PREMIUM", "KEROSENE", "DIESEL", "HSD", "LSD", "J.P.", "FUEL OIL", "LPG", "TOTAL");
+            colData = Arrays.asList("Gasoline Total", "Gasoline Regular", "Gasoline Premium", "Kerosene", "Diesel Total", "Diesel HSD", "Diesel LSD", "JP", "Fuel Oil", "LPG", "Total");
+
+        } else if (rowName.contains("Sale")) {
+            productType = "sale";
+            rowsToRead = Arrays.asList("GASOLINE", "REGULAR", "PREMIUM", "KEROSENE", "DIESEL", "HSD", "LSD", "J.P.", "FUEL OIL", "LPG", "TOTAL");
+            colData = Arrays.asList("Gasoline Total", "Gasoline Regular", "Gasoline Premium", "Kerosene", "Diesel Total", "Diesel HSD", "Diesel LSD", "JP", "Fuel Oil", "LPG", "Total");
         }
 
 
