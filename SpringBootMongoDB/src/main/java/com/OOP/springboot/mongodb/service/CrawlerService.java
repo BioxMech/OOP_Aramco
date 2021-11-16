@@ -27,16 +27,16 @@ public class CrawlerService {
     private final List<String> links;
     private final HashMap<String, String> thailandLinks = new HashMap<>();
     private final List<String> thailandDataRequiredTitle = new ArrayList<>(Arrays.asList(
-//            "Table 2.1-1: Production of Crude Oil",
-//            "Table 2.1-2: Production of Condensate",
-//            "Table 2.1-3: Import of Crude Oil Classified by Sources",
-//            "Table 2.1-5: Quantity and Value of Petroleum Products Export",
-//            "Table 2.2-2: Material Intake",
-//            "Table 2.3-2: Production of Petroleum Products (Barrel/Day)"
-            "Table 2.3-4: Sale of Petroleum Products (Barrel/Day)"
-//            "Table 2.3-7: Import of Petroleum Products (Barrel/Day)",
-//            "Table 2.3-9: Export of Petroleum Products (Barrel/Day)",
-//            "Table 2.3-11: Net Export of Petroleum Products (Barrel/Day)"
+            "Table 2.1-1: Production of Crude Oil",
+            "Table 2.1-2: Production of Condensate",
+            "Table 2.1-3: Import of Crude Oil Classified by Sources",
+            "Table 2.1-5: Quantity and Value of Petroleum Products Export",
+            "Table 2.2-2: Material Intake",
+            "Table 2.3-2: Production of Petroleum Products (Barrel/Day)",
+            "Table 2.3-4: Sale of Petroleum Products (Barrel/Day)",
+            "Table 2.3-7: Import of Petroleum Products (Barrel/Day)",
+            "Table 2.3-9: Export of Petroleum Products (Barrel/Day)",
+            "Table 2.3-11: Net Export of Petroleum Products (Barrel/Day)"
     ));
     private ChinaLinkScraper chinaLinkScraper;
     public CrawlerService(List<String> links) {
@@ -70,7 +70,7 @@ public class CrawlerService {
                     link2 = e.getElementsByIndexEquals(1).select("a").attr("abs:href");
 //                    Obtain the link for the second column
                     link = e.getElementsByIndexEquals(2).select("a").attr("abs:href");
-//                    thailandLinks.put(rowName, link);
+                    thailandLinks.put(rowName, link);
                     thailandLinks.put(rowName+" FirstCol", link2);
                     links.add(link2);
                 }
@@ -202,7 +202,7 @@ public class CrawlerService {
                 }
 
             }
-//            thailandService.saveListThailand(dataObjects);
+            thailandService.saveListThailand(dataObjects);
         } catch (IOException e) { // Same as the above - if URL cannot be found
             System.err.println("For '" + URL + "': " + e.getMessage());
         }
