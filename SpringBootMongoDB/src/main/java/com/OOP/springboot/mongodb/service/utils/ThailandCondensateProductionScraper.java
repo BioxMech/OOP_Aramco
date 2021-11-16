@@ -149,9 +149,9 @@ public class ThailandCondensateProductionScraper {
 
                 // Delete the files after reading it
                 File f = new File("./excel_files/" + savedFileName);
-//                if (f.delete()) {
-//                    System.out.println("Successful");
-//                }
+                if (f.delete()) {
+                    System.out.println("Successful");
+                }
 
 
             } catch (IOException err) {

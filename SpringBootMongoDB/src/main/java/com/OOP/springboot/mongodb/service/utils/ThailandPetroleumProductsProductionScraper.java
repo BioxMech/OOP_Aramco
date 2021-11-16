@@ -48,7 +48,6 @@ public class ThailandPetroleumProductsProductionScraper{
                     savedFileName = savedFileName.replace("/", " per ");
                 }
                 savedFileName = savedFileName.concat(".xls");
-//                            if (!savedFileName.endsWith(".xls")) savedFileName.concat(".xls");
 
                 // To create the file (set in the excel_files folder)
                 FileOutputStream fos = new FileOutputStream("./excel_files/" + savedFileName);
@@ -63,16 +62,7 @@ public class ThailandPetroleumProductsProductionScraper{
                 Sheet sheet = wb.getSheetAt(0);
 
                 int rowTotal = 4;
-                while (true) {
-                    Row currRow = sheet.getRow(rowTotal);
-                    Cell firstCol = currRow.getCell(0);
-                    if (firstCol.getCellType() == CellType.STRING && firstCol.getStringCellValue().contains("Source")) {
-                        break;
-                    }
-                    else {
-                        rowTotal++;
-                    }
-                }
+                rowTotal = ThailandPetroleumProductsScraperParent.getTotalNumRows(sheet, rowTotal);
                 String year = null;
                 int bottomCell = rowTotal;
                 int latestFourYear = bottomCell - (4*16);
@@ -94,30 +84,7 @@ public class ThailandPetroleumProductsProductionScraper{
                         String product = colData.get(a-1);
 
                         for (int b = 1; b < 14; b++) {
-                            String month = monthHeaders[b-1];
-                            extractedData = new HashMap<>();
-                            extractedData.put("year", year);
-                            extractedData.put("type", productType);
-                            extractedData.put("commodity", product);
-                            extractedData.put("unit", "Kilobarrels/day");
-                            if (b == 13){
-                                extractedData.put("month", "YTD");
-                            } else {
-                                extractedData.put("month", b+"");
-                            }
-                            Row row = sheet.getRow(yearRow+2+b);
-                            Cell cell = row.getCell(a);
-                            switch(cell.getCellType()) {
-                                case BLANK:
-                                    extractedData.put("quantity", "0");
-                                    break;
-                                case NUMERIC:
-                                    extractedData.put("quantity", String.format("%.4f",cell.getNumericCellValue()/1000));
-                                    break;
-                                case STRING:
-                                    extractedData.put("quantity", String.format("%.4f",Double.parseDouble(cell.getStringCellValue())/1000 ));
-                                    break;
-                            }
+                            extractedData = ThailandPetroleumProductsScraperParent.extractData(sheet, year, productType, product, yearRow, a, b);
                             dataObjects.add(extractedData);
                         }
                     }

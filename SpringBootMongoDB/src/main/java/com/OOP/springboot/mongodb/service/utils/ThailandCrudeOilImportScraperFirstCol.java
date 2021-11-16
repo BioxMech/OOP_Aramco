@@ -56,7 +56,6 @@ public class ThailandCrudeOilImportScraperFirstCol {
                 fos.write(bytes);
                 fos.close();
 
-//                System.out.println(savedFileName + " has been downloaded.");
                 FileInputStream excel_file = new FileInputStream("./excel_files/" + savedFileName);
                 Workbook wb = new HSSFWorkbook(excel_file);
                 Sheet sheet = wb.getSheetAt(0);
