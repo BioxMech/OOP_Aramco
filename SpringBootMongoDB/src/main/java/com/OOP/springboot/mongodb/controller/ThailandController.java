@@ -2,6 +2,7 @@ package com.OOP.springboot.mongodb.controller;
 
 import com.OOP.springboot.mongodb.model.Thailand;
 import com.OOP.springboot.mongodb.service.ThailandService;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,8 +28,9 @@ public class ThailandController {
         }
     }
 
+    @Operation(summary = "Get all data by year")
     @GetMapping("/{year}")
-    public ResponseEntity<List<Thailand>> getAllThailandByYear(@PathVariable String year, HttpServletRequest request) {
+    public ResponseEntity<List<Thailand>> getAllThailandByYear(  @PathVariable String year, HttpServletRequest request) {
         try {
             List<Thailand> thailand = thailandService.retrieveAllThailandByYear(year);
             return new ResponseEntity<>(thailand, HttpStatus.OK);
@@ -38,6 +40,7 @@ public class ThailandController {
         }
     }
 
+    @Operation(summary = "Get all data by year and commodity")
     @GetMapping("/{year}/{commodity}")
     public ResponseEntity<List<Thailand>> getAllThailandByYearAndCommodity(@PathVariable String year, @PathVariable String commodity, HttpServletRequest request) {
         try {
@@ -49,6 +52,7 @@ public class ThailandController {
         }
     }
 
+    @Operation(summary = "Get all data by year, type, commodity")
     @GetMapping("/{year}/{type}/{commodity}")
     public ResponseEntity<List<Thailand>> getAllThailandByYearAndTypeAndCommodity(@PathVariable String year, @PathVariable String type, @PathVariable String commodity, HttpServletRequest request) {
         List<Thailand> thailand = null;
@@ -67,6 +71,8 @@ public class ThailandController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @Operation(summary = "Get all data by year, month, type, commodity")
     @GetMapping("/{year}/{month}/{type}/{commodity}")
     public ResponseEntity<List<Thailand>> getAllThailandByYearAndMonthAndTypeAndCommodity(@PathVariable String year, @PathVariable String month, @PathVariable String type, @PathVariable String commodity, HttpServletRequest request) {
         List<Thailand> thailand = null;
@@ -87,6 +93,7 @@ public class ThailandController {
         }
     }
 
+    @Operation(summary = "Get all data by year, month, type, commodity, region")
     @GetMapping("/{year}/{month}/{type}/{commodity}/{region}")
     public ResponseEntity<List<Thailand>> getAllThailandByYearAndMonthAndTypeAndCommodityAndRegion(@PathVariable String year, @PathVariable String month, @PathVariable String type, @PathVariable String commodity, @PathVariable String region, HttpServletRequest request) {
         List<Thailand> thailand = null;
@@ -166,6 +173,8 @@ public class ThailandController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @Operation(summary = "Generates CSV files from data in the database")
     @GetMapping("/saveallexcel")
     public String saveAllExcelFiles() {
         try {

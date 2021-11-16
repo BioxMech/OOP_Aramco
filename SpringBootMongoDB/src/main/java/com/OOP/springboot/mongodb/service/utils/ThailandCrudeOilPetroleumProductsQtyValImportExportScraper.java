@@ -95,7 +95,7 @@ public class ThailandCrudeOilPetroleumProductsQtyValImportExportScraper {
                 String titleToSave = "";
                 String product = "";
 
-                for (int loopCount=0; loopCount < chunksToLoop; loopCount++) {
+                for (int loopCount=0; loopCount < 4; loopCount++) {
                     if (loopCount > 0) {
                         latestChunk -= 29;
                     }

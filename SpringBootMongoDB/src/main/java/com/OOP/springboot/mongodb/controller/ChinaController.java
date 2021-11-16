@@ -1,15 +1,13 @@
 package com.OOP.springboot.mongodb.controller;
 
 import com.OOP.springboot.mongodb.model.China;
-import com.OOP.springboot.mongodb.model.Customer;
 import com.OOP.springboot.mongodb.model.s3;
 import com.OOP.springboot.mongodb.repository.ChinaRepository;
-import com.OOP.springboot.mongodb.repository.CustomerRepository;
 import com.OOP.springboot.mongodb.service.ChinaService;
-import com.OOP.springboot.mongodb.service.CustomerService;
 import com.OOP.springboot.mongodb.service.s3Service;
 import com.OOP.springboot.mongodb.service.utils.ChinaExcel;
 import com.OOP.springboot.mongodb.service.utils.ChinaLinkScraper;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,8 +24,6 @@ public class ChinaController {
     @Autowired
     ChinaService chinaService;
 
-
-
     public String saveChina(China china) {
         try {
             China _china = chinaService.saveChina(china);
@@ -37,6 +33,7 @@ public class ChinaController {
         }
     }
 
+    @Operation(summary = "Get all data")
     @GetMapping("/all")
     public ResponseEntity<List<China>> getAllChina(HttpServletRequest request) {
         try {
@@ -49,6 +46,7 @@ public class ChinaController {
         }
     }
 
+    @Operation(summary = "Get all data by year")
     @GetMapping("/{year}")
     public ResponseEntity<List<China>> getAllChinaByYear(@PathVariable String year, HttpServletRequest request) {
         try {
@@ -61,6 +59,7 @@ public class ChinaController {
         }
     }
 
+    @Operation(summary = "Get all data by year and commodity")
     @GetMapping("/{year}/{commodity}")
     public ResponseEntity<List<China>> getAllChinaByYear(@PathVariable String year, @PathVariable String commodity, HttpServletRequest request) {
         try {
@@ -73,6 +72,7 @@ public class ChinaController {
         }
     }
 
+    @Operation(summary = "Get all data by year, type, commodity")
     @GetMapping("/{year}/{type}/{commodity}")
     public ResponseEntity<List<China>> getAllChinaByYear(@PathVariable String year, @PathVariable String commodity, @PathVariable String type, HttpServletRequest request) {
         try {
@@ -107,6 +107,7 @@ public class ChinaController {
         }
     }
 
+    @Operation(summary = "Generates CSV files from data in the database")
     @GetMapping("/saveallexcel")
     public String saveAllExcelFiles() {
 

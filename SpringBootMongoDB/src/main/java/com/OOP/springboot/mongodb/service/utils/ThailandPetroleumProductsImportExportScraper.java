@@ -86,7 +86,7 @@ public class ThailandPetroleumProductsImportExportScraper {
 
                 currentYear = (int) sheet.getRow(latestChunk).getCell(0).getNumericCellValue();
 
-                for (int chunksLooped = 0; chunksLooped < chunksToLoop; chunksLooped++) {
+                for (int chunksLooped = 0; chunksLooped < 4; chunksLooped++) {
 //                  Looping each row in the chunk, 1 for each month + YTD (SINGLE YEAR CHUNK)
                     for (int i=0; i < 13; i ++) {
 //                            Add 3 because of the 3 header rows
@@ -123,7 +123,7 @@ public class ThailandPetroleumProductsImportExportScraper {
                 wb.close();
                 excel_file.close();
 
-                File f= new File("./excel_files" + savedFileName);
+                File f= new File("./excel_files/" + savedFileName);
                 if (f.delete()) {
                     System.out.println("Successful");
                 }
