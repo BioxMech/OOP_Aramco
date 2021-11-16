@@ -57,7 +57,7 @@ public class ImportExportRows {
                 colData = Arrays.asList("Gasoline Total", "Gasoline Regular", "Gasoline Premium", "Gasoline Base ULG", "Kerosene", "Diesel Total", "Diesel HSD", "Diesel HSD 0.5%", "Diesel LSD", "JP", "Fuel Oil", "LPG", "Total");
             } else {
                 productType = "export";
-                rowsToRead = Arrays.asList("GASOLINE", " REGULAR", " PREMIUM", "KEROSENE", "DIESEL ", " HSD", " LSD", "J.P.    ", "FUEL OIL", "LPG", "TOTAL");
+                rowsToRead = Arrays.asList("GASOLINE", "REGULAR", "PREMIUM", "KEROSENE", "DIESEL", "HSD", "LSD", "J.P.", "FUEL OIL", "LPG", "TOTAL");
                 colData = Arrays.asList("Gasoline Total", "Gasoline Regular", "Gasoline Premium", "Kerosene", "Diesel Total", "Diesel HSD", "Diesel LSD", "JP", "Fuel Oil", "LPG", "Total");
             }
         }
