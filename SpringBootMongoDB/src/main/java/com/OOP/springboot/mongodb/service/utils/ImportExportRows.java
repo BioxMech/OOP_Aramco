@@ -78,10 +78,6 @@ public class ImportExportRows {
                     extractedData.put("year", currentYear);
                     extractedData.put("type", productType);
                     extractedData.put("commodity", colData.get(rowsTitleCount));
-                    System.out.println(rowsTitleCount);
-                    System.out.println(colData.get(rowsTitleCount));
-                    System.out.println(rowsToRead.get(rowsTitleCount));
-
                     extractedData.put("unit", "Kilobarrels/day");
                     extractedData.put("month", (j +1) + "");
 
