@@ -27,16 +27,16 @@ public class CrawlerService {
     private final List<String> links;
     private final HashMap<String, String> thailandLinks = new HashMap<>();
     private final List<String> thailandDataRequiredTitle = new ArrayList<>(Arrays.asList(
-//            "Table 2.1-1: Production of Crude Oil"
-//            "Table 2.1-2: Production of Condensate",
-//            "Table 2.1-3: Import of Crude Oil Classified by Sources",
-//            "Table 2.1-5: Quantity and Value of Petroleum Products Export",
-//            "Table 2.2-2: Material Intake",
-//            "Table 2.3-2: Production of Petroleum Products (Barrel/Day)",
-//            "Table 2.3-4: Sale of Petroleum Products (Barrel/Day)",
-            "Table 2.3-7: Import of Petroleum Products (Barrel/Day)"
-//            "Table 2.3-9: Export of Petroleum Products (Barrel/Day)",
-//            "Table 2.3-11: Net Export of Petroleum Products (Barrel/Day)"
+            "Table 2.1-1: Production of Crude Oil",
+            "Table 2.1-2: Production of Condensate",
+            "Table 2.1-3: Import of Crude Oil Classified by Sources",
+            "Table 2.1-5: Quantity and Value of Petroleum Products Export",
+            "Table 2.2-2: Material Intake",
+            "Table 2.3-2: Production of Petroleum Products (Barrel/Day)",
+            "Table 2.3-4: Sale of Petroleum Products (Barrel/Day)",
+            "Table 2.3-7: Import of Petroleum Products (Barrel/Day)",
+            "Table 2.3-9: Export of Petroleum Products (Barrel/Day)",
+            "Table 2.3-11: Net Export of Petroleum Products (Barrel/Day)"
     ));
     private ChinaLinkScraper chinaLinkScraper;
     public CrawlerService(List<String> links) {
@@ -44,7 +44,7 @@ public class CrawlerService {
     }
 
     // Thailand Web Scraping Service
-     @Scheduled(cron = "0 30 16 * * *") // 3 Am everyday
+     @Scheduled(cron = "0 00 03 * * *") // 3 Am everyday
     public List<Map<String, String>> scrapeThailand() {
         String URL = thailandURL;
         // Initialize list
@@ -75,7 +75,7 @@ public class CrawlerService {
                     links.add(link2);
                 }
             }
-            System.out.println(thailandLinks);
+//            System.out.println(thailandLinks);
             for (Map.Entry<String, String> entry : thailandLinks.entrySet()) {
                 String key = entry.getKey();
                 String value = entry.getValue();
@@ -202,7 +202,7 @@ public class CrawlerService {
                 }
 
             }
-//            thailandService.saveListThailand(dataObjects);
+            thailandService.saveListThailand(dataObjects);
         } catch (IOException e) { // Same as the above - if URL cannot be found
             System.err.println("For '" + URL + "': " + e.getMessage());
         }
@@ -211,7 +211,7 @@ public class CrawlerService {
 
 
     //  China Web scraping service
-//    @Scheduled(cron = "0 00 03 * * ?") // 3 Am everyday
+    @Scheduled(cron = "0 50 02 * * ?") // 3 Am everyday
     public List<Map<String, String>> scrapeChina() throws IOException {
         // Initialize list
         List<Map<String,String>> dataObjects = new ArrayList<>();
