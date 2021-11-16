@@ -211,7 +211,7 @@ public class CrawlerService {
 
 
     //  China Web scraping service
-    @Scheduled(cron = "0 50 02 * * ?") // 3 Am everyday
+    @Scheduled(cron = "0 50 02 * * ?") // 2:50 Am everyday
     public List<Map<String, String>> scrapeChina() throws IOException {
         // Initialize list
         List<Map<String,String>> dataObjects = new ArrayList<>();
