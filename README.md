@@ -4,6 +4,12 @@ You require maven to install the JAR File from the springboot backend applicatio
 <br /><br />
 <code>mvn -version</code>
 
+## Pre-requisites
+* Have java installed (Java jdk >= 11)
+
+## Swagger Documentation Link
+* http://localhost:8080/swagger.html
+
 ## For default deployment:
 1. Place AramcoApp folder on Desktop
 2. Using command prompt or terminal, change directory to AramcoApp
