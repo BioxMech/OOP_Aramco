@@ -56,15 +56,13 @@ public class ThailandPetroleumProductsNetExportScraperFirstCol {
                 int startRow = 0;
                 int monthSplitNum = 0;
                 String currentYear = "";
+                int rowsToCount = 25;
+                int startCol = 10;
 
                 int[] setUp = ImportExportRows.getCurrentYearStartRowMonthSplitNum(sheet, rowCount, 4, "ENERGY", "GASOLINE");
                 currentYear = setUp[0] + "";
                 startRow = setUp[1];
                 monthSplitNum = setUp[2];
-
-                int rowsToCount = 25;
-                int startCol = 10;
-
                 dataObjects = ImportExportRows.inputData(sheet, rowName, currentYear, startRow, rowsToCount, startCol, monthSplitNum);
 
 

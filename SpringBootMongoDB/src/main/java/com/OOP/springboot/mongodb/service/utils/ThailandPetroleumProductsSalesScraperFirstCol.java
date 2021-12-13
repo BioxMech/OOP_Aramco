@@ -58,6 +58,7 @@ public class ThailandPetroleumProductsSalesScraperFirstCol {
                 String currentYear = "";
 
                 int[] setUp = ImportExportRows.getCurrentYearStartRowMonthSplitNum(sheet, rowCount, 4, "ENERGY", "GASOLINE");
+
                 currentYear = setUp[0] + "";
                 startRow = setUp[1];
                 monthSplitNum = setUp[2];

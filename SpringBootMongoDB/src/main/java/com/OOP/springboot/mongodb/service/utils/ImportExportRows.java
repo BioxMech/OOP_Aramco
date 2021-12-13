@@ -19,7 +19,7 @@ public class ImportExportRows {
                         String monthSplitString = sheet.getRow(r).getCell(monthSplitCol).getStringCellValue().substring(0,2);
 
                         //Default is 10, as 10th col is where the year data starts
-                        currentYear = Integer.parseInt(sheet.getRow(r).getCell(10).getStringCellValue());
+                        currentYear = Integer.parseInt(sheet.getRow(r).getCell(7).getStringCellValue()) + 1;
                         monthSplitNum = Integer.parseInt(monthSplitString.trim());
                         continue;
                     }
@@ -66,7 +66,7 @@ public class ImportExportRows {
             colData = Arrays.asList("Gasoline Total", "Gasoline Regular", "Gasoline Premium", "Kerosene", "Diesel Total", "Diesel HSD", "Diesel LSD", "JP", "Fuel Oil", "LPG", "Total");
 
         } else if (rowName.contains("Sale")) {
-            productType = "sale";
+            productType = "sales";
             rowsToRead = Arrays.asList("GASOLINE", "REGULAR", "PREMIUM", "KEROSENE", "DIESEL", "HSD", "LSD", "J.P.", "FUEL OIL", "LPG", "TOTAL");
             colData = Arrays.asList("Gasoline Total", "Gasoline Regular", "Gasoline Premium", "Kerosene", "Diesel Total", "Diesel HSD", "Diesel LSD", "JP", "Fuel Oil", "LPG", "Total");
         }
